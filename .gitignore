@@ -1,0 +1,61 @@
+# Kotlin Multiplatform
+.kotlin/
+build/
+**/build/
+.gradle/
+local.properties
+
+# Android
+*.apk
+*.ap_
+*.aab
+*.dex
+*.class
+bin/
+gen/
+out/
+captures/
+.navigation/
+*.iml
+.idea/
+.DS_Store
+*.hprof
+.cxx/
+
+# iOS
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+*.xcworkspace/*
+!*.xcworkspace/contents.xcworkspacedata
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.moved-aside
+DerivedData/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+Pods/
+Podfile.lock
+.build/
+
+# Compose
+.compose/
+
+# SQLDelight
+*.db
+*.db-shm
+*.db-wal
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Secrets
+secrets.properties
+keystore.properties
