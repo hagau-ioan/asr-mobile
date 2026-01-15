@@ -4,6 +4,13 @@ plugins {
     alias(libs.plugins.compose.compiler)
 }
 
+// Load keystore properties
+val keystorePropertiesFile = rootProject.file("androidApp/keys/keystore.properties")
+val keystoreProperties = java.util.Properties()
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(keystorePropertiesFile.inputStream())
+}
+
 android {
     namespace = "com.asr.financial.android"
     compileSdk = 35
@@ -14,6 +21,17 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0.0"
+    }
+    
+    signingConfigs {
+        create("release") {
+            if (keystorePropertiesFile.exists()) {
+                storeFile = rootProject.file(keystoreProperties["storeFile"] as String)
+                storePassword = keystoreProperties["storePassword"] as String
+                keyAlias = keystoreProperties["keyAlias"] as String
+                keyPassword = keystoreProperties["keyPassword"] as String
+            }
+        }
     }
     
     buildFeatures {
@@ -32,6 +50,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = true
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
