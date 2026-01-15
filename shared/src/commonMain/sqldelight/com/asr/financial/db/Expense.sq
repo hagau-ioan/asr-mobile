@@ -1,0 +1,45 @@
+CREATE TABLE Expense (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    description TEXT NOT NULL,
+    amount REAL NOT NULL,
+    category TEXT NOT NULL,
+    month INTEGER NOT NULL,
+    year INTEGER NOT NULL,
+    receiptImagePath TEXT,
+    notes TEXT,
+    createdAt INTEGER NOT NULL
+);
+
+CREATE INDEX idx_expense_period ON Expense(year, month);
+CREATE INDEX idx_expense_category ON Expense(category);
+
+selectAll:
+SELECT * FROM Expense ORDER BY year DESC, month DESC, createdAt DESC;
+
+selectByPeriod:
+SELECT * FROM Expense 
+WHERE year = ? AND month = ?
+ORDER BY createdAt DESC;
+
+selectByCategory:
+SELECT * FROM Expense 
+WHERE category = ?
+ORDER BY year DESC, month DESC;
+
+selectById:
+SELECT * FROM Expense WHERE id = ?;
+
+getTotalByPeriod:
+SELECT SUM(amount) as total FROM Expense WHERE year = ? AND month = ?;
+
+insert:
+INSERT INTO Expense(description, amount, category, month, year, receiptImagePath, notes, createdAt)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+update:
+UPDATE Expense
+SET description = ?, amount = ?, category = ?, month = ?, year = ?, receiptImagePath = ?, notes = ?
+WHERE id = ?;
+
+delete:
+DELETE FROM Expense WHERE id = ?;

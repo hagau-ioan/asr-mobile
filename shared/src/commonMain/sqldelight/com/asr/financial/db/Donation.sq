@@ -1,0 +1,44 @@
+CREATE TABLE Donation (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    congregationId INTEGER NOT NULL,
+    amount REAL NOT NULL,
+    month INTEGER NOT NULL,
+    year INTEGER NOT NULL,
+    notes TEXT,
+    createdAt INTEGER NOT NULL,
+    FOREIGN KEY (congregationId) REFERENCES Congregation(id) ON DELETE CASCADE
+);
+
+CREATE INDEX idx_donation_period ON Donation(year, month);
+CREATE INDEX idx_donation_congregation ON Donation(congregationId);
+
+selectAll:
+SELECT * FROM Donation ORDER BY year DESC, month DESC, createdAt DESC;
+
+selectByPeriod:
+SELECT * FROM Donation 
+WHERE year = ? AND month = ?
+ORDER BY createdAt DESC;
+
+selectByCongregation:
+SELECT * FROM Donation 
+WHERE congregationId = ?
+ORDER BY year DESC, month DESC;
+
+selectById:
+SELECT * FROM Donation WHERE id = ?;
+
+getTotalByPeriod:
+SELECT SUM(amount) as total FROM Donation WHERE year = ? AND month = ?;
+
+insert:
+INSERT INTO Donation(congregationId, amount, month, year, notes, createdAt)
+VALUES (?, ?, ?, ?, ?, ?);
+
+update:
+UPDATE Donation
+SET congregationId = ?, amount = ?, month = ?, year = ?, notes = ?
+WHERE id = ?;
+
+delete:
+DELETE FROM Donation WHERE id = ?;

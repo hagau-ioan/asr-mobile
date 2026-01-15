@@ -1,0 +1,33 @@
+CREATE TABLE ReceiptImage (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    expenseId INTEGER,
+    utilityExpenseId INTEGER,
+    filePath TEXT NOT NULL,
+    fileName TEXT NOT NULL,
+    fileSize INTEGER NOT NULL,
+    createdAt INTEGER NOT NULL,
+    FOREIGN KEY (expenseId) REFERENCES Expense(id) ON DELETE CASCADE,
+    FOREIGN KEY (utilityExpenseId) REFERENCES UtilityExpense(id) ON DELETE CASCADE
+);
+
+CREATE INDEX idx_receipt_expense ON ReceiptImage(expenseId);
+CREATE INDEX idx_receipt_utility ON ReceiptImage(utilityExpenseId);
+
+selectAll:
+SELECT * FROM ReceiptImage ORDER BY createdAt DESC;
+
+selectByExpense:
+SELECT * FROM ReceiptImage WHERE expenseId = ?;
+
+selectByUtilityExpense:
+SELECT * FROM ReceiptImage WHERE utilityExpenseId = ?;
+
+selectById:
+SELECT * FROM ReceiptImage WHERE id = ?;
+
+insert:
+INSERT INTO ReceiptImage(expenseId, utilityExpenseId, filePath, fileName, fileSize, createdAt)
+VALUES (?, ?, ?, ?, ?, ?);
+
+delete:
+DELETE FROM ReceiptImage WHERE id = ?;

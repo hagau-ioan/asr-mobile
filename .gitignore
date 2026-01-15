@@ -21,6 +21,7 @@ captures/
 .DS_Store
 *.hprof
 .cxx/
+.externalNativeBuild/
 
 # iOS
 *.xcodeproj/*
@@ -41,6 +42,7 @@ DerivedData/
 Pods/
 Podfile.lock
 .build/
+xcuserdata/
 
 # Compose
 .compose/
@@ -52,6 +54,8 @@ Podfile.lock
 
 # macOS
 .DS_Store
+.AppleDouble
+.LSOverride
 
 # Logs
 *.log
@@ -59,3 +63,9 @@ Podfile.lock
 # Secrets
 secrets.properties
 keystore.properties
+google-services.json
+GoogleService-Info.plist
+
+# Gradle Wrapper
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties

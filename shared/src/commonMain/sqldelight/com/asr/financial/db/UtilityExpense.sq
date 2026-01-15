@@ -1,0 +1,45 @@
+CREATE TABLE UtilityExpense (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    utilityType TEXT NOT NULL,
+    amount REAL NOT NULL,
+    month INTEGER NOT NULL,
+    year INTEGER NOT NULL,
+    meterReading TEXT,
+    receiptImagePath TEXT,
+    notes TEXT,
+    createdAt INTEGER NOT NULL
+);
+
+CREATE INDEX idx_utility_period ON UtilityExpense(year, month);
+CREATE INDEX idx_utility_type ON UtilityExpense(utilityType);
+
+selectAll:
+SELECT * FROM UtilityExpense ORDER BY year DESC, month DESC, createdAt DESC;
+
+selectByPeriod:
+SELECT * FROM UtilityExpense 
+WHERE year = ? AND month = ?
+ORDER BY createdAt DESC;
+
+selectByType:
+SELECT * FROM UtilityExpense 
+WHERE utilityType = ?
+ORDER BY year DESC, month DESC;
+
+selectById:
+SELECT * FROM UtilityExpense WHERE id = ?;
+
+getTotalByPeriod:
+SELECT SUM(amount) as total FROM UtilityExpense WHERE year = ? AND month = ?;
+
+insert:
+INSERT INTO UtilityExpense(utilityType, amount, month, year, meterReading, receiptImagePath, notes, createdAt)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+update:
+UPDATE UtilityExpense
+SET utilityType = ?, amount = ?, month = ?, year = ?, meterReading = ?, receiptImagePath = ?, notes = ?
+WHERE id = ?;
+
+delete:
+DELETE FROM UtilityExpense WHERE id = ?;
