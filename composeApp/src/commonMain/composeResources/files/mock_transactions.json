@@ -1,0 +1,85 @@
+[
+  {
+    "id": "txn_001",
+    "type": "INCOME",
+    "amount": 5000.00,
+    "description": "Monthly donation from Congregation A",
+    "date": "2024-01-15",
+    "category": "Donations",
+    "congregationName": "Congregation A"
+  },
+  {
+    "id": "txn_002",
+    "type": "INCOME",
+    "amount": 3500.00,
+    "description": "Monthly donation from Congregation B",
+    "date": "2024-01-15",
+    "category": "Donations",
+    "congregationName": "Congregation B"
+  },
+  {
+    "id": "txn_003",
+    "type": "EXPENSE",
+    "amount": 1200.00,
+    "description": "Electricity bill",
+    "date": "2024-01-10",
+    "category": "Utilities"
+  },
+  {
+    "id": "txn_004",
+    "type": "EXPENSE",
+    "amount": 800.00,
+    "description": "Water bill",
+    "date": "2024-01-12",
+    "category": "Utilities"
+  },
+  {
+    "id": "txn_005",
+    "type": "EXPENSE",
+    "amount": 2500.00,
+    "description": "Building maintenance",
+    "date": "2024-01-20",
+    "category": "Maintenance"
+  },
+  {
+    "id": "txn_006",
+    "type": "INCOME",
+    "amount": 4200.00,
+    "description": "Monthly donation from Congregation C",
+    "date": "2024-02-15",
+    "category": "Donations",
+    "congregationName": "Congregation C"
+  },
+  {
+    "id": "txn_007",
+    "type": "EXPENSE",
+    "amount": 1500.00,
+    "description": "Office supplies",
+    "date": "2024-02-05",
+    "category": "Supplies"
+  },
+  {
+    "id": "txn_008",
+    "type": "INCOME",
+    "amount": 6000.00,
+    "description": "Special donation",
+    "date": "2024-02-20",
+    "category": "Donations"
+  },
+  {
+    "id": "txn_009",
+    "type": "EXPENSE",
+    "amount": 950.00,
+    "description": "Internet and phone",
+    "date": "2024-02-10",
+    "category": "Utilities"
+  },
+  {
+    "id": "txn_010",
+    "type": "EXPENSE",
+    "amount": 3200.00,
+    "description": "Cleaning services",
+    "date": "2024-02-25",
+    "category": "Services"
+  }
+]

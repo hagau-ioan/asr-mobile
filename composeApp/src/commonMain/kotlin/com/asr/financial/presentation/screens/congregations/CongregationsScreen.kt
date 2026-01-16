@@ -1,0 +1,42 @@
+package com.asr.financial.presentation.screens.congregations
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.asr.financial.presentation.ui.components.BreadcrumbItem
+import com.asr.financial.presentation.ui.responsive.WindowSizeClass
+import com.asr.financial.presentation.ui.scaffold.ScreenLayout
+import asr_financial.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
+
+@Composable
+fun CongregationsScreen(
+    windowSizeClass: WindowSizeClass,
+    onNavigate: (String) -> Unit,
+    onMenuClick: () -> Unit = {}
+) {
+    ScreenLayout(
+        windowSizeClass = windowSizeClass,
+        breadcrumbItems = listOf(
+            BreadcrumbItem(stringResource(Res.string.nav_home), "home"),
+            BreadcrumbItem(stringResource(Res.string.nav_congregations))
+        ),
+        onNavigate = onNavigate,
+        onMenuClick = onMenuClick
+    ) {
+        item {
+            Card(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(
+                        text = stringResource(Res.string.nav_congregations),
+                        style = MaterialTheme.typography.headlineMedium
+                    )
+                    Spacer(Modifier.height(8.dp))
+                    Text(stringResource(Res.string.in_development))
+                }
+            }
+        }
+    }
+}

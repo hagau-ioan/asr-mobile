@@ -1,95 +1,263 @@
 package com.asr.financial.presentation.screens.home
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.asr.financial.presentation.mvi.event.HomeEvent
+import com.asr.financial.presentation.mvi.state.HomeState
+import com.asr.financial.presentation.mvi.viewmodel.HomeViewModel
+import com.asr.financial.presentation.ui.components.BreadcrumbItem
+import com.asr.financial.presentation.ui.responsive.WindowSizeClass
+import com.asr.financial.presentation.ui.scaffold.ScreenLayout
+import com.asr.financial.utils.formatCurrency
+import asr_financial.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
+/**
+ * Home Screen matching Financial Tracking App design
+ */
 @Composable
 fun HomeScreen(
-    onItemClick: (String) -> Unit,
+    windowSizeClass: WindowSizeClass,
+    onNavigate: (String) -> Unit,
+    onMenuClick: () -> Unit = {},
     viewModel: HomeViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("ASR Financial") },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary
-                )
-            )
-        }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-        ) {
-            Text(
-                text = "Welcome to ASR Financial Management",
-                style = MaterialTheme.typography.headlineSmall,
-                modifier = Modifier.padding(16.dp)
-            )
-
-            Text(
-                text = "Select an item to view details:",
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
-
-            LazyColumn(
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(uiState.items) { item ->
-                    ItemCard(
-                        title = item,
-                        onClick = { onItemClick(item) }
+    
+    var selectedYear by remember { mutableStateOf(2025) }
+    var selectedMonth by remember { mutableStateOf("Decembrie") }
+    
+    val months = listOf(
+        "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie",
+        "Iulie", "August", "Septembrie", "Octombrie", "Noiembrie", "Decembrie"
+    )
+    
+    ScreenLayout(
+        windowSizeClass = windowSizeClass,
+        breadcrumbItems = listOf(BreadcrumbItem(stringResource(Res.string.nav_home))),
+        selectedMonth = selectedMonth,
+        selectedYear = selectedYear,
+        onNavigate = onNavigate,
+        onMenuClick = onMenuClick
+    ) {
+                // Period Selector Card
+            item {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface
                     )
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Text(
+                            text = stringResource(Res.string.home_select_period),
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                        
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            // Year selector
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = stringResource(Res.string.home_year),
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                                Spacer(Modifier.height(4.dp))
+                                OutlinedButton(
+                                    onClick = { /* TODO: Show year picker */ },
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Text(selectedYear.toString())
+                                }
+                            }
+                            
+                            // Month selector
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = stringResource(Res.string.home_month),
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                                Spacer(Modifier.height(4.dp))
+                                OutlinedButton(
+                                    onClick = { /* TODO: Show month picker */ },
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Text(selectedMonth)
+                                }
+                            }
+                        }
+                    }
                 }
             }
+            
+            // Statistics Cards
+            item {
+                when (val state = uiState) {
+                    is HomeState.Loading -> {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(200.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator()
+                        }
+                    }
+                    
+                    is HomeState.Success -> {
+                        StatisticsCards(
+                            totalExpenses = state.totalExpenses,
+                            totalIncome = state.totalIncome,
+                            balance = state.balance,
+                            selectedMonth = selectedMonth,
+                            selectedYear = selectedYear
+                        )
+                    }
+                    
+                    is HomeState.Error -> {
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.errorContainer
+                            )
+                        ) {
+                            Text(
+                                text = state.message,
+                                color = MaterialTheme.colorScheme.onErrorContainer,
+                                modifier = Modifier.padding(16.dp)
+                            )
+                        }
+                    }
+                }
+            }
+        }
+}
+
+/**
+ * Statistics Cards - 4 cards in grid
+ */
+@Composable
+private fun StatisticsCards(
+    totalExpenses: Double,
+    totalIncome: Double,
+    balance: Double,
+    selectedMonth: String,
+    selectedYear: Int
+) {
+    val perPublisher = totalExpenses / 785
+    val missingCongregations = 0 // TODO: Calculate from data
+    
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        // Row 1: Expenses and Donations
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            // Monthly Expenses
+            StatCard(
+                title = stringResource(Res.string.stat_monthly_expenses),
+                amount = totalExpenses.formatCurrency(),
+                amountColor = MaterialTheme.colorScheme.error,
+                subtitle = "$selectedMonth $selectedYear",
+                modifier = Modifier.weight(1f)
+            )
+            
+            // Monthly Donations
+            StatCard(
+                title = stringResource(Res.string.stat_monthly_donations),
+                amount = totalIncome.formatCurrency(),
+                amountColor = MaterialTheme.colorScheme.tertiary,
+                subtitle = stringResource(Res.string.stat_balance, balance.formatCurrency()),
+                subtitleColor = if (balance >= 0) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.error,
+                modifier = Modifier.weight(1f)
+            )
+        }
+        
+        // Row 2: Per Publisher and Missing Congregations
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            // Per Publisher Contribution
+            StatCard(
+                title = stringResource(Res.string.stat_per_publisher),
+                amount = perPublisher.formatCurrency(),
+                amountColor = MaterialTheme.colorScheme.primary,
+                subtitle = stringResource(Res.string.stat_for_publishers, 785),
+                modifier = Modifier.weight(1f)
+            )
+            
+            // Missing Congregations
+            StatCard(
+                title = stringResource(Res.string.stat_missing_congregations),
+                amount = missingCongregations.toString(),
+                amountColor = if (missingCongregations > 0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.tertiary,
+                subtitle = stringResource(Res.string.stat_of_congregations, 8),
+                modifier = Modifier.weight(1f)
+            )
         }
     }
 }
 
+/**
+ * Individual Stat Card
+ */
 @Composable
-private fun ItemCard(
+private fun StatCard(
     title: String,
-    onClick: () -> Unit
+    amount: String,
+    amountColor: Color,
+    subtitle: String,
+    modifier: Modifier = Modifier,
+    subtitleColor: Color = MaterialTheme.colorScheme.onSurfaceVariant
 ) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        modifier = modifier,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
+        shape = RoundedCornerShape(12.dp)
     ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(16.dp)
-        )
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Text(
+                text = amount,
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+                color = amountColor
+            )
+            Text(
+                text = subtitle,
+                style = MaterialTheme.typography.bodySmall,
+                color = subtitleColor
+            )
+        }
     }
 }

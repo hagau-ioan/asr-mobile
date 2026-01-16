@@ -1,0 +1,59 @@
+<resources>
+    <!-- App Name -->
+    <string name="app_name">ASR - Pénzügyi Menedzsment</string>
+    <string name="app_title">ASR</string>
+    <string name="app_subtitle">Pénzügyi Menedzsment</string>
+    
+    <!-- Navigation -->
+    <string name="nav_home">Kezdőlap</string>
+    <string name="nav_congregations">Gyülekezetek</string>
+    <string name="nav_expenses">Havi Kiadások</string>
+    <string name="nav_utilities">Közművek &amp; Fogyasztás</string>
+    <string name="nav_yearly">Éves Összehasonlítás</string>
+    <string name="nav_calculator">Hozzájárulás Kalkulátor</string>
+    <string name="nav_upload">Nyugták Feltöltése</string>
+    
+    <!-- Header -->
+    <string name="header_publishers">%d hirdetők</string>
+    <string name="header_congregations">%d gyülekezetek</string>
+    <string name="header_period">Időszak</string>
+    
+    <!-- Home Screen -->
+    <string name="home_select_period">Válasszon Időszakot</string>
+    <string name="home_year">Év</string>
+    <string name="home_month">Hónap</string>
+    
+    <!-- Statistics Cards -->
+    <string name="stat_monthly_expenses">Jelenlegi Havi Kiadások</string>
+    <string name="stat_monthly_donations">Jelenlegi Havi Adományok</string>
+    <string name="stat_balance">Egyenleg: %s</string>
+    <string name="stat_per_publisher">Hozzájárulás Hirdetőnként (Havi)</string>
+    <string name="stat_for_publishers">%d hirdetőre</string>
+    <string name="stat_missing_congregations">Hiányzó Gyülekezetek</string>
+    <string name="stat_of_congregations">%d gyülekezetből</string>
+    
+    <!-- Months -->
+    <string name="month_january">Január</string>
+    <string name="month_february">Február</string>
+    <string name="month_march">Március</string>
+    <string name="month_april">Április</string>
+    <string name="month_may">Május</string>
+    <string name="month_june">Június</string>
+    <string name="month_july">Július</string>
+    <string name="month_august">Augusztus</string>
+    <string name="month_september">Szeptember</string>
+    <string name="month_october">Október</string>
+    <string name="month_november">November</string>
+    <string name="month_december">December</string>
+    
+    <!-- Common -->
+    <string name="menu">Menü</string>
+    <string name="version">Verzió %s</string>
+    <string name="loading">Betöltés...</string>
+    <string name="error">Hiba</string>
+    <string name="in_development">Képernyő fejlesztés alatt...</string>
+    
+    <!-- Footer -->
+    <string name="footer_publishers_label">Hirdetők:</string>
+    <string name="footer_congregations_label">Gyülekezetek:</string>
+</resources>

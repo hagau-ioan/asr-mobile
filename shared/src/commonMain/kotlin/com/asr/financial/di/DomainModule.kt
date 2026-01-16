@@ -1,5 +1,7 @@
 package com.asr.financial.di
 
+import com.asr.financial.domain.usecase.GetTransactionsByMonthUseCase
+import com.asr.financial.domain.usecase.GetTransactionsUseCase
 import org.koin.dsl.module
 
 /**
@@ -7,5 +9,7 @@ import org.koin.dsl.module
  * Provides use cases
  */
 val domainModule = module {
-    // Use cases will be added here
+    // Transaction use cases
+    factory { GetTransactionsUseCase(get()) }
+    factory { GetTransactionsByMonthUseCase(get()) }
 }

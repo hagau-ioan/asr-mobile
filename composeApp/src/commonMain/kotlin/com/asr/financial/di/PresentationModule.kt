@@ -1,17 +1,19 @@
 package com.asr.financial.di
 
-import com.asr.financial.presentation.screens.details.DetailsViewModel
-import com.asr.financial.presentation.screens.home.HomeViewModel
+import com.asr.financial.data.ComposeJsonLoader
+import com.asr.financial.data.repository.JsonLoader
+import com.asr.financial.presentation.mvi.interactor.HomeInteractor
+import com.asr.financial.presentation.mvi.viewmodel.HomeViewModel
 import org.koin.core.module.dsl.viewModel
-import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val presentationModule = module {
+    // JSON Loader (platform-specific)
+    single<JsonLoader> { ComposeJsonLoader() }
+    
+    // Interactors
+    factory { HomeInteractor(get(), get()) }
+    
     // ViewModels
-    viewModelOf(::HomeViewModel)
-
-    // DetailsViewModel with parameter
-    viewModel { (itemId: String) ->
-        DetailsViewModel(itemId = itemId)
-    }
+    viewModel { HomeViewModel(get()) }
 }

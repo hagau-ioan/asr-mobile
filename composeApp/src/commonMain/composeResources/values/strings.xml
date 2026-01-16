@@ -1,0 +1,59 @@
+<resources>
+    <!-- App Name -->
+    <string name="app_name">ASR - Gestiune Financiară</string>
+    <string name="app_title">ASR</string>
+    <string name="app_subtitle">Gestiune Financiară</string>
+    
+    <!-- Navigation -->
+    <string name="nav_home">Acasă</string>
+    <string name="nav_congregations">Congregații</string>
+    <string name="nav_expenses">Cheltuieli Lunare</string>
+    <string name="nav_utilities">Utilități &amp; Consum</string>
+    <string name="nav_yearly">Comparație Anuală</string>
+    <string name="nav_calculator">Calculator Contribuții</string>
+    <string name="nav_upload">Încarcă Bonuri</string>
+    
+    <!-- Header -->
+    <string name="header_publishers">%d vestitori</string>
+    <string name="header_congregations">%d congregații</string>
+    <string name="header_period">Perioada</string>
+    
+    <!-- Home Screen -->
+    <string name="home_select_period">Selectează Perioada</string>
+    <string name="home_year">An</string>
+    <string name="home_month">Lună</string>
+    
+    <!-- Statistics Cards -->
+    <string name="stat_monthly_expenses">Cheltuieli Luna Curentă</string>
+    <string name="stat_monthly_donations">Donații Luna Curentă</string>
+    <string name="stat_balance">Balanță: %s</string>
+    <string name="stat_per_publisher">Contribuție per Vestitor (Lunar)</string>
+    <string name="stat_for_publishers">Pentru %d vestitori</string>
+    <string name="stat_missing_congregations">Congregații cu Lipsuri</string>
+    <string name="stat_of_congregations">din %d congregații</string>
+    
+    <!-- Months -->
+    <string name="month_january">Ianuarie</string>
+    <string name="month_february">Februarie</string>
+    <string name="month_march">Martie</string>
+    <string name="month_april">Aprilie</string>
+    <string name="month_may">Mai</string>
+    <string name="month_june">Iunie</string>
+    <string name="month_july">Iulie</string>
+    <string name="month_august">August</string>
+    <string name="month_september">Septembrie</string>
+    <string name="month_october">Octombrie</string>
+    <string name="month_november">Noiembrie</string>
+    <string name="month_december">Decembrie</string>
+    
+    <!-- Common -->
+    <string name="menu">Menu</string>
+    <string name="version">Versiune %s</string>
+    <string name="loading">Se încarcă...</string>
+    <string name="error">Eroare</string>
+    <string name="in_development">Ecran în dezvoltare...</string>
+    
+    <!-- Footer -->
+    <string name="footer_publishers_label">Vestitori:</string>
+    <string name="footer_congregations_label">Congregații:</string>
+</resources>

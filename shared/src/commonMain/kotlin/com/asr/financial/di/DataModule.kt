@@ -1,5 +1,7 @@
 package com.asr.financial.di
 
+import com.asr.financial.data.repository.MockTransactionRepository
+import com.asr.financial.domain.repository.TransactionRepository
 import org.koin.dsl.module
 
 /**
@@ -7,6 +9,6 @@ import org.koin.dsl.module
  * Provides database and repository implementations
  */
 val dataModule = module {
-    // Database will be added here
-    // Repositories will be added here
+    // Mock repositories (JsonLoader will be provided by platform module)
+    single<TransactionRepository> { MockTransactionRepository(get()) }
 }
