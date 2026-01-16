@@ -3,6 +3,8 @@ package com.asr.financial.presentation.screens.home
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -10,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.asr.financial.domain.model.TransactionType
 import com.asr.financial.presentation.mvi.event.HomeEvent
 import com.asr.financial.presentation.mvi.state.HomeState
 import com.asr.financial.presentation.mvi.viewmodel.HomeViewModel
@@ -34,17 +37,32 @@ fun HomeScreen(
     val uiState by viewModel.uiState.collectAsState()
     
     var selectedYear by remember { mutableStateOf(2025) }
-    var selectedMonth by remember { mutableStateOf("Decembrie") }
+    var selectedMonth by remember { mutableStateOf(12) } // December
+    var showYearDropdown by remember { mutableStateOf(false) }
+    var showMonthDropdown by remember { mutableStateOf(false) }
     
+    val years = listOf(2024, 2025, 2026)
     val months = listOf(
-        "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie",
-        "Iulie", "August", "Septembrie", "Octombrie", "Noiembrie", "Decembrie"
+        1 to stringResource(Res.string.month_january),
+        2 to stringResource(Res.string.month_february),
+        3 to stringResource(Res.string.month_march),
+        4 to stringResource(Res.string.month_april),
+        5 to stringResource(Res.string.month_may),
+        6 to stringResource(Res.string.month_june),
+        7 to stringResource(Res.string.month_july),
+        8 to stringResource(Res.string.month_august),
+        9 to stringResource(Res.string.month_september),
+        10 to stringResource(Res.string.month_october),
+        11 to stringResource(Res.string.month_november),
+        12 to stringResource(Res.string.month_december)
     )
+    
+    val selectedMonthName = months.find { it.first == selectedMonth }?.second ?: ""
     
     ScreenLayout(
         windowSizeClass = windowSizeClass,
         breadcrumbItems = listOf(BreadcrumbItem(stringResource(Res.string.nav_home))),
-        selectedMonth = selectedMonth,
+        selectedMonth = selectedMonthName,
         selectedYear = selectedYear,
         onNavigate = onNavigate,
         onMenuClick = onMenuClick
@@ -76,14 +94,54 @@ fun HomeScreen(
                                 Text(
                                     text = stringResource(Res.string.home_year),
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    modifier = Modifier.padding(bottom = 4.dp)
                                 )
-                                Spacer(Modifier.height(4.dp))
-                                OutlinedButton(
-                                    onClick = { /* TODO: Show year picker */ },
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
-                                    Text(selectedYear.toString())
+                                Box {
+                                    OutlinedCard(
+                                        onClick = { showYearDropdown = true },
+                                        modifier = Modifier.fillMaxWidth(),
+                                        colors = CardDefaults.outlinedCardColors(
+                                            containerColor = MaterialTheme.colorScheme.surface
+                                        )
+                                    ) {
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(horizontal = 16.dp, vertical = 12.dp),
+                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Text(
+                                                text = selectedYear.toString(),
+                                                style = MaterialTheme.typography.bodyLarge
+                                            )
+                                            Icon(
+                                                imageVector = Icons.Default.ArrowDropDown,
+                                                contentDescription = null,
+                                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                            )
+                                        }
+                                    }
+                                    DropdownMenu(
+                                        expanded = showYearDropdown,
+                                        onDismissRequest = { showYearDropdown = false }
+                                    ) {
+                                        years.forEach { year ->
+                                            DropdownMenuItem(
+                                                text = { 
+                                                    Text(
+                                                        text = year.toString(),
+                                                        style = MaterialTheme.typography.bodyLarge
+                                                    ) 
+                                                },
+                                                onClick = {
+                                                    selectedYear = year
+                                                    showYearDropdown = false
+                                                }
+                                            )
+                                        }
+                                    }
                                 }
                             }
                             
@@ -92,14 +150,54 @@ fun HomeScreen(
                                 Text(
                                     text = stringResource(Res.string.home_month),
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    modifier = Modifier.padding(bottom = 4.dp)
                                 )
-                                Spacer(Modifier.height(4.dp))
-                                OutlinedButton(
-                                    onClick = { /* TODO: Show month picker */ },
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
-                                    Text(selectedMonth)
+                                Box {
+                                    OutlinedCard(
+                                        onClick = { showMonthDropdown = true },
+                                        modifier = Modifier.fillMaxWidth(),
+                                        colors = CardDefaults.outlinedCardColors(
+                                            containerColor = MaterialTheme.colorScheme.surface
+                                        )
+                                    ) {
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(horizontal = 16.dp, vertical = 12.dp),
+                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Text(
+                                                text = selectedMonthName,
+                                                style = MaterialTheme.typography.bodyLarge
+                                            )
+                                            Icon(
+                                                imageVector = Icons.Default.ArrowDropDown,
+                                                contentDescription = null,
+                                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                            )
+                                        }
+                                    }
+                                    DropdownMenu(
+                                        expanded = showMonthDropdown,
+                                        onDismissRequest = { showMonthDropdown = false }
+                                    ) {
+                                        months.forEach { (monthNum, monthName) ->
+                                            DropdownMenuItem(
+                                                text = { 
+                                                    Text(
+                                                        text = monthName,
+                                                        style = MaterialTheme.typography.bodyLarge
+                                                    ) 
+                                                },
+                                                onClick = {
+                                                    selectedMonth = monthNum
+                                                    showMonthDropdown = false
+                                                }
+                                            )
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -122,11 +220,52 @@ fun HomeScreen(
                     }
                     
                     is HomeState.Success -> {
+                        // Filter transactions by selected year and month
+                        val filteredTransactions = state.transactions.filter { transaction ->
+                            transaction.getYear() == selectedYear && transaction.getMonth() == selectedMonth
+                        }
+                        
+                        val filteredIncome = filteredTransactions
+                            .filter { it.type == TransactionType.INCOME }
+                            .sumOf { it.amount }
+                        
+                        val filteredExpenses = filteredTransactions
+                            .filter { it.type == TransactionType.EXPENSE }
+                            .sumOf { it.amount }
+                        
+                        val filteredBalance = filteredIncome - filteredExpenses
+                        
+                        // Calculate year totals
+                        val yearTransactions = state.transactions.filter { it.getYear() == selectedYear }
+                        val yearIncome = yearTransactions.filter { it.type == TransactionType.INCOME }.sumOf { it.amount }
+                        val yearExpenses = yearTransactions.filter { it.type == TransactionType.EXPENSE }.sumOf { it.amount }
+                        val yearBalance = yearIncome - yearExpenses
+                        
+                        // Check for missing congregations in selected month
+                        val allCongregations = listOf(
+                            "Congregația A", "Congregația B", "Congregația C", 
+                            "Congregația D", "Congregația E", "Congregația F",
+                            "Congregația G", "Congregația H"
+                        )
+                        val expectedAmountPerCongregation = 500.0 // Expected monthly donation
+                        
+                        val congregationDonations = filteredTransactions
+                            .filter { it.type == TransactionType.INCOME && it.congregationName != null }
+                            .groupBy { it.congregationName }
+                            .mapValues { (_, transactions) -> transactions.sumOf { it.amount } }
+                        
+                        val missingCongregations = allCongregations.mapNotNull { congName ->
+                            val donated = congregationDonations[congName] ?: 0.0
+                            if (donated < expectedAmountPerCongregation) {
+                                Triple(congName, donated, expectedAmountPerCongregation - donated)
+                            } else null
+                        }
+                        
                         StatisticsCards(
-                            totalExpenses = state.totalExpenses,
-                            totalIncome = state.totalIncome,
-                            balance = state.balance,
-                            selectedMonth = selectedMonth,
+                            totalExpenses = filteredExpenses,
+                            totalIncome = filteredIncome,
+                            balance = filteredBalance,
+                            selectedMonth = selectedMonthName,
                             selectedYear = selectedYear
                         )
                     }
@@ -147,7 +286,219 @@ fun HomeScreen(
                     }
                 }
             }
+            
+            // Missing Congregations Alert
+            item {
+                when (val state = uiState) {
+                    is HomeState.Success -> {
+                        val filteredTransactions = state.transactions.filter { transaction ->
+                            transaction.getYear() == selectedYear && transaction.getMonth() == selectedMonth
+                        }
+                        
+                        val allCongregations = listOf(
+                            "Congregația A", "Congregația B", "Congregația C", 
+                            "Congregația D", "Congregația E", "Congregația F",
+                            "Congregația G", "Congregația H"
+                        )
+                        val expectedAmountPerCongregation = 500.0
+                        
+                        val congregationDonations = filteredTransactions
+                            .filter { it.type == TransactionType.INCOME && it.congregationName != null }
+                            .groupBy { it.congregationName }
+                            .mapValues { (_, transactions) -> transactions.sumOf { it.amount } }
+                        
+                        val missingCongregations = allCongregations.mapNotNull { congName ->
+                            val donated = congregationDonations[congName] ?: 0.0
+                            if (donated < expectedAmountPerCongregation) {
+                                Triple(congName, donated, expectedAmountPerCongregation - donated)
+                            } else null
+                        }
+                        
+                        if (missingCongregations.isNotEmpty()) {
+                            Card(
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.3f)
+                                ),
+                                border = androidx.compose.foundation.BorderStroke(
+                                    2.dp,
+                                    MaterialTheme.colorScheme.error.copy(alpha = 0.5f)
+                                )
+                            ) {
+                                Column(modifier = Modifier.padding(16.dp)) {
+                                    Text(
+                                        text = stringResource(Res.string.alert_missing_title),
+                                        style = MaterialTheme.typography.titleMedium,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.error
+                                    )
+                                    Spacer(Modifier.height(4.dp))
+                                    Text(
+                                        text = stringResource(Res.string.alert_missing_description, selectedMonthName, selectedYear),
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onErrorContainer
+                                    )
+                                    Spacer(Modifier.height(12.dp))
+                                    
+                                    missingCongregations.forEach { (congName, donated, missing) ->
+                                        Card(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(vertical = 4.dp),
+                                            colors = CardDefaults.cardColors(
+                                                containerColor = MaterialTheme.colorScheme.surface
+                                            ),
+                                            border = androidx.compose.foundation.BorderStroke(
+                                                1.dp,
+                                                MaterialTheme.colorScheme.error.copy(alpha = 0.3f)
+                                            )
+                                        ) {
+                                            Row(
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .padding(12.dp),
+                                                horizontalArrangement = Arrangement.SpaceBetween,
+                                                verticalAlignment = Alignment.CenterVertically
+                                            ) {
+                                                Text(
+                                                    text = congName,
+                                                    style = MaterialTheme.typography.bodyLarge,
+                                                    fontWeight = FontWeight.Medium,
+                                                    color = MaterialTheme.colorScheme.error
+                                                )
+                                                Column(horizontalAlignment = Alignment.End) {
+                                                    Text(
+                                                        text = stringResource(Res.string.alert_missing_amount, missing.formatCurrency()),
+                                                        style = MaterialTheme.typography.bodySmall,
+                                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                                    )
+                                                    Text(
+                                                        text = stringResource(Res.string.alert_expected_amount, expectedAmountPerCongregation.formatCurrency()),
+                                                        style = MaterialTheme.typography.bodySmall,
+                                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                                    )
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else -> {}
+                }
+            }
+            
+            // Annual Summary and General Info
+            item {
+                when (val state = uiState) {
+                    is HomeState.Success -> {
+                        val yearTransactions = state.transactions.filter { it.getYear() == selectedYear }
+                        val yearIncome = yearTransactions.filter { it.type == TransactionType.INCOME }.sumOf { it.amount }
+                        val yearExpenses = yearTransactions.filter { it.type == TransactionType.EXPENSE }.sumOf { it.amount }
+                        val yearBalance = yearIncome - yearExpenses
+                        
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            // Annual Summary
+                            Card(modifier = Modifier.weight(1f)) {
+                                Column(modifier = Modifier.padding(16.dp)) {
+                                    Text(
+                                        text = stringResource(Res.string.annual_summary_title, selectedYear),
+                                        style = MaterialTheme.typography.titleMedium,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                    Spacer(Modifier.height(12.dp))
+                                    
+                                    SummaryRow(
+                                        label = stringResource(Res.string.annual_total_expenses),
+                                        value = yearExpenses.formatCurrency(),
+                                        valueColor = MaterialTheme.colorScheme.error
+                                    )
+                                    SummaryRow(
+                                        label = stringResource(Res.string.annual_total_donations),
+                                        value = yearIncome.formatCurrency(),
+                                        valueColor = MaterialTheme.colorScheme.tertiary
+                                    )
+                                    
+                                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                                    
+                                    SummaryRow(
+                                        label = stringResource(Res.string.annual_balance),
+                                        value = yearBalance.formatCurrency(),
+                                        valueColor = if (yearBalance >= 0) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.error,
+                                        isLarge = true
+                                    )
+                                    
+                                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                                    
+                                    SummaryRow(
+                                        label = stringResource(Res.string.annual_per_publisher),
+                                        value = (yearExpenses / 785).formatCurrency(),
+                                        valueColor = MaterialTheme.colorScheme.primary
+                                    )
+                                }
+                            }
+                            
+                            // General Information
+                            Card(modifier = Modifier.weight(1f)) {
+                                Column(modifier = Modifier.padding(16.dp)) {
+                                    Text(
+                                        text = stringResource(Res.string.general_info_title),
+                                        style = MaterialTheme.typography.titleMedium,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                    Spacer(Modifier.height(12.dp))
+                                    
+                                    SummaryRow(
+                                        label = stringResource(Res.string.general_total_publishers),
+                                        value = "785"
+                                    )
+                                    SummaryRow(
+                                        label = stringResource(Res.string.general_total_congregations),
+                                        value = "8"
+                                    )
+                                    SummaryRow(
+                                        label = stringResource(Res.string.general_avg_per_congregation),
+                                        value = "${785 / 8}"
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    else -> {}
+                }
+            }
         }
+}
+
+@Composable
+private fun SummaryRow(
+    label: String,
+    value: String,
+    valueColor: Color = MaterialTheme.colorScheme.onSurface,
+    isLarge: Boolean = false
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+    ) {
+        Text(
+            text = label,
+            style = if (isLarge) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Spacer(Modifier.height(4.dp))
+        Text(
+            text = value,
+            style = if (isLarge) MaterialTheme.typography.titleLarge else MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            color = valueColor
+        )
+    }
 }
 
 /**

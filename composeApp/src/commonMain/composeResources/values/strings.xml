@@ -14,8 +14,8 @@
     <string name="nav_upload">Încarcă Bonuri</string>
     
     <!-- Header -->
-    <string name="header_publishers">%d vestitori</string>
-    <string name="header_congregations">%d congregații</string>
+    <string name="header_publishers">%1$d vestitori</string>
+    <string name="header_congregations">%1$d congregații</string>
     <string name="header_period">Perioada</string>
     
     <!-- Home Screen -->
@@ -26,11 +26,11 @@
     <!-- Statistics Cards -->
     <string name="stat_monthly_expenses">Cheltuieli Luna Curentă</string>
     <string name="stat_monthly_donations">Donații Luna Curentă</string>
-    <string name="stat_balance">Balanță: %s</string>
+    <string name="stat_balance">Balanță: %1$s</string>
     <string name="stat_per_publisher">Contribuție per Vestitor (Lunar)</string>
-    <string name="stat_for_publishers">Pentru %d vestitori</string>
+    <string name="stat_for_publishers">Pentru %1$d vestitori</string>
     <string name="stat_missing_congregations">Congregații cu Lipsuri</string>
-    <string name="stat_of_congregations">din %d congregații</string>
+    <string name="stat_of_congregations">din %1$d congregații</string>
     
     <!-- Months -->
     <string name="month_january">Ianuarie</string>
@@ -48,10 +48,29 @@
     
     <!-- Common -->
     <string name="menu">Menu</string>
-    <string name="version">Versiune %s</string>
+    <string name="version">Versiune %1$s</string>
     <string name="loading">Se încarcă...</string>
     <string name="error">Eroare</string>
     <string name="in_development">Ecran în dezvoltare...</string>
+    
+    <!-- Missing Congregations Alert -->
+    <string name="alert_missing_title">⚠️ Atenție - Donații Lipsă</string>
+    <string name="alert_missing_description">Următoarele congregații nu au donat suma așteptată în %1$s %2$d</string>
+    <string name="alert_missing_amount">Lipsă: %1$s</string>
+    <string name="alert_expected_amount">Așteptat: %1$s</string>
+    
+    <!-- Annual Summary -->
+    <string name="annual_summary_title">Rezumat Anual %1$d</string>
+    <string name="annual_total_expenses">Total Cheltuieli:</string>
+    <string name="annual_total_donations">Total Donații:</string>
+    <string name="annual_balance">Balanță:</string>
+    <string name="annual_per_publisher">Contribuție per Vestitor (Anual):</string>
+    
+    <!-- General Information -->
+    <string name="general_info_title">Informații Generale</string>
+    <string name="general_total_publishers">Număr Total Vestitori:</string>
+    <string name="general_total_congregations">Număr Congregații:</string>
+    <string name="general_avg_per_congregation">Media Vestitori/Congregație:</string>
     
     <!-- Footer -->
     <string name="footer_publishers_label">Vestitori:</string>
