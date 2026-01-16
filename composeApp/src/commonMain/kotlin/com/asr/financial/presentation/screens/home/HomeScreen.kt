@@ -3,8 +3,6 @@ package com.asr.financial.presentation.screens.home
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,11 +16,14 @@ import com.asr.financial.presentation.mvi.event.HomeEvent
 import com.asr.financial.presentation.mvi.state.HomeState
 import com.asr.financial.presentation.mvi.viewmodel.HomeViewModel
 import com.asr.financial.presentation.ui.components.BreadcrumbItem
+import com.asr.financial.presentation.ui.components.period.PeriodSelectorCard
 import com.asr.financial.presentation.ui.responsive.WindowSizeClass
 import com.asr.financial.presentation.ui.scaffold.ScreenLayout
 import com.asr.financial.utils.formatCurrency
 import com.asr.financial.utils.getCurrentYear
 import com.asr.financial.utils.getCurrentMonth
+import com.asr.financial.utils.getAvailableYears
+import com.asr.financial.utils.getMonthsList
 import asr_financial.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
@@ -42,27 +43,14 @@ fun HomeScreen(
     val uiState by viewModel.uiState.collectAsState()
     
     var selectedYear by remember { mutableStateOf(getCurrentYear(clock)) }
-    var selectedMonth by remember { mutableStateOf(getCurrentMonth(clock)) } // December
+    var selectedMonth by remember { mutableStateOf(getCurrentMonth(clock)) }
     var showYearDropdown by remember { mutableStateOf(false) }
     var showMonthDropdown by remember { mutableStateOf(false) }
     
-    val years = listOf(2024, 2025, 2026)
-    val months = listOf(
-        1 to stringResource(Res.string.month_january),
-        2 to stringResource(Res.string.month_february),
-        3 to stringResource(Res.string.month_march),
-        4 to stringResource(Res.string.month_april),
-        5 to stringResource(Res.string.month_may),
-        6 to stringResource(Res.string.month_june),
-        7 to stringResource(Res.string.month_july),
-        8 to stringResource(Res.string.month_august),
-        9 to stringResource(Res.string.month_september),
-        10 to stringResource(Res.string.month_october),
-        11 to stringResource(Res.string.month_november),
-        12 to stringResource(Res.string.month_december)
-    )
+    val years = remember { getAvailableYears(clock) }
+    val months = remember { getMonthsList() }
     
-    val selectedMonthName = months.find { it.first == selectedMonth }?.second ?: ""
+    val selectedMonthName = months.find { it.first == selectedMonth }?.second?.let { stringResource(it) } ?: ""
     
     ScreenLayout(
         windowSizeClass = windowSizeClass,
@@ -72,158 +60,40 @@ fun HomeScreen(
         onNavigate = onNavigate,
         onMenuClick = onMenuClick
     ) {
-                // Period Selector Card
-            item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surface
-                    )
-                ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
+        // Period Selector Card
+        item {
+            PeriodSelectorCard(
+                selectedYear = selectedYear,
+                selectedMonth = selectedMonth,
+                selectedMonthName = selectedMonthName,
+                years = years,
+                months = months,
+                showYearDropdown = showYearDropdown,
+                showMonthDropdown = showMonthDropdown,
+                onYearDropdownChange = { showYearDropdown = it },
+                onMonthDropdownChange = { showMonthDropdown = it },
+                onYearSelected = { selectedYear = it },
+                onMonthSelected = { selectedMonth = it },
+                title = stringResource(Res.string.home_select_period),
+                yearLabel = stringResource(Res.string.home_year),
+                monthLabel = stringResource(Res.string.home_month)
+            )
+        }
+            
+        // Statistics Cards
+        item {
+            when (val state = uiState) {
+                is HomeState.Loading -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp),
+                        contentAlignment = Alignment.Center
                     ) {
-                        Text(
-                            text = stringResource(Res.string.home_select_period),
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold
-                        )
-                        
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            // Year selector
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = stringResource(Res.string.home_year),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    modifier = Modifier.padding(bottom = 4.dp)
-                                )
-                                Box {
-                                    OutlinedCard(
-                                        onClick = { showYearDropdown = true },
-                                        modifier = Modifier.fillMaxWidth(),
-                                        colors = CardDefaults.outlinedCardColors(
-                                            containerColor = MaterialTheme.colorScheme.surface
-                                        )
-                                    ) {
-                                        Row(
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .padding(horizontal = 16.dp, vertical = 12.dp),
-                                            horizontalArrangement = Arrangement.SpaceBetween,
-                                            verticalAlignment = Alignment.CenterVertically
-                                        ) {
-                                            Text(
-                                                text = selectedYear.toString(),
-                                                style = MaterialTheme.typography.bodyLarge
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Default.ArrowDropDown,
-                                                contentDescription = null,
-                                                tint = MaterialTheme.colorScheme.onSurfaceVariant
-                                            )
-                                        }
-                                    }
-                                    DropdownMenu(
-                                        expanded = showYearDropdown,
-                                        onDismissRequest = { showYearDropdown = false }
-                                    ) {
-                                        years.forEach { year ->
-                                            DropdownMenuItem(
-                                                text = { 
-                                                    Text(
-                                                        text = year.toString(),
-                                                        style = MaterialTheme.typography.bodyLarge
-                                                    ) 
-                                                },
-                                                onClick = {
-                                                    selectedYear = year
-                                                    showYearDropdown = false
-                                                }
-                                            )
-                                        }
-                                    }
-                                }
-                            }
-                            
-                            // Month selector
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = stringResource(Res.string.home_month),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    modifier = Modifier.padding(bottom = 4.dp)
-                                )
-                                Box {
-                                    OutlinedCard(
-                                        onClick = { showMonthDropdown = true },
-                                        modifier = Modifier.fillMaxWidth(),
-                                        colors = CardDefaults.outlinedCardColors(
-                                            containerColor = MaterialTheme.colorScheme.surface
-                                        )
-                                    ) {
-                                        Row(
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .padding(horizontal = 16.dp, vertical = 12.dp),
-                                            horizontalArrangement = Arrangement.SpaceBetween,
-                                            verticalAlignment = Alignment.CenterVertically
-                                        ) {
-                                            Text(
-                                                text = selectedMonthName,
-                                                style = MaterialTheme.typography.bodyLarge
-                                            )
-                                            Icon(
-                                                imageVector = Icons.Default.ArrowDropDown,
-                                                contentDescription = null,
-                                                tint = MaterialTheme.colorScheme.onSurfaceVariant
-                                            )
-                                        }
-                                    }
-                                    DropdownMenu(
-                                        expanded = showMonthDropdown,
-                                        onDismissRequest = { showMonthDropdown = false }
-                                    ) {
-                                        months.forEach { (monthNum, monthName) ->
-                                            DropdownMenuItem(
-                                                text = { 
-                                                    Text(
-                                                        text = monthName,
-                                                        style = MaterialTheme.typography.bodyLarge
-                                                    ) 
-                                                },
-                                                onClick = {
-                                                    selectedMonth = monthNum
-                                                    showMonthDropdown = false
-                                                }
-                                            )
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        CircularProgressIndicator()
                     }
                 }
-            }
-            
-            // Statistics Cards
-            item {
-                when (val state = uiState) {
-                    is HomeState.Loading -> {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(200.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator()
-                        }
-                    }
-                    
+                
                     is HomeState.Success -> {
                         // Filter transactions by selected year and month
                         val filteredTransactions = state.transactions.filter { transaction ->

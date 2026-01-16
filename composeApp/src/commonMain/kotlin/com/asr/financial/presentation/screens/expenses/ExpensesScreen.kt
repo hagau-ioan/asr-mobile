@@ -25,6 +25,7 @@ import com.asr.financial.presentation.screens.expenses.ExpensesConstants.PIE_CHA
 import com.asr.financial.presentation.screens.expenses.ExpensesConstants.PIE_CHART_SIZE_DP
 import com.asr.financial.presentation.screens.expenses.ExpensesConstants.PIE_CHART_START_ANGLE
 import com.asr.financial.presentation.ui.components.BreadcrumbItem
+import com.asr.financial.presentation.ui.components.period.PeriodSelectorCard
 import com.asr.financial.presentation.ui.constants.UIConstants.CARD_PADDING_DP
 import com.asr.financial.presentation.ui.constants.UIConstants.DEFAULT_MONTH
 import com.asr.financial.presentation.ui.constants.UIConstants.DEFAULT_YEAR
@@ -39,6 +40,7 @@ import com.asr.financial.utils.calculateStartYearFor12Months
 import com.asr.financial.utils.formatCurrency
 import com.asr.financial.utils.getCurrentYear
 import com.asr.financial.utils.getAvailableYears
+import com.asr.financial.utils.getMonthsList
 import com.asr.financial.platform.Clock
 import com.asr.financial.utils.percentOfAsInt
 import asr_financial.composeapp.generated.resources.*
@@ -62,23 +64,7 @@ fun ExpensesScreen(
     var showMonthDropdown by remember { mutableStateOf(false) }
 
     val years = remember { getAvailableYears(clock) }
-
-    val months = remember {
-        listOf(
-            1 to Res.string.month_january,
-            2 to Res.string.month_february,
-            3 to Res.string.month_march,
-            4 to Res.string.month_april,
-            5 to Res.string.month_may,
-            6 to Res.string.month_june,
-            7 to Res.string.month_july,
-            8 to Res.string.month_august,
-            9 to Res.string.month_september,
-            10 to Res.string.month_october,
-            11 to Res.string.month_november,
-            12 to Res.string.month_december
-        )
-    }
+    val months = remember { getMonthsList() }
 
     LaunchedEffect(selectedYear, selectedMonth) {
         viewModel.onEvent(ExpensesEvent.FilterByPeriod(selectedYear, selectedMonth))
@@ -158,14 +144,17 @@ private fun ExpensesSuccessContent(
                 selectedYear = selectedYear,
                 selectedMonth = selectedMonth,
                 selectedMonthName = selectedMonthName,
-                showYearDropdown = showYearDropdown,
-                showMonthDropdown = showMonthDropdown,
                 years = years,
                 months = months,
+                showYearDropdown = showYearDropdown,
+                showMonthDropdown = showMonthDropdown,
                 onYearDropdownChange = onYearDropdownChange,
                 onMonthDropdownChange = onMonthDropdownChange,
                 onYearSelected = onYearSelected,
-                onMonthSelected = onMonthSelected
+                onMonthSelected = onMonthSelected,
+                title = stringResource(Res.string.home_select_period),
+                yearLabel = stringResource(Res.string.home_year),
+                monthLabel = stringResource(Res.string.home_month)
             )
         }
 
@@ -195,192 +184,6 @@ private fun ExpensesSuccessContent(
         if (state.expenses.isEmpty()) {
             item {
                 EmptyStateCard()
-            }
-        }
-    }
-}
-
-@Composable
-private fun PeriodSelectorCard(
-    selectedYear: Int,
-    selectedMonth: Int,
-    selectedMonthName: String,
-    showYearDropdown: Boolean,
-    showMonthDropdown: Boolean,
-    years: List<Int>,
-    months: List<Pair<Int, org.jetbrains.compose.resources.StringResource>>,
-    onYearDropdownChange: (Boolean) -> Unit,
-    onMonthDropdownChange: (Boolean) -> Unit,
-    onYearSelected: (Int) -> Unit,
-    onMonthSelected: (Int) -> Unit
-) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        )
-    ) {
-        Column(
-            modifier = Modifier.padding(CARD_PADDING_DP.dp),
-            verticalArrangement = Arrangement.spacedBy(SECTION_SPACING_DP.dp)
-        ) {
-            Text(
-                text = stringResource(Res.string.home_select_period),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(SECTION_SPACING_DP.dp)
-            ) {
-                YearSelector(
-                    selectedYear = selectedYear,
-                    showDropdown = showYearDropdown,
-                    years = years,
-                    onDropdownChange = onYearDropdownChange,
-                    onYearSelected = onYearSelected,
-                    modifier = Modifier.weight(1f)
-                )
-
-                MonthSelector(
-                    selectedMonthName = selectedMonthName,
-                    showDropdown = showMonthDropdown,
-                    months = months,
-                    onDropdownChange = onMonthDropdownChange,
-                    onMonthSelected = onMonthSelected,
-                    modifier = Modifier.weight(1f)
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun YearSelector(
-    selectedYear: Int,
-    showDropdown: Boolean,
-    years: List<Int>,
-    onDropdownChange: (Boolean) -> Unit,
-    onYearSelected: (Int) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Column(modifier = modifier) {
-        Text(
-            text = stringResource(Res.string.home_year),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(bottom = TINY_SPACING_DP.dp)
-        )
-        Box {
-            OutlinedCard(
-                onClick = { onDropdownChange(true) },
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.outlinedCardColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                )
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = CARD_PADDING_DP.dp, vertical = SECTION_SPACING_DP.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = selectedYear.toString(),
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                    Icon(
-                        imageVector = Icons.Default.ArrowDropDown,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-            DropdownMenu(
-                expanded = showDropdown,
-                onDismissRequest = { onDropdownChange(false) }
-            ) {
-                years.forEach { year ->
-                    DropdownMenuItem(
-                        text = {
-                            Text(
-                                text = year.toString(),
-                                style = MaterialTheme.typography.bodyLarge
-                            )
-                        },
-                        onClick = {
-                            onYearSelected(year)
-                            onDropdownChange(false)
-                        }
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun MonthSelector(
-    selectedMonthName: String,
-    showDropdown: Boolean,
-    months: List<Pair<Int, org.jetbrains.compose.resources.StringResource>>,
-    onDropdownChange: (Boolean) -> Unit,
-    onMonthSelected: (Int) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Column(modifier = modifier) {
-        Text(
-            text = stringResource(Res.string.home_month),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(bottom = TINY_SPACING_DP.dp)
-        )
-        Box {
-            OutlinedCard(
-                onClick = { onDropdownChange(true) },
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.outlinedCardColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                )
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = CARD_PADDING_DP.dp, vertical = SECTION_SPACING_DP.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = selectedMonthName,
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                    Icon(
-                        imageVector = Icons.Default.ArrowDropDown,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-            DropdownMenu(
-                expanded = showDropdown,
-                onDismissRequest = { onDropdownChange(false) }
-            ) {
-                months.forEach { (monthNum, monthRes) ->
-                    DropdownMenuItem(
-                        text = {
-                            Text(
-                                text = stringResource(monthRes),
-                                style = MaterialTheme.typography.bodyLarge
-                            )
-                        },
-                        onClick = {
-                            onMonthSelected(monthNum)
-                            onDropdownChange(false)
-                        }
-                    )
-                }
             }
         }
     }

@@ -27,6 +27,7 @@ import com.asr.financial.presentation.ui.components.BreadcrumbItem
 import com.asr.financial.presentation.ui.responsive.WindowSizeClass
 import com.asr.financial.presentation.ui.scaffold.ScreenLayout
 import com.asr.financial.utils.formatCurrency
+import com.asr.financial.utils.getMonthsList
 import asr_financial.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -40,24 +41,11 @@ fun CongregationsScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     
-    val months = listOf(
-        1 to stringResource(Res.string.month_january),
-        2 to stringResource(Res.string.month_february),
-        3 to stringResource(Res.string.month_march),
-        4 to stringResource(Res.string.month_april),
-        5 to stringResource(Res.string.month_may),
-        6 to stringResource(Res.string.month_june),
-        7 to stringResource(Res.string.month_july),
-        8 to stringResource(Res.string.month_august),
-        9 to stringResource(Res.string.month_september),
-        10 to stringResource(Res.string.month_october),
-        11 to stringResource(Res.string.month_november),
-        12 to stringResource(Res.string.month_december)
-    )
+    val months = getMonthsList()
     
     when (val state = uiState) {
         is CongregationsState.Success -> {
-            val selectedMonthName = months.find { it.first == state.selectedMonth }?.second ?: ""
+            val selectedMonthName = months.find { it.first == state.selectedMonth }?.second?.let { stringResource(it) } ?: ""
             
             ScreenLayout(
                 windowSizeClass = windowSizeClass,
