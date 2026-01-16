@@ -43,6 +43,9 @@ Pods/
 Podfile.lock
 .build/
 xcuserdata/
+.swiftpm/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
 
 # Compose
 .compose/
