@@ -1,25 +1,32 @@
 package com.asr.financial.data.datasource
 
-import com.asr.financial.data.json.JsonResourceLoader
 import com.asr.financial.domain.model.Transaction
+import com.asr.financial.platform.ResourceLoader
+import kotlinx.serialization.json.Json
 
 /**
  * JSON file implementation of TransactionDataSource.
- * Loads data from transactions.json in Compose resources.
- *
- * To switch to a different data source (DB, API), create a new
- * implementation of TransactionDataSource and change the DI binding.
+ * Loads data from transactions.json using platform-specific ResourceLoader.
  */
-class JsonTransactionDataSource : TransactionDataSource {
+class JsonTransactionDataSource(
+    private val resourceLoader: ResourceLoader
+) : TransactionDataSource {
 
     private companion object {
         const val FILE_NAME = "transactions.json"
     }
 
+    private val json = Json {
+        ignoreUnknownKeys = true
+        isLenient = true
+        prettyPrint = false
+        encodeDefaults = true
+    }
+
     override suspend fun getAll(): List<Transaction> {
-        val jsonString = JsonResourceLoader.loadJsonString(FILE_NAME) ?: return emptyList()
+        val jsonString = resourceLoader.loadResourceAsString(FILE_NAME) ?: return emptyList()
         return try {
-            JsonResourceLoader.json.decodeFromString<List<Transaction>>(jsonString)
+            json.decodeFromString<List<Transaction>>(jsonString)
         } catch (e: Exception) {
             emptyList()
         }

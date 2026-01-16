@@ -1,22 +1,32 @@
 package com.asr.financial.data.datasource
 
-import com.asr.financial.data.json.JsonResourceLoader
 import com.asr.financial.domain.models.CongregationInfo
+import com.asr.financial.platform.ResourceLoader
+import kotlinx.serialization.json.Json
 
 /**
  * JSON file implementation of CongregationDataSource.
- * Loads data from congregations.json in Compose resources.
+ * Loads data from congregations.json using platform-specific ResourceLoader.
  */
-class JsonCongregationDataSource : CongregationDataSource {
+class JsonCongregationDataSource(
+    private val resourceLoader: ResourceLoader
+) : CongregationDataSource {
 
     private companion object {
         const val FILE_NAME = "congregations.json"
     }
 
+    private val json = Json {
+        ignoreUnknownKeys = true
+        isLenient = true
+        prettyPrint = false
+        encodeDefaults = true
+    }
+
     override suspend fun getAll(): List<CongregationInfo> {
-        val jsonString = JsonResourceLoader.loadJsonString(FILE_NAME) ?: return emptyList()
+        val jsonString = resourceLoader.loadResourceAsString(FILE_NAME) ?: return emptyList()
         return try {
-            JsonResourceLoader.json.decodeFromString<List<CongregationInfo>>(jsonString)
+            json.decodeFromString<List<CongregationInfo>>(jsonString)
         } catch (e: Exception) {
             emptyList()
         }

@@ -60,6 +60,37 @@
     <string name="expenses_yearly_range">De la %1$s %2$d până la %3$s %4$d (12 luni)</string>
     <string name="expenses_empty">Nu există cheltuieli în această perioadă</string>
     
+    <!-- Utilities Screen -->
+    <string name="utilities_comparison_title">Comparație Utilități</string>
+    <string name="utilities_current_month">Luna Curentă</string>
+    <string name="utilities_previous_month">Luna Trecută</string>
+    <string name="utilities_difference">Diferență</string>
+    <string name="utilities_variation">Variație %%</string>
+    <string name="utilities_total">TOTAL</string>
+    <string name="utilities_yearly_title">Comparație Anuală Utilități</string>
+    <string name="utilities_yearly_subtitle">%1$d vs %2$d</string>
+    <string name="utilities_empty">Nu există date despre utilități în această perioadă</string>
+    <string name="utilities_category_electricity">Electricitate</string>
+    <string name="utilities_category_water">Apă</string>
+    <string name="utilities_category_gas">Gaz</string>
+    <string name="utilities_category_internet">Internet</string>
+    <string name="utilities_category_phone">Telefon</string>
+    <string name="utilities_category_other">Alte Utilități</string>
+    
+    <!-- Month Abbreviations (3 letters) -->
+    <string name="month_abbr_jan">Ian</string>
+    <string name="month_abbr_feb">Feb</string>
+    <string name="month_abbr_mar">Mar</string>
+    <string name="month_abbr_apr">Apr</string>
+    <string name="month_abbr_may">Mai</string>
+    <string name="month_abbr_jun">Iun</string>
+    <string name="month_abbr_jul">Iul</string>
+    <string name="month_abbr_aug">Aug</string>
+    <string name="month_abbr_sep">Sep</string>
+    <string name="month_abbr_oct">Oct</string>
+    <string name="month_abbr_nov">Noi</string>
+    <string name="month_abbr_dec">Dec</string>
+    
     <!-- Missing Congregations Alert -->
     <string name="alert_missing_title">⚠️ Atenție - Donații Lipsă</string>
     <string name="alert_missing_description">Următoarele congregații nu au donat suma așteptată în %1$s %2$d</string>

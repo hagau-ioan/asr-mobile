@@ -2,6 +2,8 @@ package com.asr.financial.presentation.mvi.interactor
 
 import com.asr.financial.domain.model.Transaction
 import com.asr.financial.domain.model.TransactionType
+import com.asr.financial.domain.usecase.GetAppConfigUseCase
+import com.asr.financial.domain.usecase.GetCongregationNamesUseCase
 import com.asr.financial.domain.usecase.GetTransactionsUseCase
 import com.asr.financial.platform.Clock
 import com.asr.financial.presentation.mvi.effect.CongregationsEffect
@@ -17,10 +19,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 
 /**
- * Congregations Interactor - Handles business logic
+ * Congregations Interactor - Handles business logic.
+ * Uses UseCases for configuration data instead of hardcoded values.
  */
 class CongregationsInteractor(
     private val getTransactionsUseCase: GetTransactionsUseCase,
+    private val getCongregationNamesUseCase: GetCongregationNamesUseCase,
+    private val getAppConfigUseCase: GetAppConfigUseCase,
     private val clock: Clock
 ) {
     private val _uiState = MutableStateFlow<CongregationsState>(CongregationsState.Loading)
@@ -67,21 +72,19 @@ class CongregationsInteractor(
             it.getYear() == year && it.getMonth() == month
         }
 
-        val allCongregations = listOf(
-            "Congregația A", "Congregația B", "Congregația C",
-            "Congregația D", "Congregația E", "Congregația F",
-            "Congregația G", "Congregația H"
-        )
-        val expectedPerCongregation = 500.0
+        // Load configuration from UseCases instead of hardcoded values
+        val allCongregations = getCongregationNamesUseCase()
+        val appConfig = getAppConfigUseCase()
+        val expectedPerCongregation = appConfig?.financial?.expectedDonationPerCongregation ?: 500.0
 
         val congregationDonations = filteredTransactions
             .filter { it.type == TransactionType.INCOME && it.congregationName != null }
             .groupBy { it.congregationName }
 
         return allCongregations.map { congName ->
-            val transactions = congregationDonations[congName] ?: emptyList()
-            val donated = transactions.sumOf { it.amount }
-            val lastDate = transactions.maxByOrNull { it.date }?.date
+            val congTransactions = congregationDonations[congName] ?: emptyList()
+            val donated = congTransactions.sumOf { it.amount }
+            val lastDate = congTransactions.maxByOrNull { it.date }?.date
 
             CongregationStat(
                 name = congName,

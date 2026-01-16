@@ -1,16 +1,18 @@
 package com.asr.financial.data.datasource
 
-import com.asr.financial.data.json.JsonResourceLoader
 import com.asr.financial.domain.models.AppConfig
 import com.asr.financial.platform.Clock
+import com.asr.financial.platform.ResourceLoader
 import com.asr.financial.utils.getAvailableYears
+import kotlinx.serialization.json.Json
 
 /**
  * JSON file implementation of AppConfigDataSource.
- * Loads data from app_config.json in Compose resources.
+ * Loads data from app_config.json using platform-specific ResourceLoader.
  */
 class JsonAppConfigDataSource(
-    private val clock: Clock
+    private val clock: Clock,
+    private val resourceLoader: ResourceLoader
 ) : AppConfigDataSource {
 
     private companion object {
@@ -23,14 +25,21 @@ class JsonAppConfigDataSource(
         const val DEFAULT_ORG_LOCATION = "Târgu Mureș"
     }
 
+    private val json = Json {
+        ignoreUnknownKeys = true
+        isLenient = true
+        prettyPrint = false
+        encodeDefaults = true
+    }
+
     private var cachedConfig: AppConfig? = null
 
     override suspend fun getConfig(): AppConfig? {
         if (cachedConfig != null) return cachedConfig
 
-        val jsonString = JsonResourceLoader.loadJsonString(FILE_NAME) ?: return null
+        val jsonString = resourceLoader.loadResourceAsString(FILE_NAME) ?: return null
         return try {
-            JsonResourceLoader.json.decodeFromString<AppConfig>(jsonString).also {
+            json.decodeFromString<AppConfig>(jsonString).also {
                 cachedConfig = it
             }
         } catch (e: Exception) {

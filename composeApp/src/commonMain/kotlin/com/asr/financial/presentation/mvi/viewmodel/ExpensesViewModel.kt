@@ -14,10 +14,10 @@ class ExpensesViewModel(
     val uiState: StateFlow<com.asr.financial.presentation.mvi.state.ExpensesState> = interactor.uiState
 
     init {
-        onEvent(ExpensesEvent.LoadData)
+        handleEvent(ExpensesEvent.LoadData)
     }
 
-    fun onEvent(event: ExpensesEvent) {
+    fun handleEvent(event: ExpensesEvent) {
         viewModelScope.launch {
             interactor.processEvent(event)
         }

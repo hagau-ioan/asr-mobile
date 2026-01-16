@@ -1,6 +1,6 @@
 package com.asr.financial.presentation.screens.home
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.asr.financial.domain.model.TransactionType
 import com.asr.financial.platform.Clock
 import com.asr.financial.presentation.mvi.event.HomeEvent
 import com.asr.financial.presentation.mvi.state.HomeState
@@ -30,7 +29,8 @@ import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 /**
- * Home Screen matching Financial Tracking App design
+ * Home Screen - Displays financial statistics.
+ * All calculations are done in HomeInteractor, this screen only renders state.
  */
 @Composable
 fun HomeScreen(
@@ -41,17 +41,22 @@ fun HomeScreen(
     clock: Clock = koinInject()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    
+
     var selectedYear by remember { mutableStateOf(getCurrentYear(clock)) }
     var selectedMonth by remember { mutableStateOf(getCurrentMonth(clock)) }
     var showYearDropdown by remember { mutableStateOf(false) }
     var showMonthDropdown by remember { mutableStateOf(false) }
-    
+
     val years = remember { getAvailableYears(clock) }
     val months = remember { getMonthsList() }
-    
+
+    // Notify interactor when period changes
+    LaunchedEffect(selectedYear, selectedMonth) {
+        viewModel.handleEvent(HomeEvent.FilterByMonth(selectedMonth, selectedYear))
+    }
+
     val selectedMonthName = months.find { it.first == selectedMonth }?.second?.let { stringResource(it) } ?: ""
-    
+
     ScreenLayout(
         windowSizeClass = windowSizeClass,
         breadcrumbItems = listOf(BreadcrumbItem(stringResource(Res.string.nav_home))),
@@ -79,274 +84,328 @@ fun HomeScreen(
                 monthLabel = stringResource(Res.string.home_month)
             )
         }
-            
-        // Statistics Cards
-        item {
-            when (val state = uiState) {
-                is HomeState.Loading -> {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(200.dp),
-                        contentAlignment = Alignment.Center
+
+        // Content based on state
+        when (val state = uiState) {
+            is HomeState.Loading -> {
+                item {
+                    LoadingContent()
+                }
+            }
+
+            is HomeState.Success -> {
+                item {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        CircularProgressIndicator()
-                    }
-                }
-                
-                    is HomeState.Success -> {
-                        // Filter transactions by selected year and month
-                        val filteredTransactions = state.transactions.filter { transaction ->
-                            transaction.getYear() == selectedYear && transaction.getMonth() == selectedMonth
-                        }
-                        
-                        val filteredIncome = filteredTransactions
-                            .filter { it.type == TransactionType.INCOME }
-                            .sumOf { it.amount }
-                        
-                        val filteredExpenses = filteredTransactions
-                            .filter { it.type == TransactionType.EXPENSE }
-                            .sumOf { it.amount }
-                        
-                        val filteredBalance = filteredIncome - filteredExpenses
-                        
-                        // Calculate year totals
-                        val yearTransactions = state.transactions.filter { it.getYear() == selectedYear }
-                        val yearIncome = yearTransactions.filter { it.type == TransactionType.INCOME }.sumOf { it.amount }
-                        val yearExpenses = yearTransactions.filter { it.type == TransactionType.EXPENSE }.sumOf { it.amount }
-                        val yearBalance = yearIncome - yearExpenses
-                        
-                        // Check for missing congregations in selected month
-                        val allCongregations = listOf(
-                            "Congregația A", "Congregația B", "Congregația C", 
-                            "Congregația D", "Congregația E", "Congregația F",
-                            "Congregația G", "Congregația H"
-                        )
-                        val expectedAmountPerCongregation = 500.0 // Expected monthly donation
-                        
-                        val congregationDonations = filteredTransactions
-                            .filter { it.type == TransactionType.INCOME && it.congregationName != null }
-                            .groupBy { it.congregationName }
-                            .mapValues { (_, transactions) -> transactions.sumOf { it.amount } }
-                        
-                        val missingCongregations = allCongregations.mapNotNull { congName ->
-                            val donated = congregationDonations[congName] ?: 0.0
-                            if (donated < expectedAmountPerCongregation) {
-                                Triple(congName, donated, expectedAmountPerCongregation - donated)
-                            } else null
-                        }
-                        
                         StatisticsCards(
-                            totalExpenses = filteredExpenses,
-                            totalIncome = filteredIncome,
-                            balance = filteredBalance,
+                            monthlyExpenses = state.monthlyExpenses,
+                            monthlyIncome = state.monthlyIncome,
+                            monthlyBalance = state.monthlyBalance,
+                            missingCongregationsCount = state.missingCongregations.size,
+                            totalPublishers = state.totalPublishers,
+                            congregationCount = state.congregationCount,
                             selectedMonth = selectedMonthName,
-                            selectedYear = selectedYear
+                            selectedYear = state.selectedYear
+                        )
+
+                        AnnualSummarySection(
+                            yearlyIncome = state.yearlyIncome,
+                            yearlyExpenses = state.yearlyExpenses,
+                            yearlyBalance = state.yearlyBalance,
+                            perPublisherExpense = state.perPublisherExpense,
+                            totalPublishers = state.totalPublishers,
+                            congregationCount = state.congregationCount,
+                            selectedYear = state.selectedYear
                         )
                     }
-                    
-                    is HomeState.Error -> {
-                        Card(
-                            modifier = Modifier.fillMaxWidth(),
-                            colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.errorContainer
-                            )
-                        ) {
-                            Text(
-                                text = state.message,
-                                color = MaterialTheme.colorScheme.onErrorContainer,
-                                modifier = Modifier.padding(16.dp)
-                            )
-                        }
+                }
+
+                // Missing Congregations Alert
+                if (state.missingCongregations.isNotEmpty()) {
+                    item {
+                        MissingCongregationsAlert(
+                            missingCongregations = state.missingCongregations,
+                            expectedAmount = state.expectedDonationPerCongregation,
+                            selectedMonth = selectedMonthName,
+                            selectedYear = state.selectedYear
+                        )
                     }
                 }
             }
-            
-            // Missing Congregations Alert
-            item {
-                when (val state = uiState) {
-                    is HomeState.Success -> {
-                        val filteredTransactions = state.transactions.filter { transaction ->
-                            transaction.getYear() == selectedYear && transaction.getMonth() == selectedMonth
-                        }
-                        
-                        val allCongregations = listOf(
-                            "Congregația A", "Congregația B", "Congregația C", 
-                            "Congregația D", "Congregația E", "Congregația F",
-                            "Congregația G", "Congregația H"
-                        )
-                        val expectedAmountPerCongregation = 500.0
-                        
-                        val congregationDonations = filteredTransactions
-                            .filter { it.type == TransactionType.INCOME && it.congregationName != null }
-                            .groupBy { it.congregationName }
-                            .mapValues { (_, transactions) -> transactions.sumOf { it.amount } }
-                        
-                        val missingCongregations = allCongregations.mapNotNull { congName ->
-                            val donated = congregationDonations[congName] ?: 0.0
-                            if (donated < expectedAmountPerCongregation) {
-                                Triple(congName, donated, expectedAmountPerCongregation - donated)
-                            } else null
-                        }
-                        
-                        if (missingCongregations.isNotEmpty()) {
-                            Card(
-                                modifier = Modifier.fillMaxWidth(),
-                                colors = CardDefaults.cardColors(
-                                    containerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.3f)
-                                ),
-                                border = androidx.compose.foundation.BorderStroke(
-                                    2.dp,
-                                    MaterialTheme.colorScheme.error.copy(alpha = 0.5f)
-                                )
-                            ) {
-                                Column(modifier = Modifier.padding(16.dp)) {
-                                    Text(
-                                        text = stringResource(Res.string.alert_missing_title),
-                                        style = MaterialTheme.typography.titleMedium,
-                                        fontWeight = FontWeight.Bold,
-                                        color = MaterialTheme.colorScheme.error
-                                    )
-                                    Spacer(Modifier.height(4.dp))
-                                    Text(
-                                        text = stringResource(Res.string.alert_missing_description, selectedMonthName, selectedYear),
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.onErrorContainer
-                                    )
-                                    Spacer(Modifier.height(12.dp))
-                                    
-                                    missingCongregations.forEach { (congName, donated, missing) ->
-                                        Card(
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .padding(vertical = 4.dp),
-                                            colors = CardDefaults.cardColors(
-                                                containerColor = MaterialTheme.colorScheme.surface
-                                            ),
-                                            border = androidx.compose.foundation.BorderStroke(
-                                                1.dp,
-                                                MaterialTheme.colorScheme.error.copy(alpha = 0.3f)
-                                            )
-                                        ) {
-                                            Row(
-                                                modifier = Modifier
-                                                    .fillMaxWidth()
-                                                    .padding(12.dp),
-                                                horizontalArrangement = Arrangement.SpaceBetween,
-                                                verticalAlignment = Alignment.CenterVertically
-                                            ) {
-                                                Text(
-                                                    text = congName,
-                                                    style = MaterialTheme.typography.bodyLarge,
-                                                    fontWeight = FontWeight.Medium,
-                                                    color = MaterialTheme.colorScheme.error
-                                                )
-                                                Column(horizontalAlignment = Alignment.End) {
-                                                    Text(
-                                                        text = stringResource(Res.string.alert_missing_amount, missing.formatCurrency()),
-                                                        style = MaterialTheme.typography.bodySmall,
-                                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                                    )
-                                                    Text(
-                                                        text = stringResource(Res.string.alert_expected_amount, expectedAmountPerCongregation.formatCurrency()),
-                                                        style = MaterialTheme.typography.bodySmall,
-                                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                                    )
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else -> {}
-                }
-            }
-            
-            // Annual Summary and General Info
-            item {
-                when (val state = uiState) {
-                    is HomeState.Success -> {
-                        val yearTransactions = state.transactions.filter { it.getYear() == selectedYear }
-                        val yearIncome = yearTransactions.filter { it.type == TransactionType.INCOME }.sumOf { it.amount }
-                        val yearExpenses = yearTransactions.filter { it.type == TransactionType.EXPENSE }.sumOf { it.amount }
-                        val yearBalance = yearIncome - yearExpenses
-                        
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            // Annual Summary
-                            Card(modifier = Modifier.weight(1f)) {
-                                Column(modifier = Modifier.padding(16.dp)) {
-                                    Text(
-                                        text = stringResource(Res.string.annual_summary_title, selectedYear),
-                                        style = MaterialTheme.typography.titleMedium,
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                    Spacer(Modifier.height(12.dp))
-                                    
-                                    SummaryRow(
-                                        label = stringResource(Res.string.annual_total_expenses),
-                                        value = yearExpenses.formatCurrency(),
-                                        valueColor = MaterialTheme.colorScheme.error
-                                    )
-                                    SummaryRow(
-                                        label = stringResource(Res.string.annual_total_donations),
-                                        value = yearIncome.formatCurrency(),
-                                        valueColor = MaterialTheme.colorScheme.tertiary
-                                    )
-                                    
-                                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
-                                    
-                                    SummaryRow(
-                                        label = stringResource(Res.string.annual_balance),
-                                        value = yearBalance.formatCurrency(),
-                                        valueColor = if (yearBalance >= 0) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.error,
-                                        isLarge = true
-                                    )
-                                    
-                                    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
-                                    
-                                    SummaryRow(
-                                        label = stringResource(Res.string.annual_per_publisher),
-                                        value = (yearExpenses / 785).formatCurrency(),
-                                        valueColor = MaterialTheme.colorScheme.primary
-                                    )
-                                }
-                            }
-                            
-                            // General Information
-                            Card(modifier = Modifier.weight(1f)) {
-                                Column(modifier = Modifier.padding(16.dp)) {
-                                    Text(
-                                        text = stringResource(Res.string.general_info_title),
-                                        style = MaterialTheme.typography.titleMedium,
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                    Spacer(Modifier.height(12.dp))
-                                    
-                                    SummaryRow(
-                                        label = stringResource(Res.string.general_total_publishers),
-                                        value = "785"
-                                    )
-                                    SummaryRow(
-                                        label = stringResource(Res.string.general_total_congregations),
-                                        value = "8"
-                                    )
-                                    SummaryRow(
-                                        label = stringResource(Res.string.general_avg_per_congregation),
-                                        value = "${785 / 8}"
-                                    )
-                                }
-                            }
-                        }
-                    }
-                    else -> {}
+
+            is HomeState.Error -> {
+                item {
+                    ErrorContent(message = state.message)
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun LoadingContent() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator()
+    }
+}
+
+@Composable
+private fun ErrorContent(message: String) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.errorContainer
+        )
+    ) {
+        Text(
+            text = message,
+            color = MaterialTheme.colorScheme.onErrorContainer,
+            modifier = Modifier.padding(16.dp)
+        )
+    }
+}
+
+@Composable
+private fun StatisticsCards(
+    monthlyExpenses: Double,
+    monthlyIncome: Double,
+    monthlyBalance: Double,
+    missingCongregationsCount: Int,
+    totalPublishers: Int,
+    congregationCount: Int,
+    selectedMonth: String,
+    selectedYear: Int
+) {
+    val perPublisher = if (totalPublishers > 0) monthlyExpenses / totalPublishers else 0.0
+
+    // Row 1: Expenses and Donations
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        StatCard(
+            title = stringResource(Res.string.stat_monthly_expenses),
+            amount = monthlyExpenses.formatCurrency(),
+            amountColor = MaterialTheme.colorScheme.error,
+            subtitle = "$selectedMonth $selectedYear",
+            modifier = Modifier.weight(1f)
+        )
+
+        StatCard(
+            title = stringResource(Res.string.stat_monthly_donations),
+            amount = monthlyIncome.formatCurrency(),
+            amountColor = MaterialTheme.colorScheme.tertiary,
+            subtitle = stringResource(Res.string.stat_balance, monthlyBalance.formatCurrency()),
+            subtitleColor = if (monthlyBalance >= 0) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.error,
+            modifier = Modifier.weight(1f)
+        )
+    }
+
+    // Row 2: Per Publisher and Missing Congregations
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        StatCard(
+            title = stringResource(Res.string.stat_per_publisher),
+            amount = perPublisher.formatCurrency(),
+            amountColor = MaterialTheme.colorScheme.primary,
+            subtitle = stringResource(Res.string.stat_for_publishers, totalPublishers),
+            modifier = Modifier.weight(1f)
+        )
+
+        StatCard(
+            title = stringResource(Res.string.stat_missing_congregations),
+            amount = missingCongregationsCount.toString(),
+            amountColor = if (missingCongregationsCount > 0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.tertiary,
+            subtitle = stringResource(Res.string.stat_of_congregations, congregationCount),
+            modifier = Modifier.weight(1f)
+        )
+    }
+}
+
+@Composable
+private fun MissingCongregationsAlert(
+    missingCongregations: List<MissingCongregation>,
+    expectedAmount: Double,
+    selectedMonth: String,
+    selectedYear: Int
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.3f)
+        ),
+        border = BorderStroke(
+            2.dp,
+            MaterialTheme.colorScheme.error.copy(alpha = 0.5f)
+        )
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = stringResource(Res.string.alert_missing_title),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.error
+            )
+            Spacer(Modifier.height(4.dp))
+            Text(
+                text = stringResource(Res.string.alert_missing_description, selectedMonth, selectedYear),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onErrorContainer
+            )
+            Spacer(Modifier.height(12.dp))
+
+            missingCongregations.forEach { missing ->
+                MissingCongregationCard(
+                    missingCongregation = missing,
+                    expectedAmount = expectedAmount
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun MissingCongregationCard(
+    missingCongregation: MissingCongregation,
+    expectedAmount: Double
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
+        border = BorderStroke(
+            1.dp,
+            MaterialTheme.colorScheme.error.copy(alpha = 0.3f)
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = missingCongregation.name,
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.error
+            )
+            Column(horizontalAlignment = Alignment.End) {
+                Text(
+                    text = stringResource(Res.string.alert_missing_amount, missingCongregation.missing.formatCurrency()),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    text = stringResource(Res.string.alert_expected_amount, expectedAmount.formatCurrency()),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun AnnualSummarySection(
+    yearlyIncome: Double,
+    yearlyExpenses: Double,
+    yearlyBalance: Double,
+    perPublisherExpense: Double,
+    totalPublishers: Int,
+    congregationCount: Int,
+    selectedYear: Int
+) {
+    val avgPerCongregation = if (congregationCount > 0) totalPublishers / congregationCount else 0
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        // Annual Summary
+        Card(modifier = Modifier.weight(1f)) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    text = stringResource(Res.string.annual_summary_title, selectedYear),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(Modifier.height(16.dp))
+
+                SummaryRow(
+                    label = stringResource(Res.string.annual_total_expenses),
+                    value = yearlyExpenses.formatCurrency(),
+                    valueColor = MaterialTheme.colorScheme.error
+                )
+                Spacer(Modifier.height(12.dp))
+                
+                SummaryRow(
+                    label = stringResource(Res.string.annual_total_donations),
+                    value = yearlyIncome.formatCurrency(),
+                    valueColor = MaterialTheme.colorScheme.tertiary
+                )
+
+                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+
+                SummaryRow(
+                    label = stringResource(Res.string.annual_balance),
+                    value = yearlyBalance.formatCurrency(),
+                    valueColor = if (yearlyBalance >= 0) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.error,
+                    isLarge = true
+                )
+
+                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+
+                SummaryRow(
+                    label = stringResource(Res.string.annual_per_publisher),
+                    value = perPublisherExpense.formatCurrency(),
+                    valueColor = MaterialTheme.colorScheme.primary
+                )
+            }
+        }
+
+        // General Information
+        Card(modifier = Modifier.weight(1f)) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    text = stringResource(Res.string.general_info_title),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(Modifier.height(16.dp))
+
+                SummaryRow(
+                    label = stringResource(Res.string.general_total_publishers),
+                    value = totalPublishers.toString()
+                )
+                Spacer(Modifier.height(12.dp))
+                
+                SummaryRow(
+                    label = stringResource(Res.string.general_total_congregations),
+                    value = congregationCount.toString()
+                )
+                Spacer(Modifier.height(12.dp))
+                
+                SummaryRow(
+                    label = stringResource(Res.string.general_avg_per_congregation),
+                    value = avgPerCongregation.toString()
+                )
+            }
+        }
+    }
 }
 
 @Composable
@@ -356,11 +415,7 @@ private fun SummaryRow(
     valueColor: Color = MaterialTheme.colorScheme.onSurface,
     isLarge: Boolean = false
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp)
-    ) {
+    Column(modifier = Modifier.fillMaxWidth()) {
         Text(
             text = label,
             style = if (isLarge) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodySmall,
@@ -376,78 +431,6 @@ private fun SummaryRow(
     }
 }
 
-/**
- * Statistics Cards - 4 cards in grid
- */
-@Composable
-private fun StatisticsCards(
-    totalExpenses: Double,
-    totalIncome: Double,
-    balance: Double,
-    selectedMonth: String,
-    selectedYear: Int
-) {
-    val perPublisher = totalExpenses / 785
-    val missingCongregations = 0 // TODO: Calculate from data
-    
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        // Row 1: Expenses and Donations
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            // Monthly Expenses
-            StatCard(
-                title = stringResource(Res.string.stat_monthly_expenses),
-                amount = totalExpenses.formatCurrency(),
-                amountColor = MaterialTheme.colorScheme.error,
-                subtitle = "$selectedMonth $selectedYear",
-                modifier = Modifier.weight(1f)
-            )
-            
-            // Monthly Donations
-            StatCard(
-                title = stringResource(Res.string.stat_monthly_donations),
-                amount = totalIncome.formatCurrency(),
-                amountColor = MaterialTheme.colorScheme.tertiary,
-                subtitle = stringResource(Res.string.stat_balance, balance.formatCurrency()),
-                subtitleColor = if (balance >= 0) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.error,
-                modifier = Modifier.weight(1f)
-            )
-        }
-        
-        // Row 2: Per Publisher and Missing Congregations
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            // Per Publisher Contribution
-            StatCard(
-                title = stringResource(Res.string.stat_per_publisher),
-                amount = perPublisher.formatCurrency(),
-                amountColor = MaterialTheme.colorScheme.primary,
-                subtitle = stringResource(Res.string.stat_for_publishers, 785),
-                modifier = Modifier.weight(1f)
-            )
-            
-            // Missing Congregations
-            StatCard(
-                title = stringResource(Res.string.stat_missing_congregations),
-                amount = missingCongregations.toString(),
-                amountColor = if (missingCongregations > 0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.tertiary,
-                subtitle = stringResource(Res.string.stat_of_congregations, 8),
-                modifier = Modifier.weight(1f)
-            )
-        }
-    }
-}
-
-/**
- * Individual Stat Card
- */
 @Composable
 private fun StatCard(
     title: String,

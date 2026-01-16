@@ -14,9 +14,12 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.asr.financial.platform.Clock
 import com.asr.financial.presentation.mvi.event.ExpensesEvent
 import com.asr.financial.presentation.mvi.state.ExpensesState
 import com.asr.financial.presentation.mvi.viewmodel.ExpensesViewModel
+import com.asr.financial.presentation.screens.charts.DonutChart
+import com.asr.financial.presentation.screens.charts.DonutChartItem
 import com.asr.financial.presentation.screens.expenses.ExpensesConstants.FULL_CIRCLE_DEGREES
 import com.asr.financial.presentation.screens.expenses.ExpensesConstants.LEGEND_ICON_SIZE_DP
 import com.asr.financial.presentation.screens.expenses.ExpensesConstants.PIE_CHART_COLORS
@@ -24,6 +27,9 @@ import com.asr.financial.presentation.screens.expenses.ExpensesConstants.PIE_CHA
 import com.asr.financial.presentation.screens.expenses.ExpensesConstants.PIE_CHART_HEIGHT_DP
 import com.asr.financial.presentation.screens.expenses.ExpensesConstants.PIE_CHART_SIZE_DP
 import com.asr.financial.presentation.screens.expenses.ExpensesConstants.PIE_CHART_START_ANGLE
+import com.asr.financial.presentation.screens.expenses.components.ExpenseCategoryRow
+import com.asr.financial.presentation.screens.expenses.components.MonthlySummaryCard
+import com.asr.financial.presentation.screens.expenses.components.YearlySummaryCard
 import com.asr.financial.presentation.ui.components.BreadcrumbItem
 import com.asr.financial.presentation.ui.components.period.PeriodSelectorCard
 import com.asr.financial.presentation.ui.constants.UIConstants.CARD_PADDING_DP
@@ -35,13 +41,9 @@ import com.asr.financial.presentation.ui.constants.UIConstants.SMALL_SPACING_DP
 import com.asr.financial.presentation.ui.constants.UIConstants.TINY_SPACING_DP
 import com.asr.financial.presentation.ui.responsive.WindowSizeClass
 import com.asr.financial.presentation.ui.scaffold.ScreenLayout
-import com.asr.financial.utils.calculateStartMonthFor12Months
-import com.asr.financial.utils.calculateStartYearFor12Months
 import com.asr.financial.utils.formatCurrency
-import com.asr.financial.utils.getCurrentYear
 import com.asr.financial.utils.getAvailableYears
 import com.asr.financial.utils.getMonthsList
-import com.asr.financial.platform.Clock
 import com.asr.financial.utils.percentOfAsInt
 import asr_financial.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
@@ -67,7 +69,7 @@ fun ExpensesScreen(
     val months = remember { getMonthsList() }
 
     LaunchedEffect(selectedYear, selectedMonth) {
-        viewModel.onEvent(ExpensesEvent.FilterByPeriod(selectedYear, selectedMonth))
+        viewModel.handleEvent(ExpensesEvent.FilterByPeriod(selectedYear, selectedMonth))
     }
 
     when (val state = uiState) {
@@ -190,31 +192,6 @@ private fun ExpensesSuccessContent(
 }
 
 @Composable
-private fun MonthlySummaryCard(totalExpenses: Double) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.errorContainer
-        )
-    ) {
-        Column(modifier = Modifier.padding(CARD_PADDING_DP.dp)) {
-            Text(
-                text = stringResource(Res.string.expenses_total_monthly),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onErrorContainer
-            )
-            Spacer(Modifier.height(SMALL_SPACING_DP.dp))
-            Text(
-                text = totalExpenses.formatCurrency(),
-                style = MaterialTheme.typography.headlineLarge,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onErrorContainer
-            )
-        }
-    }
-}
-
-@Composable
 private fun PieChartCard(expenses: List<ExpenseStat>) {
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(CARD_PADDING_DP.dp)) {
@@ -225,78 +202,6 @@ private fun PieChartCard(expenses: List<ExpenseStat>) {
             )
             Spacer(Modifier.height(CARD_PADDING_DP.dp))
             ExpensePieChart(expenses)
-        }
-    }
-}
-
-@Composable
-private fun ExpenseCategoryRow(expense: ExpenseStat) {
-    Card(modifier = Modifier.fillMaxWidth()) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(CARD_PADDING_DP.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = expense.category,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Medium,
-                modifier = Modifier.weight(1f)
-            )
-            Text(
-                text = expense.amount.formatCurrency(),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.error
-            )
-        }
-    }
-}
-
-@Composable
-private fun YearlySummaryCard(
-    yearlyTotal: Double,
-    yearlyEndMonth: Int,
-    yearlyEndYear: Int,
-    months: List<Pair<Int, org.jetbrains.compose.resources.StringResource>>
-) {
-    val endMonthName = months.find { it.first == yearlyEndMonth }?.second?.let { stringResource(it) } ?: ""
-    val startYear = calculateStartYearFor12Months(yearlyEndMonth, yearlyEndYear)
-    val startMonth = calculateStartMonthFor12Months(yearlyEndMonth)
-    val startMonthName = months.find { it.first == startMonth }?.second?.let { stringResource(it) } ?: ""
-
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
-        )
-    ) {
-        Column(modifier = Modifier.padding(CARD_PADDING_DP.dp)) {
-            Text(
-                text = stringResource(Res.string.expenses_total_yearly),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
-            )
-            Spacer(Modifier.height(SMALL_SPACING_DP.dp))
-            Text(
-                text = yearlyTotal.formatCurrency(),
-                style = MaterialTheme.typography.headlineLarge,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
-            )
-            Text(
-                text = stringResource(
-                    Res.string.expenses_yearly_range,
-                    startMonthName,
-                    startYear,
-                    endMonthName,
-                    yearlyEndYear
-                ),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
-            )
         }
     }
 }
@@ -388,71 +293,11 @@ private fun ExpensesErrorContent(
 
 @Composable
 private fun ExpensePieChart(expenses: List<ExpenseStat>) {
-    val total = expenses.sumOf { it.amount }
-    if (total == 0.0) return
-
-    Column {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(PIE_CHART_HEIGHT_DP.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Canvas(modifier = Modifier.size(PIE_CHART_SIZE_DP.dp)) {
-                val radius = size.minDimension / 2f
-                val center = Offset(size.width / 2f, size.height / 2f)
-                var startAngle = PIE_CHART_START_ANGLE
-
-                expenses.forEachIndexed { index, expense ->
-                    val sweepAngle = (expense.amount / total * FULL_CIRCLE_DEGREES).toFloat()
-                    val color = Color(PIE_CHART_COLORS[index % PIE_CHART_COLORS.size])
-
-                    drawArc(
-                        color = color,
-                        startAngle = startAngle,
-                        sweepAngle = sweepAngle,
-                        useCenter = true,
-                        topLeft = Offset(center.x - radius, center.y - radius),
-                        size = Size(radius * 2, radius * 2)
-                    )
-                    startAngle += sweepAngle
-                }
-
-                drawCircle(
-                    color = Color.White,
-                    radius = radius * PIE_CHART_DONUT_HOLE_RATIO,
-                    center = center
-                )
-            }
-        }
-
-        Spacer(Modifier.height(CARD_PADDING_DP.dp))
-
-        expenses.forEachIndexed { index, expense ->
-            val percentage = expense.amount.percentOfAsInt(total)
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = TINY_SPACING_DP.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(LEGEND_ICON_SIZE_DP.dp)
-                        .background(Color(PIE_CHART_COLORS[index % PIE_CHART_COLORS.size]))
-                )
-                Spacer(Modifier.width(SMALL_SPACING_DP.dp))
-                Text(
-                    text = expense.category,
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.weight(1f)
-                )
-                Text(
-                    text = "$percentage%",
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Medium
-                )
-            }
-        }
+    val items = expenses.map { expense ->
+        DonutChartItem(
+            label = expense.category,
+            value = expense.amount
+        )
     }
+    DonutChart(items = items)
 }

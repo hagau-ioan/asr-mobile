@@ -84,9 +84,6 @@ kotlin {
 
             // Ktor Client (for Coil networking)
             implementation(libs.ktor.client.core)
-
-            // Vico Charts (Multiplatform)
-            implementation(libs.vico.multiplatform)
         }
 
         androidMain.dependencies {

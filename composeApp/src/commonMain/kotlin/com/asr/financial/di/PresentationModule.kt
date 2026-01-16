@@ -1,31 +1,35 @@
 package com.asr.financial.di
 
-import com.asr.financial.data.datasource.*
+import com.asr.financial.platform.ComposeResourceLoader
+import com.asr.financial.platform.ResourceLoader
 import com.asr.financial.presentation.mvi.interactor.CongregationsInteractor
 import com.asr.financial.presentation.mvi.interactor.ExpensesInteractor
 import com.asr.financial.presentation.mvi.interactor.HomeInteractor
+import com.asr.financial.presentation.mvi.interactor.UtilitiesInteractor
 import com.asr.financial.presentation.mvi.viewmodel.CongregationsViewModel
 import com.asr.financial.presentation.mvi.viewmodel.ExpensesViewModel
 import com.asr.financial.presentation.mvi.viewmodel.HomeViewModel
+import com.asr.financial.presentation.mvi.viewmodel.UtilitiesViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
+/**
+ * Presentation module - provides resource loader, interactors and view models.
+ */
 val presentationModule = module {
 
     // ═══════════════════════════════════════════════════════════════════
-    // DATA SOURCES - JSON File Implementations
-    // To swap to API or Database, change these bindings only
+    // RESOURCE LOADER - Compose Resources Implementation
     // ═══════════════════════════════════════════════════════════════════
-    single<TransactionDataSource> { JsonTransactionDataSource() }
-    single<CongregationDataSource> { JsonCongregationDataSource() }
-    single<AppConfigDataSource> { JsonAppConfigDataSource(get()) }
+    single<ResourceLoader> { ComposeResourceLoader() }
 
     // ═══════════════════════════════════════════════════════════════════
     // INTERACTORS
     // ═══════════════════════════════════════════════════════════════════
-    factory { HomeInteractor(get(), get(), get(), get(), get()) }
-    factory { CongregationsInteractor(get(), get()) }
+    factory { HomeInteractor(get(), get(), get(), get(), get(), get()) }
+    factory { CongregationsInteractor(get(), get(), get(), get()) }
     factory { ExpensesInteractor(get(), get()) }
+    factory { UtilitiesInteractor(get(), get()) }
 
     // ═══════════════════════════════════════════════════════════════════
     // VIEWMODELS
@@ -33,4 +37,5 @@ val presentationModule = module {
     viewModel { HomeViewModel(get()) }
     viewModel { CongregationsViewModel(get()) }
     viewModel { ExpensesViewModel(get()) }
+    viewModel { UtilitiesViewModel(get()) }
 }
