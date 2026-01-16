@@ -1,19 +1,32 @@
 package com.asr.financial.di
 
-import com.asr.financial.data.ComposeJsonLoader
-import com.asr.financial.data.repository.JsonLoader
+import com.asr.financial.data.datasource.*
+import com.asr.financial.presentation.mvi.interactor.CongregationsInteractor
 import com.asr.financial.presentation.mvi.interactor.HomeInteractor
+import com.asr.financial.presentation.mvi.viewmodel.CongregationsViewModel
 import com.asr.financial.presentation.mvi.viewmodel.HomeViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val presentationModule = module {
-    // JSON Loader (platform-specific)
-    single<JsonLoader> { ComposeJsonLoader() }
-    
-    // Interactors
-    factory { HomeInteractor(get(), get()) }
-    
-    // ViewModels
+
+    // ═══════════════════════════════════════════════════════════════════
+    // DATA SOURCES - JSON File Implementations
+    // To swap to API or Database, change these bindings only
+    // ═══════════════════════════════════════════════════════════════════
+    single<TransactionDataSource> { JsonTransactionDataSource() }
+    single<CongregationDataSource> { JsonCongregationDataSource() }
+    single<AppConfigDataSource> { JsonAppConfigDataSource(get()) }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // INTERACTORS
+    // ═══════════════════════════════════════════════════════════════════
+    factory { HomeInteractor(get(), get(), get(), get(), get()) }
+    factory { CongregationsInteractor(get(), get()) }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // VIEWMODELS
+    // ═══════════════════════════════════════════════════════════════════
     viewModel { HomeViewModel(get()) }
+    viewModel { CongregationsViewModel(get()) }
 }

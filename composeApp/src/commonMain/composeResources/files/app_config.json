@@ -1,0 +1,12 @@
+{
+  "organization": {
+    "name": "ASR",
+    "subtitle": "Gestiune Financiară",
+    "location": "Târgu Mureș"
+  },
+  "financial": {
+    "expectedDonationPerCongregation": 500.0,
+    "totalPublishers": 785,
+    "currency": "RON"
+  }
+}

@@ -4,6 +4,11 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
 
+// Custom semantic colors
+val SuccessGreen = Color(0xFF10B981)        // green-500
+val SuccessGreenDark = Color(0xFF059669)    // green-600
+val WarningOrange = Color(0xFFEA580C)       // orange-600
+
 // Light Theme Colors (from Financial Tracking App)
 private val md_theme_light_primary = Color(0xFF0F172A)        // slate-900
 private val md_theme_light_onPrimary = Color(0xFFFFFFFF)

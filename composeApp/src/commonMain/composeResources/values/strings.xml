@@ -72,6 +72,20 @@
     <string name="general_total_congregations">Număr Congregații:</string>
     <string name="general_avg_per_congregation">Media Vestitori/Congregație:</string>
     
+    <!-- Congregations Screen -->
+    <string name="congregations_title">Donații pe Congregații - %1$s</string>
+    <string name="congregations_missing_count">%1$d congregație cu donații lipsă sau insuficiente</string>
+    <string name="congregations_missing_count_plural">%1$d congregații cu donații lipsă sau insuficiente</string>
+    <string name="congregations_all_complete">Toate congregațiile au donat suma așteptată</string>
+    <string name="congregations_total_donated">Total Donat</string>
+    <string name="congregations_total_expected">Total Așteptat</string>
+    <string name="congregations_difference">Diferență</string>
+    <string name="congregations_name">Congregația</string>
+    <string name="congregations_donated_amount">Suma Donată</string>
+    <string name="congregations_expected_amount">Suma Așteptată</string>
+    <string name="congregations_last_donation">Ultima Donație</string>
+    <string name="congregations_never">Niciodată</string>
+    
     <!-- Footer -->
     <string name="footer_publishers_label">Vestitori:</string>
     <string name="footer_congregations_label">Congregații:</string>

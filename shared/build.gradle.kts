@@ -9,6 +9,7 @@ kotlin {
     androidTarget {
         compilerOptions {
             jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
+            freeCompilerArgs.add("-Xexpect-actual-classes")
         }
     }
 
@@ -20,6 +21,9 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "Shared"
             isStatic = true
+        }
+        iosTarget.compilerOptions {
+            freeCompilerArgs.add("-Xexpect-actual-classes")
         }
     }
 

@@ -1,0 +1,58 @@
+[
+  {
+    "id": "cong_001",
+    "name": "Congregația A",
+    "location": "Târgu Mureș",
+    "memberCount": 98,
+    "isActive": true
+  },
+  {
+    "id": "cong_002",
+    "name": "Congregația B",
+    "location": "Târgu Mureș",
+    "memberCount": 102,
+    "isActive": true
+  },
+  {
+    "id": "cong_003",
+    "name": "Congregația C",
+    "location": "Târgu Mureș",
+    "memberCount": 95,
+    "isActive": true
+  },
+  {
+    "id": "cong_004",
+    "name": "Congregația D",
+    "location": "Târgu Mureș",
+    "memberCount": 105,
+    "isActive": true
+  },
+  {
+    "id": "cong_005",
+    "name": "Congregația E",
+    "location": "Târgu Mureș",
+    "memberCount": 92,
+    "isActive": true
+  },
+  {
+    "id": "cong_006",
+    "name": "Congregația F",
+    "location": "Târgu Mureș",
+    "memberCount": 110,
+    "isActive": true
+  },
+  {
+    "id": "cong_007",
+    "name": "Congregația G",
+    "location": "Târgu Mureș",
+    "memberCount": 88,
+    "isActive": true
+  },
+  {
+    "id": "cong_008",
+    "name": "Congregația H",
+    "location": "Târgu Mureș",
+    "memberCount": 95,
+    "isActive": true
+  }
+]

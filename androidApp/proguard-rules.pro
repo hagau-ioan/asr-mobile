@@ -40,3 +40,6 @@
     <fields>;
     <init>(...);
 }
+
+# Suppress warnings for missing error-prone annotations (compile-time only)
+-dontwarn com.google.errorprone.annotations.**

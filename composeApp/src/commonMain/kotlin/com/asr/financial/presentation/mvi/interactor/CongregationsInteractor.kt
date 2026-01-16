@@ -1,0 +1,115 @@
+package com.asr.financial.presentation.mvi.interactor
+
+import com.asr.financial.domain.model.Transaction
+import com.asr.financial.domain.model.TransactionType
+import com.asr.financial.domain.usecase.GetTransactionsUseCase
+import com.asr.financial.platform.Clock
+import com.asr.financial.presentation.mvi.effect.CongregationsEffect
+import com.asr.financial.presentation.mvi.event.CongregationsEvent
+import com.asr.financial.presentation.mvi.state.CongregationsState
+import com.asr.financial.presentation.screens.congregations.CongregationStat
+import com.asr.financial.utils.getCurrentMonth
+import com.asr.financial.utils.getCurrentYear
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
+
+/**
+ * Congregations Interactor - Handles business logic
+ */
+class CongregationsInteractor(
+    private val getTransactionsUseCase: GetTransactionsUseCase,
+    private val clock: Clock
+) {
+    private val _uiState = MutableStateFlow<CongregationsState>(CongregationsState.Loading)
+    val uiState = _uiState.asStateFlow()
+
+    private val _uiEffectChannel = Channel<CongregationsEffect>(Channel.UNLIMITED)
+    val uiEffect: Flow<CongregationsEffect> = _uiEffectChannel.receiveAsFlow()
+
+    private var currentYear = getCurrentYear(clock)
+    private var currentMonth = getCurrentMonth(clock)
+
+    suspend fun processEvent(event: CongregationsEvent) {
+        when (event) {
+            is CongregationsEvent.LoadData -> loadData(currentYear, currentMonth)
+            is CongregationsEvent.FilterByPeriod -> filterByPeriod(event.year, event.month)
+            is CongregationsEvent.Refresh -> refreshData()
+        }
+    }
+
+    private suspend fun loadData(year: Int, month: Int) {
+        _uiState.emit(CongregationsState.Loading)
+        try {
+            val stats = calculateStats(year, month)
+            emitSuccessState(stats, year, month)
+        } catch (e: Exception) {
+            _uiState.emit(CongregationsState.Error(e.message ?: "Unknown error"))
+            _uiEffectChannel.send(CongregationsEffect.ShowToast("Failed to load data"))
+        }
+    }
+
+    private suspend fun filterByPeriod(year: Int, month: Int) {
+        currentYear = year
+        currentMonth = month
+        loadData(year, month)
+    }
+
+    private suspend fun refreshData() {
+        loadData(currentYear, currentMonth)
+    }
+
+    private suspend fun calculateStats(year: Int, month: Int): List<CongregationStat> {
+        val transactions = getTransactionsUseCase()
+        val filteredTransactions = transactions.filter {
+            it.getYear() == year && it.getMonth() == month
+        }
+
+        val allCongregations = listOf(
+            "Congregația A", "Congregația B", "Congregația C",
+            "Congregația D", "Congregația E", "Congregația F",
+            "Congregația G", "Congregația H"
+        )
+        val expectedPerCongregation = 500.0
+
+        val congregationDonations = filteredTransactions
+            .filter { it.type == TransactionType.INCOME && it.congregationName != null }
+            .groupBy { it.congregationName }
+
+        return allCongregations.map { congName ->
+            val transactions = congregationDonations[congName] ?: emptyList()
+            val donated = transactions.sumOf { it.amount }
+            val lastDate = transactions.maxByOrNull { it.date }?.date
+
+            CongregationStat(
+                name = congName,
+                donated = donated,
+                expected = expectedPerCongregation,
+                difference = donated - expectedPerCongregation,
+                lastDonation = lastDate,
+                isMissing = donated < expectedPerCongregation
+            )
+        }.sortedWith(compareBy({ !it.isMissing }, { it.difference }))
+    }
+
+    private suspend fun emitSuccessState(stats: List<CongregationStat>, year: Int, month: Int) {
+        val totalDonated = stats.sumOf { it.donated }
+        val totalExpected = stats.sumOf { it.expected }
+        val totalDifference = totalDonated - totalExpected
+        val missingCount = stats.count { it.isMissing }
+
+        _uiState.emit(
+            CongregationsState.Success(
+                stats = stats,
+                totalDonated = totalDonated,
+                totalExpected = totalExpected,
+                totalDifference = totalDifference,
+                missingCount = missingCount,
+                selectedYear = year,
+                selectedMonth = month
+            )
+        )
+    }
+}

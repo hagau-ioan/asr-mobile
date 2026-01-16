@@ -72,6 +72,20 @@
     <string name="general_total_congregations">Gyülekezetek Száma:</string>
     <string name="general_avg_per_congregation">Átlag Hirdető/Gyülekezet:</string>
     
+    <!-- Congregations Screen -->
+    <string name="congregations_title">Adományok Gyülekezetenként - %1$s</string>
+    <string name="congregations_missing_count">%1$d gyülekezet hiányzó vagy elégtelen adományokkal</string>
+    <string name="congregations_missing_count_plural">%1$d gyülekezetek hiányzó vagy elégtelen adományokkal</string>
+    <string name="congregations_all_complete">Minden gyülekezet adományozta a várt összeget</string>
+    <string name="congregations_total_donated">Összes Adományozott</string>
+    <string name="congregations_total_expected">Összes Várt</string>
+    <string name="congregations_difference">Különbség</string>
+    <string name="congregations_name">Gyülekezet</string>
+    <string name="congregations_donated_amount">Adományozott Összeg</string>
+    <string name="congregations_expected_amount">Várt Összeg</string>
+    <string name="congregations_last_donation">Utolsó Adomány</string>
+    <string name="congregations_never">Soha</string>
+    
     <!-- Footer -->
     <string name="footer_publishers_label">Hirdetők:</string>
     <string name="footer_congregations_label">Gyülekezetek:</string>

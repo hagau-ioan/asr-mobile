@@ -1,8 +1,7 @@
 package com.asr.financial.presentation.mvi.interactor
 
 import com.asr.financial.domain.model.TransactionType
-import com.asr.financial.domain.usecase.GetTransactionsByMonthUseCase
-import com.asr.financial.domain.usecase.GetTransactionsUseCase
+import com.asr.financial.domain.usecase.*
 import com.asr.financial.presentation.mvi.effect.HomeEffect
 import com.asr.financial.presentation.mvi.event.HomeEvent
 import com.asr.financial.presentation.mvi.state.HomeState
@@ -18,7 +17,10 @@ import kotlinx.coroutines.flow.receiveAsFlow
  */
 class HomeInteractor(
     private val getTransactionsUseCase: GetTransactionsUseCase,
-    private val getTransactionsByMonthUseCase: GetTransactionsByMonthUseCase
+    private val getTransactionsByMonthUseCase: GetTransactionsByMonthUseCase,
+    private val getCongregationNamesUseCase: GetCongregationNamesUseCase,
+    private val getAvailableYearsUseCase: GetAvailableYearsUseCase,
+    private val getAppConfigUseCase: GetAppConfigUseCase
 ) {
     private val _uiState = MutableStateFlow<HomeState>(HomeState.Loading)
     val uiState = _uiState.asStateFlow()
@@ -47,12 +49,22 @@ class HomeInteractor(
                 .sumOf { it.amount }
             val balance = totalIncome - totalExpenses
 
+            // Load configuration data from JSON
+            val congregationNames = getCongregationNamesUseCase()
+            val availableYears = getAvailableYearsUseCase()
+            val appConfig = getAppConfigUseCase()
+
             _uiState.emit(
                 HomeState.Success(
                     transactions = transactions,
                     totalIncome = totalIncome,
                     totalExpenses = totalExpenses,
-                    balance = balance
+                    balance = balance,
+                    congregationNames = congregationNames,
+                    availableYears = availableYears,
+                    expectedDonationPerCongregation = appConfig?.financial?.expectedDonationPerCongregation ?: 500.0,
+                    totalPublishers = appConfig?.financial?.totalPublishers ?: 785,
+                    congregationCount = congregationNames.size
                 )
             )
         } catch (e: Exception) {
@@ -73,12 +85,22 @@ class HomeInteractor(
                 .sumOf { it.amount }
             val balance = totalIncome - totalExpenses
 
+            // Load configuration data from JSON
+            val congregationNames = getCongregationNamesUseCase()
+            val availableYears = getAvailableYearsUseCase()
+            val appConfig = getAppConfigUseCase()
+
             _uiState.emit(
                 HomeState.Success(
                     transactions = transactions,
                     totalIncome = totalIncome,
                     totalExpenses = totalExpenses,
-                    balance = balance
+                    balance = balance,
+                    congregationNames = congregationNames,
+                    availableYears = availableYears,
+                    expectedDonationPerCongregation = appConfig?.financial?.expectedDonationPerCongregation ?: 500.0,
+                    totalPublishers = appConfig?.financial?.totalPublishers ?: 785,
+                    congregationCount = congregationNames.size
                 )
             )
         } catch (e: Exception) {

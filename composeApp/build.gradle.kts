@@ -10,6 +10,7 @@ kotlin {
     androidTarget {
         compilerOptions {
             jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
+            freeCompilerArgs.add("-Xexpect-actual-classes")
         }
     }
 
@@ -23,6 +24,9 @@ kotlin {
             isStatic = true
             export(project(":shared"))
             binaryOption("bundleId", "com.asr.financial.ComposeApp")
+        }
+        iosTarget.compilerOptions {
+            freeCompilerArgs.add("-Xexpect-actual-classes")
         }
     }
 

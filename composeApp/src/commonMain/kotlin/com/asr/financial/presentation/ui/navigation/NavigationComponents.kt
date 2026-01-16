@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import asr_financial.composeapp.generated.resources.*
 import com.asr.financial.AppConfig
+import com.asr.financial.presentation.ui.components.TwoLevelHouseIcon
 import org.jetbrains.compose.resources.stringResource
 
 /**
@@ -71,8 +72,14 @@ fun DrawerNavigationContent(
         ) {
             Row(
                 modifier = Modifier.fillMaxSize(),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
+                TwoLevelHouseIcon(
+                    modifier = Modifier.size(56.dp),
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+                
                 Column {
                     Text(
                         text = stringResource(Res.string.app_title),

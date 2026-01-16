@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.asr.financial.domain.model.TransactionType
+import com.asr.financial.platform.Clock
 import com.asr.financial.presentation.mvi.event.HomeEvent
 import com.asr.financial.presentation.mvi.state.HomeState
 import com.asr.financial.presentation.mvi.viewmodel.HomeViewModel
@@ -20,8 +21,11 @@ import com.asr.financial.presentation.ui.components.BreadcrumbItem
 import com.asr.financial.presentation.ui.responsive.WindowSizeClass
 import com.asr.financial.presentation.ui.scaffold.ScreenLayout
 import com.asr.financial.utils.formatCurrency
+import com.asr.financial.utils.getCurrentYear
+import com.asr.financial.utils.getCurrentMonth
 import asr_financial.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 /**
@@ -32,12 +36,13 @@ fun HomeScreen(
     windowSizeClass: WindowSizeClass,
     onNavigate: (String) -> Unit,
     onMenuClick: () -> Unit = {},
-    viewModel: HomeViewModel = koinViewModel()
+    viewModel: HomeViewModel = koinViewModel(),
+    clock: Clock = koinInject()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     
-    var selectedYear by remember { mutableStateOf(2025) }
-    var selectedMonth by remember { mutableStateOf(12) } // December
+    var selectedYear by remember { mutableStateOf(getCurrentYear(clock)) }
+    var selectedMonth by remember { mutableStateOf(getCurrentMonth(clock)) } // December
     var showYearDropdown by remember { mutableStateOf(false) }
     var showMonthDropdown by remember { mutableStateOf(false) }
     

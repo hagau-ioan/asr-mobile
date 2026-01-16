@@ -4,15 +4,48 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <group android:scaleX="0.4"
-        android:scaleY="0.4"
-        android:translateX="32.4"
-        android:translateY="32.4">
+    
+    <!-- Two-level house icon -->
+    <group android:translateX="20"
+        android:translateY="20">
+        
+        <!-- Roof -->
         <path
             android:fillColor="#FFFFFF"
-            android:pathData="M54,0C24.18,0 0,24.18 0,54s24.18,54 54,54 54,-24.18 54,-54S83.82,0 54,0zM54,96c-23.2,0 -42,-18.8 -42,-42s18.8,-42 42,-42 42,18.8 42,42 -18.8,42 -42,42z"/>
+            android:pathData="M34,15 L54,5 L74,15 Z"/>
+        
+        <!-- Second level (upper floor) -->
         <path
             android:fillColor="#FFFFFF"
-            android:pathData="M54,24c-16.54,0 -30,13.46 -30,30s13.46,30 30,30 30,-13.46 30,-30 -13.46,-30 -30,-30zM54,72c-9.94,0 -18,-8.06 -18,-18s8.06,-18 18,-18 18,8.06 18,18 -8.06,18 -18,18z"/>
+            android:pathData="M30,15 L78,15 L78,38 L30,38 Z"/>
+        
+        <!-- Windows second level -->
+        <path
+            android:fillColor="#0F172A"
+            android:pathData="M36,20 L44,20 L44,32 L36,32 Z"/>
+        <path
+            android:fillColor="#0F172A"
+            android:pathData="M50,20 L58,20 L58,32 L50,32 Z"/>
+        <path
+            android:fillColor="#0F172A"
+            android:pathData="M64,20 L72,20 L72,32 L64,32 Z"/>
+        
+        <!-- First level (ground floor) -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M26,38 L82,38 L82,62 L26,62 Z"/>
+        
+        <!-- Door -->
+        <path
+            android:fillColor="#0F172A"
+            android:pathData="M48,44 L60,44 L60,62 L48,62 Z"/>
+        
+        <!-- Windows first level -->
+        <path
+            android:fillColor="#0F172A"
+            android:pathData="M32,44 L42,44 L42,54 L32,54 Z"/>
+        <path
+            android:fillColor="#0F172A"
+            android:pathData="M66,44 L76,44 L76,54 L66,54 Z"/>
     </group>
 </vector>
