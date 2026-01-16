@@ -1,0 +1,184 @@
+package com.asr.financial.presentation.screens.charts
+
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.drawText
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import asr_financial.composeapp.generated.resources.Res
+import asr_financial.composeapp.generated.resources.*
+import com.asr.financial.presentation.screens.yearly.YearlyStat
+import com.asr.financial.presentation.ui.constants.UIConstants.SMALL_SPACING_DP
+import com.asr.financial.presentation.ui.constants.UIConstants.TINY_SPACING_DP
+import com.asr.financial.utils.formatForAxis
+import org.jetbrains.compose.resources.stringResource
+import kotlin.math.max
+
+/**
+ * Bar chart showing yearly financial data (donations, expenses, balance)
+ */
+@Composable
+fun BarChart(
+    yearlyStats: List<YearlyStat>,
+    modifier: Modifier = Modifier,
+    height: Int = 350
+) {
+    val donationsColor = MaterialTheme.colorScheme.tertiary
+    val expensesColor = MaterialTheme.colorScheme.error
+    val balanceColor = MaterialTheme.colorScheme.primary
+    val textColor = MaterialTheme.colorScheme.onSurface
+    val textMeasurer = rememberTextMeasurer()
+
+    Column(modifier = modifier.fillMaxWidth()) {
+        Canvas(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(height.dp)
+        ) {
+            val padding = 60f
+            val bottomPadding = 40f
+            val chartWidth = size.width - padding * 2
+            val chartHeight = size.height - padding - bottomPadding
+
+            val maxValue = yearlyStats.maxOfOrNull {
+                max(it.totalDonations, max(it.totalExpenses, it.balance.coerceAtLeast(0.0)))
+            } ?: 0.0
+
+            if (maxValue == 0.0 || yearlyStats.isEmpty()) return@Canvas
+
+            val barGroupWidth = chartWidth / yearlyStats.size
+            val barWidth = barGroupWidth / 4
+            val ySteps = 4
+
+            // Draw Y-axis labels and grid
+            for (i in 0..ySteps) {
+                val value = (maxValue / ySteps) * i
+                val y = padding + chartHeight - (i.toFloat() / ySteps * chartHeight)
+                
+                drawLine(
+                    color = textColor.copy(alpha = 0.1f),
+                    start = Offset(padding, y),
+                    end = Offset(padding + chartWidth, y),
+                    strokeWidth = 1f
+                )
+                
+                val label = value.formatForAxis()
+                val textLayoutResult = textMeasurer.measure(
+                    text = label,
+                    style = TextStyle(
+                        color = textColor.copy(alpha = 0.6f),
+                        fontSize = 10.sp
+                    )
+                )
+                drawText(
+                    textLayoutResult = textLayoutResult,
+                    topLeft = Offset(
+                        x = padding - textLayoutResult.size.width - 8f,
+                        y = y - textLayoutResult.size.height / 2
+                    )
+                )
+            }
+
+            // Draw bars for each year
+            yearlyStats.forEachIndexed { index, stat ->
+                val x = padding + index * barGroupWidth + barGroupWidth / 2 - barWidth * 1.5f
+
+                // Donations bar
+                val donationsHeight = (stat.totalDonations / maxValue * chartHeight).toFloat()
+                drawRect(
+                    color = donationsColor,
+                    topLeft = Offset(x, padding + chartHeight - donationsHeight),
+                    size = Size(barWidth, donationsHeight)
+                )
+
+                // Expenses bar
+                val expensesHeight = (stat.totalExpenses / maxValue * chartHeight).toFloat()
+                drawRect(
+                    color = expensesColor,
+                    topLeft = Offset(x + barWidth, padding + chartHeight - expensesHeight),
+                    size = Size(barWidth, expensesHeight)
+                )
+
+                // Balance bar
+                val balanceHeight = (stat.balance.coerceAtLeast(0.0) / maxValue * chartHeight).toFloat()
+                drawRect(
+                    color = balanceColor,
+                    topLeft = Offset(x + barWidth * 2, padding + chartHeight - balanceHeight),
+                    size = Size(barWidth, balanceHeight)
+                )
+
+                // X-axis label (year)
+                val yearLabel = stat.year.toString()
+                val textLayoutResult = textMeasurer.measure(
+                    text = yearLabel,
+                    style = TextStyle(
+                        color = textColor.copy(alpha = 0.6f),
+                        fontSize = 10.sp
+                    )
+                )
+                drawText(
+                    textLayoutResult = textLayoutResult,
+                    topLeft = Offset(
+                        x = x + barWidth * 1.5f - textLayoutResult.size.width / 2,
+                        y = padding + chartHeight + 10f
+                    )
+                )
+            }
+        }
+
+        Spacer(Modifier.height(SMALL_SPACING_DP.dp))
+
+        // Legend
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            LegendItem(
+                color = donationsColor,
+                label = stringResource(Res.string.yearly_donations)
+            )
+            Spacer(Modifier.width(SMALL_SPACING_DP.dp))
+            LegendItem(
+                color = expensesColor,
+                label = stringResource(Res.string.yearly_expenses)
+            )
+            Spacer(Modifier.width(SMALL_SPACING_DP.dp))
+            LegendItem(
+                color = balanceColor,
+                label = stringResource(Res.string.yearly_balance)
+            )
+        }
+    }
+}
+
+@Composable
+private fun LegendItem(color: Color, label: String) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(TINY_SPACING_DP.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .size(12.dp)
+                .background(color)
+        )
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodySmall,
+            fontWeight = FontWeight.Medium
+        )
+    }
+}

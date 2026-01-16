@@ -124,6 +124,22 @@
     <string name="congregations_last_donation">Ultima Donație</string>
     <string name="congregations_never">Niciodată</string>
     
+    <!-- Yearly Comparison Screen -->
+    <string name="yearly_title">Comparație Anuală</string>
+    <string name="yearly_subtitle">Donații și cheltuieli pe ultimii ani</string>
+    <string name="yearly_chart_title">Evoluție Anuală</string>
+    <string name="yearly_donations">Donații Totale</string>
+    <string name="yearly_expenses">Cheltuieli Totale</string>
+    <string name="yearly_balance">Balanță</string>
+    <string name="yearly_summary_title">Anul %1$d</string>
+    <string name="yearly_summary_subtitle">Sumar financiar</string>
+    <string name="yearly_variations_title">Variații An cu An</string>
+    <string name="yearly_variations_subtitle">Creșteri și scăderi față de anul precedent</string>
+    <string name="yearly_comparison_vs">%1$d vs %2$d</string>
+    <string name="yearly_donations_change">Donații</string>
+    <string name="yearly_expenses_change">Cheltuieli</string>
+    <string name="yearly_empty">Nu există date pentru comparație anuală</string>
+    
     <!-- Footer -->
     <string name="footer_publishers_label">Vestitori:</string>
     <string name="footer_congregations_label">Congregații:</string>

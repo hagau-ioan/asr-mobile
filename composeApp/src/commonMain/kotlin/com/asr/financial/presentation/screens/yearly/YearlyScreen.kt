@@ -1,21 +1,139 @@
 package com.asr.financial.presentation.screens.yearly
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.asr.financial.platform.Clock
+import com.asr.financial.presentation.mvi.event.YearlyEvent
+import com.asr.financial.presentation.mvi.state.YearlyState
+import com.asr.financial.presentation.mvi.viewmodel.YearlyViewModel
+import com.asr.financial.presentation.screens.charts.BarChart
+import com.asr.financial.presentation.screens.yearly.YearlyConstants.CHART_HEIGHT_DP
+import com.asr.financial.presentation.screens.yearly.components.YearSummaryCard
+import com.asr.financial.presentation.screens.yearly.components.YearVariationCard
 import com.asr.financial.presentation.ui.components.BreadcrumbItem
+import com.asr.financial.presentation.ui.constants.UIConstants.CARD_PADDING_DP
+import com.asr.financial.presentation.ui.constants.UIConstants.EMPTY_STATE_PADDING_DP
+import com.asr.financial.presentation.ui.constants.UIConstants.SECTION_SPACING_DP
 import com.asr.financial.presentation.ui.responsive.WindowSizeClass
 import com.asr.financial.presentation.ui.scaffold.ScreenLayout
+import com.asr.financial.utils.getCurrentYear
 import asr_financial.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun YearlyScreen(
     windowSizeClass: WindowSizeClass,
     onNavigate: (String) -> Unit,
-    onMenuClick: () -> Unit = {}
+    onMenuClick: () -> Unit = {},
+    viewModel: YearlyViewModel = koinViewModel()
+) {
+    val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.handleEvent(YearlyEvent.LoadData)
+    }
+
+    when (val state = uiState) {
+        is YearlyState.Success -> {
+            YearlySuccessContent(
+                state = state,
+                windowSizeClass = windowSizeClass,
+                onNavigate = onNavigate,
+                onMenuClick = onMenuClick
+            )
+        }
+        is YearlyState.Loading -> {
+            YearlyLoadingContent(
+                windowSizeClass = windowSizeClass,
+                onNavigate = onNavigate,
+                onMenuClick = onMenuClick
+            )
+        }
+        is YearlyState.Error -> {
+            YearlyErrorContent(
+                message = state.message,
+                windowSizeClass = windowSizeClass,
+                onNavigate = onNavigate,
+                onMenuClick = onMenuClick
+            )
+        }
+    }
+}
+
+@Composable
+private fun YearlySuccessContent(
+    state: YearlyState.Success,
+    windowSizeClass: WindowSizeClass,
+    onNavigate: (String) -> Unit,
+    onMenuClick: () -> Unit
+) {
+    ScreenLayout(
+        windowSizeClass = windowSizeClass,
+        breadcrumbItems = listOf(
+            BreadcrumbItem(stringResource(Res.string.nav_home), "home"),
+            BreadcrumbItem(stringResource(Res.string.nav_yearly))
+        ),
+        onNavigate = onNavigate,
+        onMenuClick = onMenuClick
+    ) {
+        if (state.yearlyStats.isEmpty()) {
+            item {
+                EmptyYearlyCard()
+            }
+        } else {
+            item {
+                YearlyChartCard(yearlyStats = state.yearlyStats.sortedBy { it.year })
+            }
+
+            item {
+                Text(
+                    text = stringResource(Res.string.yearly_summary_subtitle),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            state.yearlyStats.forEach { stat ->
+                item {
+                    YearSummaryCard(stat = stat)
+                }
+            }
+
+            if (state.comparisons.isNotEmpty()) {
+                item {
+                    Spacer(Modifier.height(SECTION_SPACING_DP.dp))
+                    Text(
+                        text = stringResource(Res.string.yearly_variations_title),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
+                state.comparisons.forEach { comparison ->
+                    item {
+                        YearVariationCard(comparison = comparison)
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun YearlyLoadingContent(
+    windowSizeClass: WindowSizeClass,
+    onNavigate: (String) -> Unit,
+    onMenuClick: () -> Unit
 ) {
     ScreenLayout(
         windowSizeClass = windowSizeClass,
@@ -27,16 +145,134 @@ fun YearlyScreen(
         onMenuClick = onMenuClick
     ) {
         item {
-            Card(modifier = Modifier.fillMaxWidth()) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        text = stringResource(Res.string.nav_yearly),
-                        style = MaterialTheme.typography.headlineMedium
-                    )
-                    Spacer(Modifier.height(8.dp))
-                    Text(stringResource(Res.string.in_development))
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp),
+                contentAlignment = androidx.compose.ui.Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+    }
+}
+
+@Composable
+private fun YearlyErrorContent(
+    message: String,
+    windowSizeClass: WindowSizeClass,
+    onNavigate: (String) -> Unit,
+    onMenuClick: () -> Unit
+) {
+    ScreenLayout(
+        windowSizeClass = windowSizeClass,
+        breadcrumbItems = listOf(
+            BreadcrumbItem(stringResource(Res.string.nav_home), "home"),
+            BreadcrumbItem(stringResource(Res.string.nav_yearly))
+        ),
+        onNavigate = onNavigate,
+        onMenuClick = onMenuClick
+    ) {
+        item {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.errorContainer
+                )
+            ) {
+                Text(
+                    text = message,
+                    color = MaterialTheme.colorScheme.onErrorContainer,
+                    modifier = Modifier.padding(CARD_PADDING_DP.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun EmptyYearlyCard() {
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(EMPTY_STATE_PADDING_DP.dp),
+            contentAlignment = androidx.compose.ui.Alignment.Center
+        ) {
+            Text(
+                text = stringResource(Res.string.yearly_empty),
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
+}
+
+@Composable
+private fun YearlyChartCard(
+    yearlyStats: List<YearlyStat>,
+    clock: Clock = koinInject()
+) {
+    val currentYear = remember { getCurrentYear(clock) }
+    val allYears = remember(yearlyStats, currentYear) {
+        val dataYears = yearlyStats.map { it.year }
+        val minYear = dataYears.minOrNull() ?: currentYear
+        val maxYear = maxOf(dataYears.maxOrNull() ?: currentYear, currentYear + 1)
+        (minYear..maxYear).toList()
+    }
+    
+    val allStats = remember(allYears, yearlyStats) {
+        allYears.map { year ->
+            yearlyStats.find { it.year == year } ?: YearlyStat(year, 0.0, 0.0, 0.0)
+        }
+    }
+    
+    var startIndex by remember { mutableStateOf((allYears.size - 3).coerceAtLeast(0)) }
+    
+    val displayStats = remember(allStats, startIndex) {
+        allStats.drop(startIndex).take(3)
+    }
+    
+    val displayYears = remember(allYears, startIndex) {
+        allYears.drop(startIndex).take(3)
+    }
+
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(CARD_PADDING_DP.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(Res.string.yearly_chart_title),
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold
+                )
+                
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    IconButton(
+                        onClick = { if (startIndex > 0) startIndex-- },
+                        enabled = startIndex > 0
+                    ) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Previous years")
+                    }
+                    
+                    IconButton(
+                        onClick = { if (startIndex < allYears.size - 3) startIndex++ },
+                        enabled = startIndex < allYears.size - 3
+                    ) {
+                        Icon(Icons.Default.ArrowForward, contentDescription = "Next years")
+                    }
                 }
             }
+            
+            Spacer(Modifier.height(SECTION_SPACING_DP.dp))
+            
+            BarChart(
+                yearlyStats = displayStats,
+                height = CHART_HEIGHT_DP
+            )
         }
     }
 }
