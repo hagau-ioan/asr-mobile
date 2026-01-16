@@ -53,3 +53,28 @@ fun getMonthNameResource(monthNumber: Int): StringResource? {
         else -> null
     }
 }
+
+
+/**
+ * Get month name as String by month number
+ * 
+ * @param monthNumber Month number (1-12)
+ * @return Month name in Romanian
+ */
+fun getMonthName(monthNumber: Int): String {
+    return when (monthNumber) {
+        1 -> "Ianuarie"
+        2 -> "Februarie"
+        3 -> "Martie"
+        4 -> "Aprilie"
+        5 -> "Mai"
+        6 -> "Iunie"
+        7 -> "Iulie"
+        8 -> "August"
+        9 -> "Septembrie"
+        10 -> "Octombrie"
+        11 -> "Noiembrie"
+        12 -> "Decembrie"
+        else -> ""
+    }
+}

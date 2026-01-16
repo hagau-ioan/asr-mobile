@@ -2,11 +2,13 @@ package com.asr.financial.di
 
 import com.asr.financial.platform.ComposeResourceLoader
 import com.asr.financial.platform.ResourceLoader
+import com.asr.financial.presentation.mvi.interactor.CalculatorInteractor
 import com.asr.financial.presentation.mvi.interactor.CongregationsInteractor
 import com.asr.financial.presentation.mvi.interactor.ExpensesInteractor
 import com.asr.financial.presentation.mvi.interactor.HomeInteractor
 import com.asr.financial.presentation.mvi.interactor.UtilitiesInteractor
 import com.asr.financial.presentation.mvi.interactor.YearlyInteractor
+import com.asr.financial.presentation.mvi.viewmodel.CalculatorViewModel
 import com.asr.financial.presentation.mvi.viewmodel.CongregationsViewModel
 import com.asr.financial.presentation.mvi.viewmodel.ExpensesViewModel
 import com.asr.financial.presentation.mvi.viewmodel.HomeViewModel
@@ -33,6 +35,7 @@ val presentationModule = module {
     factory { ExpensesInteractor(get(), get()) }
     factory { UtilitiesInteractor(get(), get()) }
     factory { YearlyInteractor(get()) }
+    factory { CalculatorInteractor(get(), get()) }
 
     // ═══════════════════════════════════════════════════════════════════
     // VIEWMODELS
@@ -42,4 +45,5 @@ val presentationModule = module {
     viewModel { ExpensesViewModel(get()) }
     viewModel { UtilitiesViewModel(get()) }
     viewModel { YearlyViewModel(get()) }
+    viewModel { CalculatorViewModel(get()) }
 }

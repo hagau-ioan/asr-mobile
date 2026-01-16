@@ -17,6 +17,8 @@
     <string name="header_publishers">%1$d vestitori</string>
     <string name="header_congregations">%1$d congregații</string>
     <string name="header_period">Perioada</string>
+    <string name="select_year">Selectează anul</string>
+    <string name="select_month">Selectează luna</string>
     
     <!-- Home Screen -->
     <string name="home_select_period">Selectează Perioada</string>
@@ -139,6 +141,20 @@
     <string name="yearly_donations_change">Donații</string>
     <string name="yearly_expenses_change">Cheltuieli</string>
     <string name="yearly_empty">Nu există date pentru comparație anuală</string>
+    
+    <!-- Calculator Screen -->
+    <string name="calculator_title">Calculator Contribuții per Vestitor</string>
+    <string name="calculator_subtitle">Calculează cât ar trebui să doneze fiecare vestitor pentru a acoperi cheltuielile ASR</string>
+    <string name="calculator_monthly_title">Contribuție Lunară</string>
+    <string name="calculator_yearly_title">Contribuție Anuală</string>
+    <string name="calculator_total_expenses">Cheltuieli totale:</string>
+    <string name="calculator_number_publishers">Număr vestitori:</string>
+    <string name="calculator_per_publisher">Per vestitor:</string>
+    <string name="calculator_for_month">* Pentru luna %1$s %2$d</string>
+    <string name="calculator_for_year">* Pentru anul %1$d</string>
+    <string name="calculator_distribution_title">Distribuție pe Congregații</string>
+    <string name="calculator_publishers">%1$d vestitori</string>
+    <string name="calculator_empty">Nu există date pentru calculul contribuțiilor</string>
     
     <!-- Footer -->
     <string name="footer_publishers_label">Vestitori:</string>
