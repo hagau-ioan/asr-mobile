@@ -31,15 +31,6 @@ import asr_financial.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
-data class CongregationStat(
-    val name: String,
-    val donated: Double,
-    val expected: Double,
-    val difference: Double,
-    val lastDonation: String?,
-    val isMissing: Boolean
-)
-
 @Composable
 fun CongregationsScreen(
     windowSizeClass: WindowSizeClass,

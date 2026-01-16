@@ -36,6 +36,13 @@ fun Double.percentOf(total: Double): Double {
 }
 
 /**
+ * Calculate percentage as Int
+ */
+fun Double.percentOfAsInt(total: Double): Int {
+    return percentOf(total).toInt()
+}
+
+/**
  * Add two numbers safely
  */
 fun Double.add(other: Double): Double = this + other

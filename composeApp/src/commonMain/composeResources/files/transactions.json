@@ -293,5 +293,88 @@
     "description": "Întreținere anuală",
     "date": "2025-12-20",
     "category": "Întreținere"
+  },
+  {
+    "id": "txn_2026_01_001",
+    "type": "INCOME",
+    "amount": 6000.00,
+    "description": "Donație Congregația A",
+    "date": "2026-01-15",
+    "category": "Donații",
+    "congregationName": "Congregația A"
+  },
+  {
+    "id": "txn_2026_01_002",
+    "type": "INCOME",
+    "amount": 4500.00,
+    "description": "Donație Congregația B",
+    "date": "2026-01-15",
+    "category": "Donații",
+    "congregationName": "Congregația B"
+  },
+  {
+    "id": "txn_2026_01_003",
+    "type": "INCOME",
+    "amount": 3800.00,
+    "description": "Donație Congregația C",
+    "date": "2026-01-16",
+    "category": "Donații",
+    "congregationName": "Congregația C"
+  },
+  {
+    "id": "txn_2026_01_004",
+    "type": "EXPENSE",
+    "amount": 1450.00,
+    "description": "Factură electricitate",
+    "date": "2026-01-10",
+    "category": "Energie Electrică"
+  },
+  {
+    "id": "txn_2026_01_005",
+    "type": "EXPENSE",
+    "amount": 920.00,
+    "description": "Factură apă",
+    "date": "2026-01-12",
+    "category": "Apă"
+  },
+  {
+    "id": "txn_2026_01_006",
+    "type": "EXPENSE",
+    "amount": 650.00,
+    "description": "Factură gaz",
+    "date": "2026-01-11",
+    "category": "Gaze Naturale"
+  },
+  {
+    "id": "txn_2026_01_007",
+    "type": "EXPENSE",
+    "amount": 2200.00,
+    "description": "Materiale birou și papetărie",
+    "date": "2026-01-08",
+    "category": "Echipamente Electronice"
+  },
+  {
+    "id": "txn_2026_01_008",
+    "type": "EXPENSE",
+    "amount": 1800.00,
+    "description": "Întreținere sistem încălzire",
+    "date": "2026-01-14",
+    "category": "Întreținere și Reparații"
+  },
+  {
+    "id": "txn_2026_01_009",
+    "type": "EXPENSE",
+    "amount": 450.00,
+    "description": "Curățenie profesională",
+    "date": "2026-01-05",
+    "category": "Salubritate"
+  },
+  {
+    "id": "txn_2026_01_010",
+    "type": "EXPENSE",
+    "amount": 320.00,
+    "description": "Internet și telefonie",
+    "date": "2026-01-03",
+    "category": "Internet/Telecomunicații"
   }
 ]
