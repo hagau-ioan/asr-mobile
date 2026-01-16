@@ -7,13 +7,11 @@ plugins {
 
 kotlin {
     androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "17"
-            }
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -24,39 +22,46 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     sourceSets {
         commonMain.dependencies {
             // Coroutines
             implementation(libs.kotlinx.coroutines.core)
-            
+
             // Serialization
             implementation(libs.kotlinx.serialization.json)
-            
+
             // DateTime
             implementation(libs.kotlinx.datetime)
-            
+
             // SQLDelight
             implementation(libs.sqldelight.runtime)
             implementation(libs.sqldelight.coroutines)
-            
+
             // DataStore
             implementation(libs.datastore.preferences)
-            
+
             // Koin
             implementation(libs.koin.core)
+
+            // Ktor Client (for API calls if needed)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.json)
         }
-        
+
         androidMain.dependencies {
             implementation(libs.kotlinx.coroutines.android)
             implementation(libs.sqldelight.android.driver)
-            implementation("androidx.security:security-crypto:1.1.0-alpha06")
+            implementation(libs.androidx.security.crypto)
+            implementation(libs.ktor.client.okhttp)
         }
-        
+
         iosMain.dependencies {
             implementation(libs.sqldelight.native.driver)
+            implementation(libs.ktor.client.darwin)
         }
-        
+
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
@@ -65,15 +70,15 @@ kotlin {
 
 android {
     namespace = "com.asr.financial.shared"
-    compileSdk = 35
-    
+    compileSdk = 36
+
     defaultConfig {
         minSdk = 26
     }
-    
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 }
 

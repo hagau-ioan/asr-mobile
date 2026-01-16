@@ -30,7 +30,7 @@ selectById:
 SELECT * FROM Expense WHERE id = ?;
 
 getTotalByPeriod:
-SELECT SUM(amount) as total FROM Expense WHERE year = ? AND month = ?;
+SELECT SUM(amount) FROM Expense WHERE year = ? AND month = ?;
 
 insert:
 INSERT INTO Expense(description, amount, category, month, year, receiptImagePath, notes, createdAt)

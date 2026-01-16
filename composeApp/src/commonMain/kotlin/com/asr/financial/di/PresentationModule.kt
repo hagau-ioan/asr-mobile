@@ -1,12 +1,17 @@
 package com.asr.financial.di
 
+import com.asr.financial.presentation.screens.details.DetailsViewModel
+import com.asr.financial.presentation.screens.home.HomeViewModel
+import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
-/**
- * Presentation module
- * Provides ViewModels and UI Interactors
- */
 val presentationModule = module {
-    // ViewModels will be added here
-    // UI Interactors will be added here
+    // ViewModels
+    viewModelOf(::HomeViewModel)
+
+    // DetailsViewModel with parameter
+    viewModel { (itemId: String) ->
+        DetailsViewModel(itemId = itemId)
+    }
 }

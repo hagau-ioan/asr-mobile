@@ -29,7 +29,7 @@ selectById:
 SELECT * FROM Donation WHERE id = ?;
 
 getTotalByPeriod:
-SELECT SUM(amount) as total FROM Donation WHERE year = ? AND month = ?;
+SELECT SUM(amount) FROM Donation WHERE year = ? AND month = ?;
 
 insert:
 INSERT INTO Donation(congregationId, amount, month, year, notes, createdAt)

@@ -30,7 +30,7 @@ selectById:
 SELECT * FROM UtilityExpense WHERE id = ?;
 
 getTotalByPeriod:
-SELECT SUM(amount) as total FROM UtilityExpense WHERE year = ? AND month = ?;
+SELECT SUM(amount) FROM UtilityExpense WHERE year = ? AND month = ?;
 
 insert:
 INSERT INTO UtilityExpense(utilityType, amount, month, year, meterReading, receiptImagePath, notes, createdAt)
