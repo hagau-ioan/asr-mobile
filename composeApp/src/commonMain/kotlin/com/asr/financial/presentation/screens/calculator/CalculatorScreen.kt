@@ -13,13 +13,15 @@ import com.asr.financial.presentation.mvi.viewmodel.CalculatorViewModel
 import com.asr.financial.presentation.screens.calculator.components.CongregationContributionRow
 import com.asr.financial.presentation.screens.calculator.components.ContributionCard
 import com.asr.financial.presentation.ui.components.BreadcrumbItem
+import com.asr.financial.presentation.ui.components.period.PeriodSelectorCard
 import com.asr.financial.presentation.ui.constants.UIConstants.CARD_PADDING_DP
 import com.asr.financial.presentation.ui.constants.UIConstants.SECTION_SPACING_DP
 import com.asr.financial.presentation.ui.responsive.WindowSizeClass
 import com.asr.financial.presentation.ui.scaffold.ScreenLayout
 import com.asr.financial.utils.getCurrentMonth
 import com.asr.financial.utils.getCurrentYear
-import com.asr.financial.utils.getMonthName
+import com.asr.financial.utils.getMonthNameResource
+import com.asr.financial.utils.getMonthsList
 import asr_financial.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
@@ -36,6 +38,12 @@ fun CalculatorScreen(
     val uiState by viewModel.uiState.collectAsState()
     var selectedYear by remember { mutableStateOf(getCurrentYear(clock)) }
     var selectedMonth by remember { mutableStateOf(getCurrentMonth(clock)) }
+    var showYearDropdown by remember { mutableStateOf(false) }
+    var showMonthDropdown by remember { mutableStateOf(false) }
+    
+    val months = remember { getMonthsList() }
+    val years = remember { (2024..2027).toList() }
+    val selectedMonthName = getMonthNameResource(selectedMonth)?.let { stringResource(it) } ?: ""
 
     LaunchedEffect(selectedYear, selectedMonth) {
         viewModel.handleEvent(CalculatorEvent.LoadData(selectedYear, selectedMonth))
@@ -47,8 +55,15 @@ fun CalculatorScreen(
                 state = state,
                 selectedYear = selectedYear,
                 selectedMonth = selectedMonth,
-                onYearChange = { selectedYear = it },
-                onMonthChange = { selectedMonth = it },
+                selectedMonthName = selectedMonthName,
+                years = years,
+                months = months,
+                showYearDropdown = showYearDropdown,
+                showMonthDropdown = showMonthDropdown,
+                onYearDropdownChange = { showYearDropdown = it },
+                onMonthDropdownChange = { showMonthDropdown = it },
+                onYearSelected = { selectedYear = it },
+                onMonthSelected = { selectedMonth = it },
                 windowSizeClass = windowSizeClass,
                 onNavigate = onNavigate,
                 onMenuClick = onMenuClick
@@ -77,8 +92,15 @@ private fun CalculatorSuccessContent(
     state: CalculatorState.Success,
     selectedYear: Int,
     selectedMonth: Int,
-    onYearChange: (Int) -> Unit,
-    onMonthChange: (Int) -> Unit,
+    selectedMonthName: String,
+    years: List<Int>,
+    months: List<Pair<Int, org.jetbrains.compose.resources.StringResource>>,
+    showYearDropdown: Boolean,
+    showMonthDropdown: Boolean,
+    onYearDropdownChange: (Boolean) -> Unit,
+    onMonthDropdownChange: (Boolean) -> Unit,
+    onYearSelected: (Int) -> Unit,
+    onMonthSelected: (Int) -> Unit,
     windowSizeClass: WindowSizeClass,
     onNavigate: (String) -> Unit,
     onMenuClick: () -> Unit
@@ -110,11 +132,21 @@ private fun CalculatorSuccessContent(
         }
 
         item {
-            PeriodSelector(
+            PeriodSelectorCard(
                 selectedYear = selectedYear,
                 selectedMonth = selectedMonth,
-                onYearChange = onYearChange,
-                onMonthChange = onMonthChange
+                selectedMonthName = selectedMonthName,
+                years = years,
+                months = months,
+                showYearDropdown = showYearDropdown,
+                showMonthDropdown = showMonthDropdown,
+                onYearDropdownChange = onYearDropdownChange,
+                onMonthDropdownChange = onMonthDropdownChange,
+                onYearSelected = onYearSelected,
+                onMonthSelected = onMonthSelected,
+                title = stringResource(Res.string.home_select_period),
+                yearLabel = stringResource(Res.string.home_year),
+                monthLabel = stringResource(Res.string.home_month)
             )
         }
 
@@ -129,7 +161,7 @@ private fun CalculatorSuccessContent(
                         contribution = state.monthlyContribution,
                         periodLabel = stringResource(
                             Res.string.calculator_for_month,
-                            getMonthName(selectedMonth),
+                            selectedMonthName,
                             selectedYear
                         ),
                         containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -160,101 +192,6 @@ private fun CalculatorSuccessContent(
         state.congregationContributions.forEach { contribution ->
             item {
                 CongregationContributionRow(contribution = contribution)
-            }
-        }
-    }
-}
-
-@Composable
-private fun PeriodSelector(
-    selectedYear: Int,
-    selectedMonth: Int,
-    onYearChange: (Int) -> Unit,
-    onMonthChange: (Int) -> Unit
-) {
-    Card(modifier = Modifier.fillMaxWidth()) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(CARD_PADDING_DP.dp),
-            horizontalArrangement = Arrangement.spacedBy(SECTION_SPACING_DP.dp)
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = stringResource(Res.string.select_year),
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.Medium
-                )
-                Spacer(Modifier.height(4.dp))
-                YearDropdown(selectedYear = selectedYear, onYearChange = onYearChange)
-            }
-            
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = stringResource(Res.string.select_month),
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.Medium
-                )
-                Spacer(Modifier.height(4.dp))
-                MonthDropdown(selectedMonth = selectedMonth, onMonthChange = onMonthChange)
-            }
-        }
-    }
-}
-
-@Composable
-private fun YearDropdown(selectedYear: Int, onYearChange: (Int) -> Unit) {
-    var expanded by remember { mutableStateOf(false) }
-    val years = (2024..2027).toList()
-
-    Box {
-        OutlinedButton(
-            onClick = { expanded = true },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(selectedYear.toString())
-        }
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            years.forEach { year ->
-                DropdownMenuItem(
-                    text = { Text(year.toString()) },
-                    onClick = {
-                        onYearChange(year)
-                        expanded = false
-                    }
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun MonthDropdown(selectedMonth: Int, onMonthChange: (Int) -> Unit) {
-    var expanded by remember { mutableStateOf(false) }
-    val months = (1..12).toList()
-
-    Box {
-        OutlinedButton(
-            onClick = { expanded = true },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(getMonthName(selectedMonth))
-        }
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            months.forEach { month ->
-                DropdownMenuItem(
-                    text = { Text(getMonthName(month)) },
-                    onClick = {
-                        onMonthChange(month)
-                        expanded = false
-                    }
-                )
             }
         }
     }
