@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -46,24 +47,18 @@ fun DonutChart(
     val total = items.sumOf { it.value }
     if (total == 0.0) return
 
-    val dataKey = remember(items) { items.hashCode() }
-    var currentDataKey by remember { mutableStateOf(dataKey) }
-    var animationProgress by remember { mutableStateOf(0f) }
+    val dataKey = remember(items) { items.hashCode().toString() }
     
-    val animatedProgress by animateFloatAsState(
-        targetValue = animationProgress,
+    var animationTriggered by rememberSaveable(dataKey) { mutableStateOf(false) }
+    
+    val animationProgress by animateFloatAsState(
+        targetValue = if (animationTriggered) 1f else 0f,
         animationSpec = tween(durationMillis = 1000),
         label = "donutChartAnimation"
     )
 
     LaunchedEffect(dataKey) {
-        if (dataKey != currentDataKey) {
-            currentDataKey = dataKey
-            animationProgress = 0f
-            animationProgress = 1f
-        } else if (animationProgress == 0f) {
-            animationProgress = 1f
-        }
+        animationTriggered = true
     }
 
     Column(modifier = modifier) {
@@ -79,7 +74,7 @@ fun DonutChart(
                 var startAngle = PIE_CHART_START_ANGLE
 
                 items.forEachIndexed { index, item ->
-                    val sweepAngle = (item.value / total * FULL_CIRCLE_DEGREES).toFloat() * animatedProgress
+                    val sweepAngle = (item.value / total * FULL_CIRCLE_DEGREES).toFloat() * animationProgress
                     val color = Color(PIE_CHART_COLORS[index % PIE_CHART_COLORS.size])
 
                     drawArc(

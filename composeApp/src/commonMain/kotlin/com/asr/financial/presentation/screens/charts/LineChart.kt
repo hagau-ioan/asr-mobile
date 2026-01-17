@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Path
@@ -47,25 +48,19 @@ fun LineChart(
     val textMeasurer = rememberTextMeasurer()
     
     val dataKey = remember(currentYearData, previousYearData) { 
-        currentYearData.hashCode() + previousYearData.hashCode() 
+        "${currentYearData.hashCode()}_${previousYearData.hashCode()}"
     }
-    var currentDataKey by remember { mutableStateOf(dataKey) }
-    var animationProgress by remember { mutableStateOf(0f) }
     
-    val animatedProgress by animateFloatAsState(
-        targetValue = animationProgress,
+    var animationTriggered by rememberSaveable(dataKey) { mutableStateOf(false) }
+    
+    val animationProgress by animateFloatAsState(
+        targetValue = if (animationTriggered) 1f else 0f,
         animationSpec = tween(durationMillis = 1500),
         label = "lineChartAnimation"
     )
 
     LaunchedEffect(dataKey) {
-        if (dataKey != currentDataKey) {
-            currentDataKey = dataKey
-            animationProgress = 0f
-            animationProgress = 1f
-        } else if (animationProgress == 0f) {
-            animationProgress = 1f
-        }
+        animationTriggered = true
     }
     
     val months = listOf(
@@ -158,7 +153,7 @@ fun LineChart(
 
         // Draw current year line (solid) with animation
         val currentPath = Path()
-        val pointsToShow = (currentYearData.size * animatedProgress).toInt().coerceAtLeast(1)
+        val pointsToShow = (currentYearData.size * animationProgress).toInt().coerceAtLeast(1)
         currentYearData.take(pointsToShow).forEachIndexed { index, value ->
             val x = padding + index * xStep
             val y = padding + chartHeight - (value / maxValue * chartHeight).toFloat()
