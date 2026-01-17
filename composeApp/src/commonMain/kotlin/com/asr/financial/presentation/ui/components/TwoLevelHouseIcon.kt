@@ -11,9 +11,7 @@ import androidx.compose.ui.graphics.drawscope.Fill
 @Composable
 fun TwoLevelHouseIcon(
     modifier: Modifier = Modifier,
-    color: Color = Color.White,
-    windowColor: Color = Color.White,
-    doorColor: Color = Color(0xFF8B4513) // Brown door
+    color: Color = Color.White
 ) {
     Canvas(modifier = modifier) {
         val width = size.width
@@ -42,7 +40,8 @@ fun TwoLevelHouseIcon(
             size = androidx.compose.ui.geometry.Size(width * 0.6f, height * 0.35f)
         )
         
-        // Windows second level (white/light)
+        // Windows second level (light for visibility on dark backgrounds)
+        val windowColor = Color(0xFFE0E7FF)
         drawRect(
             color = windowColor,
             topLeft = Offset(width * 0.3f, height * 0.3f),
@@ -59,14 +58,14 @@ fun TwoLevelHouseIcon(
             size = androidx.compose.ui.geometry.Size(width * 0.08f, height * 0.15f)
         )
         
-        // Door (brown)
+        // Door
         drawRect(
-            color = doorColor,
+            color = windowColor,
             topLeft = Offset(width * 0.44f, height * 0.65f),
             size = androidx.compose.ui.geometry.Size(width * 0.12f, height * 0.25f)
         )
         
-        // Windows first level (white/light)
+        // Windows first level
         drawRect(
             color = windowColor,
             topLeft = Offset(width * 0.26f, height * 0.65f),
