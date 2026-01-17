@@ -14,8 +14,11 @@ import com.asr.financial.platform.Clock
 import com.asr.financial.presentation.mvi.event.HomeEvent
 import com.asr.financial.presentation.mvi.state.HomeState
 import com.asr.financial.presentation.mvi.viewmodel.HomeViewModel
+import com.asr.financial.presentation.navigation.Routes
 import com.asr.financial.presentation.ui.components.BreadcrumbItem
 import com.asr.financial.presentation.ui.components.period.PeriodSelectorCard
+import com.asr.financial.presentation.ui.components.states.ErrorContent
+import com.asr.financial.presentation.ui.components.states.LoadingContent
 import com.asr.financial.presentation.ui.responsive.WindowSizeClass
 import com.asr.financial.presentation.ui.scaffold.ScreenLayout
 import com.asr.financial.utils.formatCurrency
@@ -161,34 +164,6 @@ fun HomeScreen(
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun LoadingContent() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(200.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator()
-    }
-}
-
-@Composable
-private fun ErrorContent(message: String) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.errorContainer
-        )
-    ) {
-        Text(
-            text = message,
-            color = MaterialTheme.colorScheme.onErrorContainer,
-            modifier = Modifier.padding(16.dp)
-        )
     }
 }
 

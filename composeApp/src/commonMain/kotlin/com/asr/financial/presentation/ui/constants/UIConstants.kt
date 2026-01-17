@@ -14,4 +14,8 @@ object UIConstants {
     // Default date selections
     const val DEFAULT_YEAR = 2026
     const val DEFAULT_MONTH = 1
+    
+    // Publisher defaults (used when config is not available)
+    const val DEFAULT_TOTAL_PUBLISHERS = 785
+    const val DEFAULT_PUBLISHER_CONTRIBUTION = 30.0
 }

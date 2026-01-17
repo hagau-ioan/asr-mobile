@@ -16,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import asr_financial.composeapp.generated.resources.*
 import com.asr.financial.AppConfig
+import com.asr.financial.presentation.navigation.Routes
 import com.asr.financial.presentation.ui.components.TwoLevelHouseIcon
 import org.jetbrains.compose.resources.stringResource
 
@@ -27,14 +28,14 @@ sealed class NavigationItem(
     val titleRes: org.jetbrains.compose.resources.StringResource,
     val icon: ImageVector
 ) {
-    data object Home : NavigationItem("home", Res.string.nav_home, Icons.Default.Home)
-    data object Congregations : NavigationItem("congregations", Res.string.nav_congregations, Icons.Default.People)
-    data object Expenses : NavigationItem("expenses", Res.string.nav_expenses, Icons.Default.Receipt)
-    data object Utilities : NavigationItem("utilities", Res.string.nav_utilities, Icons.Default.Bolt)
-    data object Yearly : NavigationItem("yearly", Res.string.nav_yearly, Icons.AutoMirrored.Filled.TrendingUp)
-    data object Calculator : NavigationItem("calculator", Res.string.nav_calculator, Icons.Default.Calculate)
-    data object AsrExpenses : NavigationItem("asr-expenses", Res.string.nav_asr_expenses, Icons.Default.AccountBalance)
-    data object Upload : NavigationItem("upload", Res.string.nav_upload, Icons.Default.Upload)
+    data object Home : NavigationItem(Routes.HOME, Res.string.nav_home, Icons.Default.Home)
+    data object Congregations : NavigationItem(Routes.CONGREGATIONS, Res.string.nav_congregations, Icons.Default.People)
+    data object Expenses : NavigationItem(Routes.EXPENSES, Res.string.nav_expenses, Icons.Default.Receipt)
+    data object Utilities : NavigationItem(Routes.UTILITIES, Res.string.nav_utilities, Icons.Default.Bolt)
+    data object Yearly : NavigationItem(Routes.YEARLY, Res.string.nav_yearly, Icons.AutoMirrored.Filled.TrendingUp)
+    data object Calculator : NavigationItem(Routes.CALCULATOR, Res.string.nav_calculator, Icons.Default.Calculate)
+    data object AsrExpenses : NavigationItem(Routes.ASR_EXPENSES, Res.string.nav_asr_expenses, Icons.Default.AccountBalance)
+    data object Upload : NavigationItem(Routes.UPLOAD, Res.string.nav_upload, Icons.Default.Upload)
 }
 
 val navigationItems = listOf(

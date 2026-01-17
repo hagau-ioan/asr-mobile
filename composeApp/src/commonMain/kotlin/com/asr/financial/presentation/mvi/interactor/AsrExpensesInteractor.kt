@@ -5,6 +5,7 @@ import com.asr.financial.domain.usecase.GetAsrExpensesUseCase
 import com.asr.financial.presentation.mvi.effect.AsrExpensesEffect
 import com.asr.financial.presentation.mvi.event.AsrExpensesEvent
 import com.asr.financial.presentation.mvi.state.AsrExpensesState
+import com.asr.financial.utils.parseDateComponentsSafe
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -52,11 +53,13 @@ class AsrExpensesInteractor(
         val selectedMonth = month ?: currentState.selectedMonth
         
         val filtered = allExpenses.filter { expense ->
-            val parts = expense.date.split("-")
-            val expenseYear = parts[0].toInt()
-            val expenseMonth = parts[1].toInt()
-            
-            (expenseYear == selectedYear) && (selectedMonth == 0 || expenseMonth == selectedMonth)
+            val dateComponents = parseDateComponentsSafe(expense.date)
+            if (dateComponents == null) {
+                false
+            } else {
+                val (expenseYear, expenseMonth, _) = dateComponents
+                (expenseYear == selectedYear) && (selectedMonth == 0 || expenseMonth == selectedMonth)
+            }
         }
         emitSuccessState(filtered, selectedYear, selectedMonth, currentState.availableYears)
     }

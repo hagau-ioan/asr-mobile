@@ -8,6 +8,8 @@ import com.asr.financial.presentation.mvi.effect.HomeEffect
 import com.asr.financial.presentation.mvi.event.HomeEvent
 import com.asr.financial.presentation.mvi.state.HomeState
 import com.asr.financial.presentation.screens.home.MissingCongregation
+import com.asr.financial.presentation.ui.constants.UIConstants
+import com.asr.financial.utils.calculatePreviousMonth
 import com.asr.financial.utils.getCurrentMonth
 import com.asr.financial.utils.getCurrentYear
 import kotlinx.coroutines.channels.Channel
@@ -37,17 +39,13 @@ class HomeInteractor(
     private val _uiEffectChannel = Channel<HomeEffect>(Channel.UNLIMITED)
     val uiEffect: Flow<HomeEffect> = _uiEffectChannel.receiveAsFlow()
 
-    private var currentYear = getCurrentYear(clock)
-    private var currentMonth = getCurrentMonth(clock)
+    private var currentYear: Int
+    private var currentMonth: Int
 
     init {
-        // Calculate previous month
-        if (currentMonth == 1) {
-            currentMonth = 12
-            currentYear -= 1
-        } else {
-            currentMonth -= 1
-        }
+        val (prevMonth, prevYear) = calculatePreviousMonth(getCurrentMonth(clock), getCurrentYear(clock))
+        currentYear = prevYear
+        currentMonth = prevMonth
     }
 
     suspend fun processEvent(event: HomeEvent) {
@@ -89,8 +87,8 @@ class HomeInteractor(
         val congregationNames = getCongregationNamesUseCase()
         val appConfig = getAppConfigUseCase()
         val availableYears = getAvailableYearsUseCase()
-        val totalPublishers = appConfig?.financial?.totalPublishers ?: 785
-        val publisherExpectedContribution = appConfig?.financial?.publisherExpectedContribution ?: 30.0
+        val totalPublishers = appConfig?.financial?.totalPublishers ?: UIConstants.DEFAULT_TOTAL_PUBLISHERS
+        val publisherExpectedContribution = appConfig?.financial?.publisherExpectedContribution ?: UIConstants.DEFAULT_PUBLISHER_CONTRIBUTION
         val congregationCount = congregationNames.size
 
         // Filter transactions for selected month

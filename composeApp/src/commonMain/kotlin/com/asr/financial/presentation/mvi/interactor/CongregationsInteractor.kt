@@ -11,6 +11,7 @@ import com.asr.financial.presentation.mvi.effect.CongregationsEffect
 import com.asr.financial.presentation.mvi.event.CongregationsEvent
 import com.asr.financial.presentation.mvi.state.CongregationsState
 import com.asr.financial.presentation.screens.congregations.CongregationStat
+import com.asr.financial.utils.calculatePreviousMonth
 import com.asr.financial.utils.getCurrentMonth
 import com.asr.financial.utils.getCurrentYear
 import kotlinx.coroutines.channels.Channel
@@ -36,17 +37,13 @@ class CongregationsInteractor(
     private val _uiEffectChannel = Channel<CongregationsEffect>(Channel.UNLIMITED)
     val uiEffect: Flow<CongregationsEffect> = _uiEffectChannel.receiveAsFlow()
 
-    private var currentYear = getCurrentYear(clock)
-    private var currentMonth = getCurrentMonth(clock)
+    private var currentYear: Int
+    private var currentMonth: Int
 
     init {
-        // Calculate previous month
-        if (currentMonth == 1) {
-            currentMonth = 12
-            currentYear -= 1
-        } else {
-            currentMonth -= 1
-        }
+        val (prevMonth, prevYear) = calculatePreviousMonth(getCurrentMonth(clock), getCurrentYear(clock))
+        currentYear = prevYear
+        currentMonth = prevMonth
     }
 
     suspend fun processEvent(event: CongregationsEvent) {

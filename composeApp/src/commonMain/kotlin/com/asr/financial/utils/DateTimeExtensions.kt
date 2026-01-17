@@ -104,3 +104,30 @@ fun monthNumberToIndex(month: Int): Int = month - 1
  * Useful when working with arrays
  */
 fun monthIndexToNumber(index: Int): Int = index + 1
+
+/**
+ * Parse date string components safely (year, month, day).
+ * Handles date strings in format "YYYY-MM-DD".
+ *
+ * @param dateString Date string in "YYYY-MM-DD" format
+ * @return Triple of (year, month, day) or null if parsing fails
+ *
+ * Example: "2025-06-15" -> Triple(2025, 6, 15)
+ * Example: "invalid" -> null
+ */
+fun parseDateComponentsSafe(dateString: String): Triple<Int, Int, Int>? {
+    return try {
+        val parts = dateString.split("-")
+        if (parts.size >= 3) {
+            Triple(
+                parts[0].toInt(),
+                parts[1].toInt(),
+                parts[2].toInt()
+            )
+        } else {
+            null
+        }
+    } catch (e: NumberFormatException) {
+        null
+    }
+}

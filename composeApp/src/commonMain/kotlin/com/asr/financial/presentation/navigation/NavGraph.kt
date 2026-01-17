@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.asr.financial.presentation.navigation.Routes
 import com.asr.financial.presentation.screens.asrexpenses.AsrExpensesScreen
 import com.asr.financial.presentation.screens.calculator.CalculatorScreen
 import com.asr.financial.presentation.screens.congregations.CongregationsScreen
@@ -25,7 +26,7 @@ fun NavGraph(
 ) {
     val windowSizeClass = calculateWindowSizeClass()
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = currentBackStackEntry?.destination?.route ?: "home"
+    val currentRoute = currentBackStackEntry?.destination?.route ?: Routes.HOME
     
     AdaptiveScaffold(
         windowSizeClass = windowSizeClass,
@@ -42,10 +43,10 @@ fun NavGraph(
     ) { paddingValues, onMenuClick ->
         NavHost(
             navController = navController,
-            startDestination = "home",
+            startDestination = Routes.HOME,
             modifier = Modifier.padding(paddingValues)
         ) {
-            composable("home") {
+            composable(Routes.HOME) {
                 HomeScreen(
                     windowSizeClass = windowSizeClass,
                     onNavigate = { route -> navController.navigate(route) },
@@ -53,7 +54,7 @@ fun NavGraph(
                 )
             }
             
-            composable("congregations") {
+            composable(Routes.CONGREGATIONS) {
                 CongregationsScreen(
                     windowSizeClass = windowSizeClass,
                     onNavigate = { route -> navController.navigate(route) },
@@ -61,7 +62,7 @@ fun NavGraph(
                 )
             }
             
-            composable("expenses") {
+            composable(Routes.EXPENSES) {
                 ExpensesScreen(
                     windowSizeClass = windowSizeClass,
                     onNavigate = { route -> navController.navigate(route) },
@@ -69,7 +70,7 @@ fun NavGraph(
                 )
             }
             
-            composable("utilities") {
+            composable(Routes.UTILITIES) {
                 UtilitiesScreen(
                     windowSizeClass = windowSizeClass,
                     onNavigate = { route -> navController.navigate(route) },
@@ -77,7 +78,7 @@ fun NavGraph(
                 )
             }
             
-            composable("yearly") {
+            composable(Routes.YEARLY) {
                 YearlyScreen(
                     windowSizeClass = windowSizeClass,
                     onNavigate = { route -> navController.navigate(route) },
@@ -85,7 +86,7 @@ fun NavGraph(
                 )
             }
             
-            composable("calculator") {
+            composable(Routes.CALCULATOR) {
                 CalculatorScreen(
                     windowSizeClass = windowSizeClass,
                     onNavigate = { route -> navController.navigate(route) },
@@ -93,7 +94,7 @@ fun NavGraph(
                 )
             }
             
-            composable("asr-expenses") {
+            composable(Routes.ASR_EXPENSES) {
                 AsrExpensesScreen(
                     windowSizeClass = windowSizeClass,
                     onNavigate = { route -> navController.navigate(route) },
@@ -101,7 +102,7 @@ fun NavGraph(
                 )
             }
             
-            composable("upload") {
+            composable(Routes.UPLOAD) {
                 UploadScreen(
                     windowSizeClass = windowSizeClass,
                     onNavigate = { route -> navController.navigate(route) },
