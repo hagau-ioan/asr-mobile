@@ -47,15 +47,23 @@ fun DonutChart(
     if (total == 0.0) return
 
     val dataKey = remember(items) { items.hashCode() }
-    var animationPlayed by remember(dataKey) { mutableStateOf(false) }
-    val animationProgress by animateFloatAsState(
-        targetValue = if (animationPlayed) 1f else 0f,
+    var currentDataKey by remember { mutableStateOf(dataKey) }
+    var animationProgress by remember { mutableStateOf(0f) }
+    
+    val animatedProgress by animateFloatAsState(
+        targetValue = animationProgress,
         animationSpec = tween(durationMillis = 1000),
         label = "donutChartAnimation"
     )
 
     LaunchedEffect(dataKey) {
-        animationPlayed = true
+        if (dataKey != currentDataKey) {
+            currentDataKey = dataKey
+            animationProgress = 0f
+            animationProgress = 1f
+        } else if (animationProgress == 0f) {
+            animationProgress = 1f
+        }
     }
 
     Column(modifier = modifier) {
@@ -71,7 +79,7 @@ fun DonutChart(
                 var startAngle = PIE_CHART_START_ANGLE
 
                 items.forEachIndexed { index, item ->
-                    val sweepAngle = (item.value / total * FULL_CIRCLE_DEGREES).toFloat() * animationProgress
+                    val sweepAngle = (item.value / total * FULL_CIRCLE_DEGREES).toFloat() * animatedProgress
                     val color = Color(PIE_CHART_COLORS[index % PIE_CHART_COLORS.size])
 
                     drawArc(

@@ -49,15 +49,23 @@ fun LineChart(
     val dataKey = remember(currentYearData, previousYearData) { 
         currentYearData.hashCode() + previousYearData.hashCode() 
     }
-    var animationPlayed by remember(dataKey) { mutableStateOf(false) }
-    val animationProgress by animateFloatAsState(
-        targetValue = if (animationPlayed) 1f else 0f,
+    var currentDataKey by remember { mutableStateOf(dataKey) }
+    var animationProgress by remember { mutableStateOf(0f) }
+    
+    val animatedProgress by animateFloatAsState(
+        targetValue = animationProgress,
         animationSpec = tween(durationMillis = 1500),
         label = "lineChartAnimation"
     )
 
     LaunchedEffect(dataKey) {
-        animationPlayed = true
+        if (dataKey != currentDataKey) {
+            currentDataKey = dataKey
+            animationProgress = 0f
+            animationProgress = 1f
+        } else if (animationProgress == 0f) {
+            animationProgress = 1f
+        }
     }
     
     val months = listOf(
@@ -150,7 +158,7 @@ fun LineChart(
 
         // Draw current year line (solid) with animation
         val currentPath = Path()
-        val pointsToShow = (currentYearData.size * animationProgress).toInt().coerceAtLeast(1)
+        val pointsToShow = (currentYearData.size * animatedProgress).toInt().coerceAtLeast(1)
         currentYearData.take(pointsToShow).forEachIndexed { index, value ->
             val x = padding + index * xStep
             val y = padding + chartHeight - (value / maxValue * chartHeight).toFloat()
