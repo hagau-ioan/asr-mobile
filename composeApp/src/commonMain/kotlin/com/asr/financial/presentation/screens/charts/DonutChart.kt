@@ -53,7 +53,8 @@ fun DonutChart(
         label = "donutChartAnimation"
     )
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(items) {
+        animationPlayed = false
         animationPlayed = true
     }
 

@@ -53,7 +53,8 @@ fun LineChart(
         label = "lineChartAnimation"
     )
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(currentYearData, previousYearData) {
+        animationPlayed = false
         animationPlayed = true
     }
     

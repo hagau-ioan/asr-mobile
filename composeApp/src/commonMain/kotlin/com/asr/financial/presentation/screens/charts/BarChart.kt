@@ -50,7 +50,8 @@ fun BarChart(
         label = "barChartAnimation"
     )
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(yearlyStats) {
+        animationPlayed = false
         animationPlayed = true
     }
 
