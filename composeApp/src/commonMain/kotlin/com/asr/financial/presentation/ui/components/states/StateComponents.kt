@@ -8,15 +8,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 /**
- * Shared loading state component.
- * Use this across all screens for consistent loading UI.
+ * Shared loading content component.
+ * Displays a centered circular progress indicator.
  */
 @Composable
-fun LoadingContent(
-    modifier: Modifier = Modifier
-) {
+fun LoadingContent() {
     Box(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .height(200.dp),
         contentAlignment = Alignment.Center
@@ -26,18 +24,15 @@ fun LoadingContent(
 }
 
 /**
- * Shared error state component.
- * Use this across all screens for consistent error UI.
+ * Shared error content component.
+ * Displays an error message in a card with error styling.
  *
  * @param message The error message to display
  */
 @Composable
-fun ErrorContent(
-    message: String,
-    modifier: Modifier = Modifier
-) {
+fun ErrorContent(message: String) {
     Card(
-        modifier = modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.errorContainer
         )

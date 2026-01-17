@@ -14,11 +14,14 @@ import com.asr.financial.platform.Clock
 import com.asr.financial.presentation.mvi.event.YearlyEvent
 import com.asr.financial.presentation.mvi.state.YearlyState
 import com.asr.financial.presentation.mvi.viewmodel.YearlyViewModel
+import com.asr.financial.presentation.navigation.Routes
 import com.asr.financial.presentation.screens.charts.BarChart
 import com.asr.financial.presentation.screens.yearly.YearlyConstants.CHART_HEIGHT_DP
 import com.asr.financial.presentation.screens.yearly.components.YearSummaryCard
 import com.asr.financial.presentation.screens.yearly.components.YearVariationCard
 import com.asr.financial.presentation.ui.components.BreadcrumbItem
+import com.asr.financial.presentation.ui.components.states.ErrorContent
+import com.asr.financial.presentation.ui.components.states.LoadingContent
 import com.asr.financial.presentation.ui.constants.UIConstants.CARD_PADDING_DP
 import com.asr.financial.presentation.ui.constants.UIConstants.EMPTY_STATE_PADDING_DP
 import com.asr.financial.presentation.ui.constants.UIConstants.SECTION_SPACING_DP
@@ -53,19 +56,34 @@ fun YearlyScreen(
             )
         }
         is YearlyState.Loading -> {
-            YearlyLoadingContent(
+            ScreenLayout(
                 windowSizeClass = windowSizeClass,
+                breadcrumbItems = listOf(
+                    BreadcrumbItem(stringResource(Res.string.nav_home), Routes.HOME),
+                    BreadcrumbItem(stringResource(Res.string.nav_yearly))
+                ),
                 onNavigate = onNavigate,
                 onMenuClick = onMenuClick
-            )
+            ) {
+                item {
+                    LoadingContent()
+                }
+            }
         }
         is YearlyState.Error -> {
-            YearlyErrorContent(
-                message = state.message,
+            ScreenLayout(
                 windowSizeClass = windowSizeClass,
+                breadcrumbItems = listOf(
+                    BreadcrumbItem(stringResource(Res.string.nav_home), Routes.HOME),
+                    BreadcrumbItem(stringResource(Res.string.nav_yearly))
+                ),
                 onNavigate = onNavigate,
                 onMenuClick = onMenuClick
-            )
+            ) {
+                item {
+                    ErrorContent(message = state.message)
+                }
+            }
         }
     }
 }
@@ -80,7 +98,7 @@ private fun YearlySuccessContent(
     ScreenLayout(
         windowSizeClass = windowSizeClass,
         breadcrumbItems = listOf(
-            BreadcrumbItem(stringResource(Res.string.nav_home), "home"),
+            BreadcrumbItem(stringResource(Res.string.nav_home), Routes.HOME),
             BreadcrumbItem(stringResource(Res.string.nav_yearly))
         ),
         onNavigate = onNavigate,
@@ -124,67 +142,6 @@ private fun YearlySuccessContent(
                         YearVariationCard(comparison = comparison)
                     }
                 }
-            }
-        }
-    }
-}
-
-@Composable
-private fun YearlyLoadingContent(
-    windowSizeClass: WindowSizeClass,
-    onNavigate: (String) -> Unit,
-    onMenuClick: () -> Unit
-) {
-    ScreenLayout(
-        windowSizeClass = windowSizeClass,
-        breadcrumbItems = listOf(
-            BreadcrumbItem(stringResource(Res.string.nav_home), "home"),
-            BreadcrumbItem(stringResource(Res.string.nav_yearly))
-        ),
-        onNavigate = onNavigate,
-        onMenuClick = onMenuClick
-    ) {
-        item {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp),
-                contentAlignment = androidx.compose.ui.Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        }
-    }
-}
-
-@Composable
-private fun YearlyErrorContent(
-    message: String,
-    windowSizeClass: WindowSizeClass,
-    onNavigate: (String) -> Unit,
-    onMenuClick: () -> Unit
-) {
-    ScreenLayout(
-        windowSizeClass = windowSizeClass,
-        breadcrumbItems = listOf(
-            BreadcrumbItem(stringResource(Res.string.nav_home), "home"),
-            BreadcrumbItem(stringResource(Res.string.nav_yearly))
-        ),
-        onNavigate = onNavigate,
-        onMenuClick = onMenuClick
-    ) {
-        item {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.errorContainer
-                )
-            ) {
-                Text(
-                    text = message,
-                    color = MaterialTheme.colorScheme.onErrorContainer,
-                    modifier = Modifier.padding(CARD_PADDING_DP.dp)
-                )
             }
         }
     }

@@ -15,12 +15,15 @@ import com.asr.financial.domain.models.AsrExpense
 import com.asr.financial.presentation.mvi.event.AsrExpensesEvent
 import com.asr.financial.presentation.mvi.state.AsrExpensesState
 import com.asr.financial.presentation.mvi.viewmodel.AsrExpensesViewModel
+import com.asr.financial.presentation.navigation.Routes
 import com.asr.financial.presentation.screens.asrexpenses.AsrExpensesConstants.COL_AMOUNT_WIDTH_DP
 import com.asr.financial.presentation.screens.asrexpenses.AsrExpensesConstants.COL_CATEGORY_WIDTH_DP
 import com.asr.financial.presentation.screens.asrexpenses.AsrExpensesConstants.COL_DATE_WIDTH_DP
 import com.asr.financial.presentation.screens.asrexpenses.AsrExpensesConstants.COL_DESCRIPTION_WIDTH_DP
 import com.asr.financial.presentation.screens.asrexpenses.components.AsrExpenseRow
 import com.asr.financial.presentation.ui.components.BreadcrumbItem
+import com.asr.financial.presentation.ui.components.states.ErrorContent
+import com.asr.financial.presentation.ui.components.states.LoadingContent
 import com.asr.financial.presentation.ui.components.period.PeriodSelectorCard
 import com.asr.financial.presentation.ui.components.table.DataTable
 import com.asr.financial.presentation.ui.components.table.TableColumn
@@ -46,7 +49,7 @@ fun AsrExpensesScreen(
     ScreenLayout(
         windowSizeClass = windowSizeClass,
         breadcrumbItems = listOf(
-            BreadcrumbItem(stringResource(Res.string.nav_home), "home"),
+            BreadcrumbItem(stringResource(Res.string.nav_home), Routes.HOME),
             BreadcrumbItem(stringResource(Res.string.nav_asr_expenses))
         ),
         onNavigate = onNavigate,
@@ -55,7 +58,7 @@ fun AsrExpensesScreen(
         when (val state = uiState) {
             is AsrExpensesState.Loading -> {
                 item {
-                    AsrExpensesLoadingContent()
+                    LoadingContent()
                 }
             }
             is AsrExpensesState.Success -> {
@@ -85,7 +88,7 @@ fun AsrExpensesScreen(
             }
             is AsrExpensesState.Error -> {
                 item {
-                    AsrExpensesErrorContent(message = state.message)
+                    ErrorContent(message = state.message)
                 }
             }
         }
@@ -232,30 +235,3 @@ private fun AsrExpensesSuccessContent(
     }
 }
 
-@Composable
-private fun AsrExpensesLoadingContent() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(200.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator()
-    }
-}
-
-@Composable
-private fun AsrExpensesErrorContent(message: String) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.errorContainer
-        )
-    ) {
-        Text(
-            text = message,
-            color = MaterialTheme.colorScheme.onErrorContainer,
-            modifier = Modifier.padding(16.dp)
-        )
-    }
-}

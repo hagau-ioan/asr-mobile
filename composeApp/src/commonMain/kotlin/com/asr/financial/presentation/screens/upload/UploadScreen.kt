@@ -20,7 +20,9 @@ import com.asr.financial.presentation.mvi.effect.UploadEffect
 import com.asr.financial.presentation.mvi.event.UploadEvent
 import com.asr.financial.presentation.mvi.state.UploadState
 import com.asr.financial.presentation.mvi.viewmodel.UploadViewModel
+import com.asr.financial.presentation.navigation.Routes
 import com.asr.financial.presentation.ui.components.BreadcrumbItem
+import com.asr.financial.presentation.ui.components.states.LoadingContent
 import com.asr.financial.presentation.ui.constants.UIConstants.CARD_PADDING_DP
 import com.asr.financial.presentation.ui.constants.UIConstants.SECTION_SPACING_DP
 import com.asr.financial.presentation.ui.responsive.WindowSizeClass
@@ -89,11 +91,19 @@ fun UploadScreen(
                     )
                 }
                 is UploadState.Loading -> {
-                    UploadLoadingContent(
+                    ScreenLayout(
                         windowSizeClass = windowSizeClass,
+                        breadcrumbItems = listOf(
+                            BreadcrumbItem(stringResource(Res.string.nav_home), Routes.HOME),
+                            BreadcrumbItem(stringResource(Res.string.nav_upload))
+                        ),
                         onNavigate = onNavigate,
                         onMenuClick = onMenuClick
-                    )
+                    ) {
+                        item {
+                            LoadingContent()
+                        }
+                    }
                 }
                 is UploadState.Error -> {
                     UploadErrorContent(
@@ -127,7 +137,7 @@ private fun UploadSuccessContent(
     ScreenLayout(
         windowSizeClass = windowSizeClass,
         breadcrumbItems = listOf(
-            BreadcrumbItem(stringResource(Res.string.nav_home), "home"),
+            BreadcrumbItem(stringResource(Res.string.nav_home), Routes.HOME),
             BreadcrumbItem(stringResource(Res.string.nav_upload))
         ),
         onNavigate = onNavigate,
@@ -219,34 +229,6 @@ private fun UploadSuccessContent(
 }
 
 @Composable
-private fun UploadLoadingContent(
-    windowSizeClass: WindowSizeClass,
-    onNavigate: (String) -> Unit,
-    onMenuClick: () -> Unit
-) {
-    ScreenLayout(
-        windowSizeClass = windowSizeClass,
-        breadcrumbItems = listOf(
-            BreadcrumbItem(stringResource(Res.string.nav_home), "home"),
-            BreadcrumbItem(stringResource(Res.string.nav_upload))
-        ),
-        onNavigate = onNavigate,
-        onMenuClick = onMenuClick
-    ) {
-        item {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        }
-    }
-}
-
-@Composable
 private fun UploadErrorContent(
     message: String,
     windowSizeClass: WindowSizeClass,
@@ -257,7 +239,7 @@ private fun UploadErrorContent(
     ScreenLayout(
         windowSizeClass = windowSizeClass,
         breadcrumbItems = listOf(
-            BreadcrumbItem(stringResource(Res.string.nav_home), "home"),
+            BreadcrumbItem(stringResource(Res.string.nav_home), Routes.HOME),
             BreadcrumbItem(stringResource(Res.string.nav_upload))
         ),
         onNavigate = onNavigate,

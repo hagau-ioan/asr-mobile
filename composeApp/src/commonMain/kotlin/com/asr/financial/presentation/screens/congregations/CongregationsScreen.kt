@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.asr.financial.presentation.mvi.event.CongregationsEvent
 import com.asr.financial.presentation.mvi.state.CongregationsState
 import com.asr.financial.presentation.mvi.viewmodel.CongregationsViewModel
+import com.asr.financial.presentation.navigation.Routes
 import com.asr.financial.presentation.screens.congregations.CongregationsConstants.TABLE_AMOUNT_WIDTH_DP
 import com.asr.financial.presentation.screens.congregations.CongregationsConstants.TABLE_NAME_WIDTH_DP
 import com.asr.financial.presentation.screens.congregations.components.CongregationRow
@@ -24,6 +25,8 @@ import com.asr.financial.presentation.theme.SuccessGreen
 import com.asr.financial.presentation.theme.SuccessGreenDark
 import com.asr.financial.presentation.ui.components.BreadcrumbItem
 import com.asr.financial.presentation.ui.components.cards.SummaryCard
+import com.asr.financial.presentation.ui.components.states.ErrorContent
+import com.asr.financial.presentation.ui.components.states.LoadingContent
 import com.asr.financial.presentation.ui.components.table.DataTable
 import com.asr.financial.presentation.ui.components.table.TableHeaderCell
 import com.asr.financial.presentation.ui.responsive.WindowSizeClass
@@ -109,7 +112,7 @@ fun CongregationsScreen(
             ScreenLayout(
                 windowSizeClass = windowSizeClass,
                 breadcrumbItems = listOf(
-                    BreadcrumbItem(stringResource(Res.string.nav_home), "home"),
+                    BreadcrumbItem(stringResource(Res.string.nav_home), Routes.HOME),
                     BreadcrumbItem(stringResource(Res.string.nav_congregations))
                 ),
                 selectedMonth = headerMonth,
@@ -134,79 +137,33 @@ fun CongregationsScreen(
             }
         }
         is CongregationsState.Loading -> {
-            CongregationsLoadingContent(
+            ScreenLayout(
                 windowSizeClass = windowSizeClass,
+                breadcrumbItems = listOf(
+                    BreadcrumbItem(stringResource(Res.string.nav_home), Routes.HOME),
+                    BreadcrumbItem(stringResource(Res.string.nav_congregations))
+                ),
                 onNavigate = onNavigate,
                 onMenuClick = onMenuClick
-            )
-        }
-        is CongregationsState.Error -> {
-            CongregationsErrorContent(
-                message = state.message,
-                windowSizeClass = windowSizeClass,
-                onNavigate = onNavigate,
-                onMenuClick = onMenuClick
-            )
-        }
-    }
-}
-
-@Composable
-private fun CongregationsLoadingContent(
-    windowSizeClass: WindowSizeClass,
-    onNavigate: (String) -> Unit,
-    onMenuClick: () -> Unit
-) {
-    ScreenLayout(
-        windowSizeClass = windowSizeClass,
-        breadcrumbItems = listOf(
-            BreadcrumbItem(stringResource(Res.string.nav_home), "home"),
-            BreadcrumbItem(stringResource(Res.string.nav_congregations))
-        ),
-        onNavigate = onNavigate,
-        onMenuClick = onMenuClick
-    ) {
-        item {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(48.dp),
-                contentAlignment = Alignment.Center
             ) {
-                CircularProgressIndicator()
+                item {
+                    LoadingContent()
+                }
             }
         }
-    }
-}
-
-@Composable
-private fun CongregationsErrorContent(
-    message: String,
-    windowSizeClass: WindowSizeClass,
-    onNavigate: (String) -> Unit,
-    onMenuClick: () -> Unit
-) {
-    ScreenLayout(
-        windowSizeClass = windowSizeClass,
-        breadcrumbItems = listOf(
-            BreadcrumbItem(stringResource(Res.string.nav_home), "home"),
-            BreadcrumbItem(stringResource(Res.string.nav_congregations))
-        ),
-        onNavigate = onNavigate,
-        onMenuClick = onMenuClick
-    ) {
-        item {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.errorContainer
-                )
+        is CongregationsState.Error -> {
+            ScreenLayout(
+                windowSizeClass = windowSizeClass,
+                breadcrumbItems = listOf(
+                    BreadcrumbItem(stringResource(Res.string.nav_home), Routes.HOME),
+                    BreadcrumbItem(stringResource(Res.string.nav_congregations))
+                ),
+                onNavigate = onNavigate,
+                onMenuClick = onMenuClick
             ) {
-                Text(
-                    text = message,
-                    color = MaterialTheme.colorScheme.onErrorContainer,
-                    modifier = Modifier.padding(16.dp)
-                )
+                item {
+                    ErrorContent(message = state.message)
+                }
             }
         }
     }

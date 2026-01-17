@@ -10,9 +10,12 @@ import com.asr.financial.platform.Clock
 import com.asr.financial.presentation.mvi.event.CalculatorEvent
 import com.asr.financial.presentation.mvi.state.CalculatorState
 import com.asr.financial.presentation.mvi.viewmodel.CalculatorViewModel
+import com.asr.financial.presentation.navigation.Routes
 import com.asr.financial.presentation.screens.calculator.components.CongregationContributionRow
 import com.asr.financial.presentation.screens.calculator.components.ContributionCard
 import com.asr.financial.presentation.ui.components.BreadcrumbItem
+import com.asr.financial.presentation.ui.components.states.ErrorContent
+import com.asr.financial.presentation.ui.components.states.LoadingContent
 import com.asr.financial.presentation.ui.constants.UIConstants.CARD_PADDING_DP
 import com.asr.financial.presentation.ui.constants.UIConstants.SECTION_SPACING_DP
 import com.asr.financial.presentation.ui.responsive.WindowSizeClass
@@ -57,19 +60,34 @@ fun CalculatorScreen(
             )
         }
         is CalculatorState.Loading -> {
-            CalculatorLoadingContent(
+            ScreenLayout(
                 windowSizeClass = windowSizeClass,
+                breadcrumbItems = listOf(
+                    BreadcrumbItem(stringResource(Res.string.nav_home), Routes.HOME),
+                    BreadcrumbItem(stringResource(Res.string.nav_calculator))
+                ),
                 onNavigate = onNavigate,
                 onMenuClick = onMenuClick
-            )
+            ) {
+                item {
+                    LoadingContent()
+                }
+            }
         }
         is CalculatorState.Error -> {
-            CalculatorErrorContent(
-                message = state.message,
+            ScreenLayout(
                 windowSizeClass = windowSizeClass,
+                breadcrumbItems = listOf(
+                    BreadcrumbItem(stringResource(Res.string.nav_home), Routes.HOME),
+                    BreadcrumbItem(stringResource(Res.string.nav_calculator))
+                ),
                 onNavigate = onNavigate,
                 onMenuClick = onMenuClick
-            )
+            ) {
+                item {
+                    ErrorContent(message = state.message)
+                }
+            }
         }
     }
 }
@@ -88,7 +106,7 @@ private fun CalculatorSuccessContent(
     ScreenLayout(
         windowSizeClass = windowSizeClass,
         breadcrumbItems = listOf(
-            BreadcrumbItem(stringResource(Res.string.nav_home), "home"),
+            BreadcrumbItem(stringResource(Res.string.nav_home), Routes.HOME),
             BreadcrumbItem(stringResource(Res.string.nav_calculator))
         ),
         onNavigate = onNavigate,
@@ -153,67 +171,6 @@ private fun CalculatorSuccessContent(
         state.congregationContributions.forEach { contribution ->
             item {
                 CongregationContributionRow(contribution = contribution)
-            }
-        }
-    }
-}
-
-@Composable
-private fun CalculatorLoadingContent(
-    windowSizeClass: WindowSizeClass,
-    onNavigate: (String) -> Unit,
-    onMenuClick: () -> Unit
-) {
-    ScreenLayout(
-        windowSizeClass = windowSizeClass,
-        breadcrumbItems = listOf(
-            BreadcrumbItem(stringResource(Res.string.nav_home), "home"),
-            BreadcrumbItem(stringResource(Res.string.nav_calculator))
-        ),
-        onNavigate = onNavigate,
-        onMenuClick = onMenuClick
-    ) {
-        item {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp),
-                contentAlignment = androidx.compose.ui.Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        }
-    }
-}
-
-@Composable
-private fun CalculatorErrorContent(
-    message: String,
-    windowSizeClass: WindowSizeClass,
-    onNavigate: (String) -> Unit,
-    onMenuClick: () -> Unit
-) {
-    ScreenLayout(
-        windowSizeClass = windowSizeClass,
-        breadcrumbItems = listOf(
-            BreadcrumbItem(stringResource(Res.string.nav_home), "home"),
-            BreadcrumbItem(stringResource(Res.string.nav_calculator))
-        ),
-        onNavigate = onNavigate,
-        onMenuClick = onMenuClick
-    ) {
-        item {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.errorContainer
-                )
-            ) {
-                Text(
-                    text = message,
-                    color = MaterialTheme.colorScheme.onErrorContainer,
-                    modifier = Modifier.padding(CARD_PADDING_DP.dp)
-                )
             }
         }
     }

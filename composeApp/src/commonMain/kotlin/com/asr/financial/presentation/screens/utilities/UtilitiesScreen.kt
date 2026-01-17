@@ -1,32 +1,46 @@
 package com.asr.financial.presentation.screens.utilities
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import asr_financial.composeapp.generated.resources.Res
+import asr_financial.composeapp.generated.resources.home_month
+import asr_financial.composeapp.generated.resources.home_select_period
+import asr_financial.composeapp.generated.resources.home_year
+import asr_financial.composeapp.generated.resources.nav_home
+import asr_financial.composeapp.generated.resources.nav_utilities
+import asr_financial.composeapp.generated.resources.utilities_empty
 import com.asr.financial.platform.Clock
 import com.asr.financial.presentation.mvi.event.UtilitiesEvent
 import com.asr.financial.presentation.mvi.state.UtilitiesState
 import com.asr.financial.presentation.mvi.viewmodel.UtilitiesViewModel
+import com.asr.financial.presentation.navigation.Routes
 import com.asr.financial.presentation.screens.utilities.components.ComparisonCard
 import com.asr.financial.presentation.screens.utilities.components.YearlyComparisonCard
 import com.asr.financial.presentation.ui.components.BreadcrumbItem
 import com.asr.financial.presentation.ui.components.period.PeriodSelectorCard
-import com.asr.financial.presentation.ui.constants.UIConstants.CARD_PADDING_DP
-import com.asr.financial.presentation.ui.constants.UIConstants.DEFAULT_MONTH
-import com.asr.financial.presentation.ui.constants.UIConstants.DEFAULT_YEAR
+import com.asr.financial.presentation.ui.components.states.ErrorContent
+import com.asr.financial.presentation.ui.components.states.LoadingContent
 import com.asr.financial.presentation.ui.constants.UIConstants.EMPTY_STATE_PADDING_DP
 import com.asr.financial.presentation.ui.responsive.WindowSizeClass
 import com.asr.financial.presentation.ui.scaffold.ScreenLayout
 import com.asr.financial.utils.calculatePreviousMonth
-import com.asr.financial.utils.getMonthsList
 import com.asr.financial.utils.getCurrentMonth
 import com.asr.financial.utils.getCurrentYear
-import asr_financial.composeapp.generated.resources.*
+import com.asr.financial.utils.getMonthsList
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
@@ -83,20 +97,35 @@ fun UtilitiesScreen(
         }
 
         is UtilitiesState.Loading -> {
-            UtilitiesLoadingContent(
+            ScreenLayout(
                 windowSizeClass = windowSizeClass,
+                breadcrumbItems = listOf(
+                    BreadcrumbItem(stringResource(Res.string.nav_home), Routes.HOME),
+                    BreadcrumbItem(stringResource(Res.string.nav_utilities))
+                ),
                 onNavigate = onNavigate,
                 onMenuClick = onMenuClick
-            )
+            ) {
+                item {
+                    LoadingContent()
+                }
+            }
         }
 
         is UtilitiesState.Error -> {
-            UtilitiesErrorContent(
-                message = state.message,
+            ScreenLayout(
                 windowSizeClass = windowSizeClass,
+                breadcrumbItems = listOf(
+                    BreadcrumbItem(stringResource(Res.string.nav_home), Routes.HOME),
+                    BreadcrumbItem(stringResource(Res.string.nav_utilities))
+                ),
                 onNavigate = onNavigate,
                 onMenuClick = onMenuClick
-            )
+            ) {
+                item {
+                    ErrorContent(message = state.message)
+                }
+            }
         }
     }
 }
@@ -125,7 +154,7 @@ private fun UtilitiesSuccessContent(
     ScreenLayout(
         windowSizeClass = windowSizeClass,
         breadcrumbItems = listOf(
-            BreadcrumbItem(stringResource(Res.string.nav_home), "home"),
+            BreadcrumbItem(stringResource(Res.string.nav_home), Routes.HOME),
             BreadcrumbItem(stringResource(Res.string.nav_utilities))
         ),
         selectedMonth = selectedMonthName,
@@ -174,67 +203,6 @@ private fun UtilitiesSuccessContent(
                     onYearChange = { year ->
                         viewModel.handleEvent(UtilitiesEvent.ChangeComparisonYear(year))
                     }
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun UtilitiesLoadingContent(
-    windowSizeClass: WindowSizeClass,
-    onNavigate: (String) -> Unit,
-    onMenuClick: () -> Unit
-) {
-    ScreenLayout(
-        windowSizeClass = windowSizeClass,
-        breadcrumbItems = listOf(
-            BreadcrumbItem(stringResource(Res.string.nav_home), "home"),
-            BreadcrumbItem(stringResource(Res.string.nav_utilities))
-        ),
-        onNavigate = onNavigate,
-        onMenuClick = onMenuClick
-    ) {
-        item {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        }
-    }
-}
-
-@Composable
-private fun UtilitiesErrorContent(
-    message: String,
-    windowSizeClass: WindowSizeClass,
-    onNavigate: (String) -> Unit,
-    onMenuClick: () -> Unit
-) {
-    ScreenLayout(
-        windowSizeClass = windowSizeClass,
-        breadcrumbItems = listOf(
-            BreadcrumbItem(stringResource(Res.string.nav_home), "home"),
-            BreadcrumbItem(stringResource(Res.string.nav_utilities))
-        ),
-        onNavigate = onNavigate,
-        onMenuClick = onMenuClick
-    ) {
-        item {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.errorContainer
-                )
-            ) {
-                Text(
-                    text = message,
-                    color = MaterialTheme.colorScheme.onErrorContainer,
-                    modifier = Modifier.padding(CARD_PADDING_DP.dp)
                 )
             }
         }
