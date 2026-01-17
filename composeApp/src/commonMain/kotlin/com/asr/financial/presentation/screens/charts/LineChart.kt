@@ -1,11 +1,13 @@
 package com.asr.financial.presentation.screens.charts
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Path
@@ -43,6 +45,17 @@ fun LineChart(
         ChartSecondaryGreen
     val textColor = MaterialTheme.colorScheme.onSurface
     val textMeasurer = rememberTextMeasurer()
+    
+    var animationPlayed by remember { mutableStateOf(false) }
+    val animationProgress by animateFloatAsState(
+        targetValue = if (animationPlayed) 1f else 0f,
+        animationSpec = tween(durationMillis = 1500),
+        label = "lineChartAnimation"
+    )
+
+    LaunchedEffect(Unit) {
+        animationPlayed = true
+    }
     
     val months = listOf(
         stringResource(Res.string.month_abbr_jan),
@@ -132,9 +145,10 @@ fun LineChart(
             )
         }
 
-        // Draw current year line (solid)
+        // Draw current year line (solid) with animation
         val currentPath = Path()
-        currentYearData.forEachIndexed { index, value ->
+        val pointsToShow = (currentYearData.size * animationProgress).toInt().coerceAtLeast(1)
+        currentYearData.take(pointsToShow).forEachIndexed { index, value ->
             val x = padding + index * xStep
             val y = padding + chartHeight - (value / maxValue * chartHeight).toFloat()
             if (index == 0) {
@@ -149,9 +163,9 @@ fun LineChart(
             style = Stroke(width = 4f)
         )
 
-        // Draw previous year line (dashed)
+        // Draw previous year line (dashed) with animation
         val previousPath = Path()
-        previousYearData.forEachIndexed { index, value ->
+        previousYearData.take(pointsToShow).forEachIndexed { index, value ->
             val x = padding + index * xStep
             val y = padding + chartHeight - (value / maxValue * chartHeight).toFloat()
             if (index == 0) {

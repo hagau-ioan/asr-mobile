@@ -1,11 +1,13 @@
 package com.asr.financial.presentation.screens.charts
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -44,6 +46,17 @@ fun DonutChart(
     val total = items.sumOf { it.value }
     if (total == 0.0) return
 
+    var animationPlayed by remember { mutableStateOf(false) }
+    val animationProgress by animateFloatAsState(
+        targetValue = if (animationPlayed) 1f else 0f,
+        animationSpec = tween(durationMillis = 1000),
+        label = "donutChartAnimation"
+    )
+
+    LaunchedEffect(Unit) {
+        animationPlayed = true
+    }
+
     Column(modifier = modifier) {
         Box(
             modifier = Modifier
@@ -57,7 +70,7 @@ fun DonutChart(
                 var startAngle = PIE_CHART_START_ANGLE
 
                 items.forEachIndexed { index, item ->
-                    val sweepAngle = (item.value / total * FULL_CIRCLE_DEGREES).toFloat()
+                    val sweepAngle = (item.value / total * FULL_CIRCLE_DEGREES).toFloat() * animationProgress
                     val color = Color(PIE_CHART_COLORS[index % PIE_CHART_COLORS.size])
 
                     drawArc(

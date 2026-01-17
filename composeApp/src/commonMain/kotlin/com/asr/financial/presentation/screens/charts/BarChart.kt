@@ -1,11 +1,13 @@
 package com.asr.financial.presentation.screens.charts
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -40,6 +42,17 @@ fun BarChart(
     val balanceColor = MaterialTheme.colorScheme.primary
     val textColor = MaterialTheme.colorScheme.onSurface
     val textMeasurer = rememberTextMeasurer()
+
+    var animationPlayed by remember { mutableStateOf(false) }
+    val animationProgress by animateFloatAsState(
+        targetValue = if (animationPlayed) 1f else 0f,
+        animationSpec = tween(durationMillis = 1200),
+        label = "barChartAnimation"
+    )
+
+    LaunchedEffect(Unit) {
+        animationPlayed = true
+    }
 
     Column(modifier = modifier.fillMaxWidth()) {
         Canvas(
@@ -141,7 +154,7 @@ fun BarChart(
                 val x = padding + index * barGroupWidth + barGroupWidth / 2 - barWidth * 1.5f
 
                 // Donations bar
-                val donationsHeight = (stat.totalDonations / maxValue * (zeroY - padding)).toFloat()
+                val donationsHeight = (stat.totalDonations / maxValue * (zeroY - padding)).toFloat() * animationProgress
                 drawRect(
                     color = donationsColor,
                     topLeft = Offset(x, zeroY - donationsHeight),
@@ -149,7 +162,7 @@ fun BarChart(
                 )
 
                 // Expenses bar
-                val expensesHeight = (stat.totalExpenses / maxValue * (zeroY - padding)).toFloat()
+                val expensesHeight = (stat.totalExpenses / maxValue * (zeroY - padding)).toFloat() * animationProgress
                 drawRect(
                     color = expensesColor,
                     topLeft = Offset(x + barWidth, zeroY - expensesHeight),
@@ -158,14 +171,14 @@ fun BarChart(
 
                 // Balance bar (positive or negative)
                 if (stat.balance >= 0) {
-                    val balanceHeight = (stat.balance / maxValue * (zeroY - padding)).toFloat()
+                    val balanceHeight = (stat.balance / maxValue * (zeroY - padding)).toFloat() * animationProgress
                     drawRect(
                         color = balanceColor,
                         topLeft = Offset(x + barWidth * 2, zeroY - balanceHeight),
                         size = Size(barWidth, balanceHeight)
                     )
                 } else {
-                    val balanceHeight = (kotlin.math.abs(stat.balance) / maxValue * (padding + chartHeight - zeroY)).toFloat()
+                    val balanceHeight = (kotlin.math.abs(stat.balance) / maxValue * (padding + chartHeight - zeroY)).toFloat() * animationProgress
                     drawRect(
                         color = balanceColor.copy(alpha = 0.7f),
                         topLeft = Offset(x + barWidth * 2, zeroY),
