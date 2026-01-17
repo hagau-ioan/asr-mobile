@@ -46,3 +46,14 @@ class GetTotalPublishersUseCase(
         return repository.getTotalPublishers()
     }
 }
+
+/**
+ * UseCase for getting publisher expected contribution
+ */
+class GetPublisherExpectedContributionUseCase(
+    private val repository: AppConfigRepository
+) {
+    suspend operator fun invoke(): Double {
+        return repository.getConfig()?.financial?.publisherExpectedContribution ?: 30.0
+    }
+}

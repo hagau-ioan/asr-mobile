@@ -87,13 +87,5 @@ fun CongregationRow(stat: CongregationStat) {
                 else -> WarningOrange
             }
         )
-        
-        // Last Donation
-        TableCell(
-            text = stat.lastDonation ?: "-",
-            width = TABLE_AMOUNT_WIDTH_DP.dp,
-            textAlign = TextAlign.End,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
     }
 }

@@ -53,3 +53,27 @@ fun getMonthNameResource(monthNumber: Int): StringResource? {
         else -> null
     }
 }
+
+/**
+ * Get abbreviated month name string resource by month number
+ * 
+ * @param monthNumber Month number (1-12)
+ * @return StringResource for the abbreviated month name, or null if invalid
+ */
+fun getMonthAbbreviationResource(monthNumber: Int): StringResource? {
+    return when (monthNumber) {
+        1 -> Res.string.month_abbr_jan
+        2 -> Res.string.month_abbr_feb
+        3 -> Res.string.month_abbr_mar
+        4 -> Res.string.month_abbr_apr
+        5 -> Res.string.month_abbr_may
+        6 -> Res.string.month_abbr_jun
+        7 -> Res.string.month_abbr_jul
+        8 -> Res.string.month_abbr_aug
+        9 -> Res.string.month_abbr_sep
+        10 -> Res.string.month_abbr_oct
+        11 -> Res.string.month_abbr_nov
+        12 -> Res.string.month_abbr_dec
+        else -> null
+    }
+}

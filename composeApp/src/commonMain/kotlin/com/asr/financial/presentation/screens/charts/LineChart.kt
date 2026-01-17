@@ -1,6 +1,7 @@
 package com.asr.financial.presentation.screens.charts
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
@@ -18,6 +19,7 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import asr_financial.composeapp.generated.resources.*
+import com.asr.financial.presentation.theme.ChartSecondaryGreen
 import com.asr.financial.utils.formatForAxis
 import org.jetbrains.compose.resources.stringResource
 import kotlin.math.max
@@ -35,7 +37,10 @@ fun LineChart(
     height: Int = 350
 ) {
     val primaryColor = MaterialTheme.colorScheme.primary
-    val secondaryColor = MaterialTheme.colorScheme.tertiary
+    val secondaryColor = if (isSystemInDarkTheme()) 
+        androidx.compose.ui.graphics.Color.White 
+    else 
+        ChartSecondaryGreen
     val textColor = MaterialTheme.colorScheme.onSurface
     val textMeasurer = rememberTextMeasurer()
     

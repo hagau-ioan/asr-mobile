@@ -58,6 +58,7 @@ kotlin {
             implementation(libs.kotlinx.coroutines.android)
             implementation(libs.sqldelight.android.driver)
             implementation(libs.androidx.security.crypto)
+            implementation(libs.androidx.core.ktx)
             implementation(libs.ktor.client.okhttp)
         }
 

@@ -22,5 +22,7 @@ data class OrganizationConfig(
 data class FinancialConfig(
     val expectedDonationPerCongregation: Double,
     val totalPublishers: Int,
-    val currency: String
+    val publisherExpectedContribution: Double = 30.0,
+    val currency: String,
+    val startYear: Int = 2024
 )

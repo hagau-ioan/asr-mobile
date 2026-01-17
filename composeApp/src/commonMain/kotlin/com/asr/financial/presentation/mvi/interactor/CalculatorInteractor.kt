@@ -2,7 +2,9 @@ package com.asr.financial.presentation.mvi.interactor
 
 import com.asr.financial.domain.model.TransactionType
 import com.asr.financial.domain.usecase.GetAllCongregationsUseCase
-import com.asr.financial.domain.usecase.GetTransactionsUseCase
+import com.asr.financial.domain.usecase.GetPublisherExpectedContributionUseCase
+import com.asr.financial.domain.usecase.GetTotalPublishersUseCase
+import com.asr.financial.domain.usecase.GetTransactionsByMonthUseCase
 import com.asr.financial.presentation.mvi.effect.CalculatorEffect
 import com.asr.financial.presentation.mvi.event.CalculatorEvent
 import com.asr.financial.presentation.mvi.state.CalculatorState
@@ -19,8 +21,10 @@ import kotlinx.coroutines.flow.receiveAsFlow
  * Handles business logic for contribution calculations
  */
 class CalculatorInteractor(
-    private val getTransactionsUseCase: GetTransactionsUseCase,
-    private val getAllCongregationsUseCase: GetAllCongregationsUseCase
+    private val getAllCongregationsUseCase: GetAllCongregationsUseCase,
+    private val getTotalPublishersUseCase: GetTotalPublishersUseCase,
+    private val getPublisherExpectedContributionUseCase: GetPublisherExpectedContributionUseCase,
+    private val getTransactionsByMonthUseCase: GetTransactionsByMonthUseCase
 ) {
     private val _uiState = MutableStateFlow<CalculatorState>(CalculatorState.Loading)
     val uiState: Flow<CalculatorState> = _uiState.asStateFlow()
@@ -39,46 +43,32 @@ class CalculatorInteractor(
         try {
             _uiState.emit(CalculatorState.Loading)
 
-            val transactions = getTransactionsUseCase()
             val congregations = getAllCongregationsUseCase()
-
-            // Calculate monthly expenses
-            val monthExpenses = transactions
+            val totalPublishers = getTotalPublishersUseCase()
+            val publisherExpectedContribution = getPublisherExpectedContributionUseCase()
+            
+            // Calculate monthly expenses from transactions
+            val monthlyTransactions = getTransactionsByMonthUseCase(month, year)
+            val monthlyExpenses = monthlyTransactions
                 .filter { it.type == TransactionType.EXPENSE }
-                .filter { 
-                    val parts = it.date.split("-")
-                    parts.size >= 2 && parts[0].toIntOrNull() == year && parts[1].toIntOrNull() == month
-                }
                 .sumOf { it.amount }
-
-            // Calculate yearly expenses
-            val yearExpenses = transactions
-                .filter { it.type == TransactionType.EXPENSE }
-                .filter { 
-                    val parts = it.date.split("-")
-                    parts.isNotEmpty() && parts[0].toIntOrNull() == year
-                }
-                .sumOf { it.amount }
-
-            // Total publishers
-            val totalPublishers = congregations.sumOf { it.memberCount }
 
             if (totalPublishers == 0) {
                 _uiState.emit(CalculatorState.Error("Nu există vestitori înregistrați"))
                 return
             }
 
-            // Calculate contributions
+            // Calculate contributions based on expected contribution per publisher
             val monthlyContribution = ContributionCalculation(
-                totalExpenses = monthExpenses,
+                totalExpenses = monthlyExpenses,
                 numberOfPublishers = totalPublishers,
-                perPublisherAmount = monthExpenses / totalPublishers
+                perPublisherAmount = publisherExpectedContribution
             )
 
             val yearlyContribution = ContributionCalculation(
-                totalExpenses = yearExpenses,
+                totalExpenses = monthlyExpenses * 12,
                 numberOfPublishers = totalPublishers,
-                perPublisherAmount = yearExpenses / totalPublishers
+                perPublisherAmount = publisherExpectedContribution * 12
             )
 
             // Calculate per congregation
@@ -87,8 +77,8 @@ class CalculatorInteractor(
                     congregationId = congregation.id,
                     congregationName = congregation.name,
                     numberOfPublishers = congregation.memberCount,
-                    perPublisherAmount = monthlyContribution.perPublisherAmount,
-                    totalAmount = monthlyContribution.perPublisherAmount * congregation.memberCount
+                    perPublisherAmount = publisherExpectedContribution,
+                    totalAmount = publisherExpectedContribution * congregation.memberCount
                 )
             }.sortedBy { it.congregationName }
 

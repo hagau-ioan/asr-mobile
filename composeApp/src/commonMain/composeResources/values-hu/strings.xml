@@ -10,13 +10,50 @@
     <string name="nav_expenses">Havi Kiadások</string>
     <string name="nav_utilities">Közművek &amp; Fogyasztás</string>
     <string name="nav_yearly">Éves Összehasonlítás</string>
-    <string name="nav_calculator">Hozzájárulás Kalkulátor</string>
-    <string name="nav_upload">Nyugták Feltöltése</string>
+    <string name="nav_calculator">Helyzet Adomanyok</string>
+    <string name="nav_upload">Dokumentumok feltöltése</string>
+    
+    <!-- Upload Screen -->
+    <string name="upload_title">Dokumentum feltöltése</string>
+    <string name="upload_description">Készítsen fényképet a dokumentumról (nyugta, számla)</string>
+    <string name="upload_capture">Fénykép készítése</string>
+    <string name="upload_capturing">Rögzítés...</string>
+    <string name="upload_delete">Törlés</string>
+    <string name="upload_send">Küldés</string>
+    <string name="upload_no_image">Nincs rögzített kép</string>
+    <string name="upload_success_captured">Kép sikeresen rögzítve</string>
+    <string name="upload_success_deleted">Kép törölve</string>
+    <string name="upload_error_unknown">Ismeretlen hiba</string>
+    <string name="upload_error_capture">Hiba a rögzítés során</string>
+    <string name="upload_error_processing">Hiba a kép feldolgozása során</string>
+    <string name="upload_error_delete">Hiba a törlés során</string>
+    <string name="upload_error_send">Hiba a küldés során</string>
+    <string name="upload_path_prefix">Útvonal: </string>
+    
+    <!-- Common Errors -->
+    <string name="error_unknown">Ismeretlen hiba</string>
+    <string name="error_load_data">Hiba az adatok betöltése során</string>
+    <string name="error_load_transactions">Hiba a tranzakciók betöltése során</string>
+    <string name="error_load_expenses">Hiba a kiadások betöltése során</string>
+    <string name="error_load_utilities">Hiba a közművek betöltése során</string>
+    <string name="error_no_publishers">Nincsenek regisztrált hirdetők</string>
+    
+    <!-- Accessibility / Content Descriptions -->
+    <string name="cd_menu">Menü</string>
+    <string name="cd_export">Exportálás</string>
+    <string name="cd_previous_year">Előző év</string>
+    <string name="cd_next_year">Következő év</string>
+    <string name="cd_previous_years">Előző évek</string>
+    <string name="cd_next_years">Következő évek</string>
+    <string name="cd_receipt_preview">Nyugta előnézet</string>
     
     <!-- Header -->
     <string name="header_publishers">%1$d hirdetők</string>
     <string name="header_congregations">%1$d gyülekezetek</string>
     <string name="header_period">Időszak</string>
+    <string name="header_month">Honap</string>
+    <string name="select_year">Valassza ki az evet</string>
+    <string name="select_month">Valassza ki a honapot</string>
     
     <!-- Home Screen -->
     <string name="home_select_period">Válasszon Időszakot</string>
@@ -58,6 +95,7 @@
     <string name="alert_missing_description">A következő gyülekezetek nem adományozták a várt összeget %1$s %2$d-ban</string>
     <string name="alert_missing_amount">Hiányzik: %1$s</string>
     <string name="alert_expected_amount">Várt: %1$s</string>
+    <string name="alert_donated_amount">Adományozott: %1$s</string>
     
     <!-- Annual Summary -->
     <string name="annual_summary_title">Éves Összefoglaló %1$d</string>
@@ -72,6 +110,63 @@
     <string name="general_total_congregations">Gyülekezetek Száma:</string>
     <string name="general_avg_per_congregation">Átlag Hirdető/Gyülekezet:</string>
     
+    <!-- Expenses Screen -->
+    <string name="expenses_total_monthly">Osszes Kiadas</string>
+    <string name="expenses_distribution">Eloszlas Kategoriak Szerint</string>
+    <string name="expenses_total_yearly">Osszes Kiadas - Utolso 12 Honap</string>
+    <string name="expenses_yearly_range">%1$s %2$d-tol %3$s %4$d-ig (12 honap)</string>
+    <string name="expenses_empty">Nincsenek kiadasok ehhez az idoszakhoz</string>
+    
+    <!-- Utilities Screen -->
+    <string name="utilities_comparison_title">Kozmuvek Osszehasonlitasa</string>
+    <string name="utilities_current_month">Jelenlegi Honap</string>
+    <string name="utilities_previous_month">Elozo Honap</string>
+    <string name="utilities_difference">Kulonbseg</string>
+    <string name="utilities_variation">Valtozas</string>
+    <string name="utilities_total">Osszes</string>
+    <string name="utilities_yearly_title">Eves Kozmuvek Osszehasonlitasa</string>
+    <string name="utilities_yearly_subtitle">%1$d vs %2$d</string>
+    <string name="utilities_empty">Nincsenek kozmu adatok</string>
+    <string name="utilities_category_electricity">Villany</string>
+    <string name="utilities_category_water">Viz</string>
+    <string name="utilities_category_gas">Gaz</string>
+    <string name="utilities_category_internet">Internet</string>
+    <string name="utilities_category_phone">Telefon</string>
+    <string name="utilities_category_other">Egyeb Kozmuvek</string>
+    <string name="utilities_decreased">csökkent</string>
+    <string name="utilities_increased">nőtt</string>
+    <string name="utilities_trend">Tendencia</string>
+    
+    <!-- Month Abbreviations -->
+    <string name="month_abbr_jan">Jan</string>
+    <string name="month_abbr_feb">Feb</string>
+    <string name="month_abbr_mar">Mar</string>
+    <string name="month_abbr_apr">Apr</string>
+    <string name="month_abbr_may">Maj</string>
+    <string name="month_abbr_jun">Jun</string>
+    <string name="month_abbr_jul">Jul</string>
+    <string name="month_abbr_aug">Aug</string>
+    <string name="month_abbr_sep">Szep</string>
+    <string name="month_abbr_oct">Okt</string>
+    <string name="month_abbr_nov">Nov</string>
+    <string name="month_abbr_dec">Dec</string>
+    
+    <!-- Yearly Comparison Screen -->
+    <string name="yearly_title">Eves Osszehasonlitas</string>
+    <string name="yearly_subtitle">Adomanyok es kiadasok az elmult evekben</string>
+    <string name="yearly_chart_title">Eves Fejlodes</string>
+    <string name="yearly_donations">Osszes Adomany</string>
+    <string name="yearly_expenses">Osszes Kiadas</string>
+    <string name="yearly_balance">Egyenleg</string>
+    <string name="yearly_summary_title">%1$d ev</string>
+    <string name="yearly_summary_subtitle">Penzugyi osszefoglalo</string>
+    <string name="yearly_variations_title">Evenkenti Valtozasok</string>
+    <string name="yearly_variations_subtitle">Novekedes es csokkenes az elozo evhez kepest</string>
+    <string name="yearly_comparison_vs">%1$d vs %2$d</string>
+    <string name="yearly_donations_change">Adomanyok</string>
+    <string name="yearly_expenses_change">Kiadasok</string>
+    <string name="yearly_empty">Nincsenek adatok az eves osszehasonlitashoz</string>
+    
     <!-- Congregations Screen -->
     <string name="congregations_title">Adományok Gyülekezetenként - %1$s</string>
     <string name="congregations_missing_count">%1$d gyülekezet hiányzó vagy elégtelen adományokkal</string>
@@ -85,6 +180,20 @@
     <string name="congregations_expected_amount">Várt Összeg</string>
     <string name="congregations_last_donation">Utolsó Adomány</string>
     <string name="congregations_never">Soha</string>
+    
+    <!-- Calculator Screen -->
+    <string name="calculator_title">Helyzet Hozzajarulasok Hirdetonkent</string>
+    <string name="calculator_subtitle">Becsult helyzet, hogy mennyit kellene adományoznia minden hirdetonek az ASR kiadásainak fedezésére</string>
+    <string name="calculator_monthly_title">Havi Hozzajarulas</string>
+    <string name="calculator_yearly_title">Eves Hozzajarulas</string>
+    <string name="calculator_total_expenses">Osszes kiadas:</string>
+    <string name="calculator_number_publishers">Hirdetok szama:</string>
+    <string name="calculator_per_publisher">Hirdetonkent:</string>
+    <string name="calculator_for_month">* %1$s %2$d honapra</string>
+    <string name="calculator_for_year">* %1$d evre</string>
+    <string name="calculator_distribution_title">Eloszlas Gyulekezetek Szerint</string>
+    <string name="calculator_publishers">%1$d hirdeto</string>
+    <string name="calculator_empty">Nincsenek adatok a hozzajarulasok szamitasahoz</string>
     
     <!-- Footer -->
     <string name="footer_publishers_label">Hirdetők:</string>

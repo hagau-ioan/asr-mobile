@@ -52,7 +52,7 @@ fun AppHeader(
                 IconButton(onClick = onMenuClick) {
                     Icon(
                         imageVector = Icons.Default.Menu,
-                        contentDescription = "Menu",
+                        contentDescription = stringResource(Res.string.cd_menu),
                         tint = MaterialTheme.colorScheme.onPrimary
                     )
                 }
@@ -80,7 +80,7 @@ fun AppHeader(
                 horizontalAlignment = Alignment.End
             ) {
                 Text(
-                    text = stringResource(Res.string.header_period),
+                    text = stringResource(Res.string.header_month),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
                 )

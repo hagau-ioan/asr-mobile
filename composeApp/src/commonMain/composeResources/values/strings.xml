@@ -10,13 +10,48 @@
     <string name="nav_expenses">Cheltuieli Lunare</string>
     <string name="nav_utilities">Utilități &amp; Consum</string>
     <string name="nav_yearly">Comparație Anuală</string>
-    <string name="nav_calculator">Calculator Contribuții</string>
-    <string name="nav_upload">Încarcă Bonuri</string>
+    <string name="nav_calculator">Situatie Donatii</string>
+    <string name="nav_upload">Încarcă documente</string>
+    
+    <!-- Upload Screen -->
+    <string name="upload_title">Încarcă Document</string>
+    <string name="upload_description">Fă o poză documentului (bon, factură, chitanță)</string>
+    <string name="upload_capture">Fă Poză</string>
+    <string name="upload_capturing">Se capturează...</string>
+    <string name="upload_delete">Șterge</string>
+    <string name="upload_send">Trimite</string>
+    <string name="upload_no_image">Nu există nicio imagine capturată</string>
+    <string name="upload_success_captured">Imagine capturată cu succes</string>
+    <string name="upload_success_deleted">Imagine ștearsă</string>
+    <string name="upload_error_unknown">Eroare necunoscută</string>
+    <string name="upload_error_capture">Eroare la capturare</string>
+    <string name="upload_error_processing">Eroare la procesarea imaginii</string>
+    <string name="upload_error_delete">Eroare la ștergere</string>
+    <string name="upload_error_send">Eroare la trimitere</string>
+    <string name="upload_path_prefix">Cale: </string>
+    
+    <!-- Common Errors -->
+    <string name="error_unknown">Eroare necunoscută</string>
+    <string name="error_load_data">Eroare la încărcarea datelor</string>
+    <string name="error_load_transactions">Eroare la încărcarea tranzacțiilor</string>
+    <string name="error_load_expenses">Eroare la încărcarea cheltuielilor</string>
+    <string name="error_load_utilities">Eroare la încărcarea utilităților</string>
+    <string name="error_no_publishers">Nu există vestitori înregistrați</string>
+    
+    <!-- Accessibility / Content Descriptions -->
+    <string name="cd_menu">Meniu</string>
+    <string name="cd_export">Exportă</string>
+    <string name="cd_previous_year">Anul anterior</string>
+    <string name="cd_next_year">Anul următor</string>
+    <string name="cd_previous_years">Anii anteriori</string>
+    <string name="cd_next_years">Anii următori</string>
+    <string name="cd_receipt_preview">Previzualizare chitanță</string>
     
     <!-- Header -->
     <string name="header_publishers">%1$d vestitori</string>
     <string name="header_congregations">%1$d congregații</string>
     <string name="header_period">Perioada</string>
+    <string name="header_month">Luna</string>
     <string name="select_year">Selectează anul</string>
     <string name="select_month">Selectează luna</string>
     
@@ -54,6 +89,7 @@
     <string name="version">Versiune %1$s</string>
     <string name="loading">Se încarcă...</string>
     <string name="in_development">Ecran în dezvoltare...</string>
+    <string name="retry">Reîncearcă</string>
     
     <!-- Expenses Screen -->
     <string name="expenses_total_monthly">Total Cheltuieli</string>
@@ -78,6 +114,9 @@
     <string name="utilities_category_internet">Internet</string>
     <string name="utilities_category_phone">Telefon</string>
     <string name="utilities_category_other">Alte Utilități</string>
+    <string name="utilities_decreased">scăzut</string>
+    <string name="utilities_increased">crescut</string>
+    <string name="utilities_trend">Tendință</string>
     
     <!-- Month Abbreviations (3 letters) -->
     <string name="month_abbr_jan">Ian</string>
@@ -98,6 +137,7 @@
     <string name="alert_missing_description">Următoarele congregații nu au donat suma așteptată în %1$s %2$d</string>
     <string name="alert_missing_amount">Lipsă: %1$s</string>
     <string name="alert_expected_amount">Așteptat: %1$s</string>
+    <string name="alert_donated_amount">Donat: %1$s</string>
     
     <!-- Annual Summary -->
     <string name="annual_summary_title">Rezumat Anual %1$d</string>
@@ -143,8 +183,8 @@
     <string name="yearly_empty">Nu există date pentru comparație anuală</string>
     
     <!-- Calculator Screen -->
-    <string name="calculator_title">Calculator Contribuții per Vestitor</string>
-    <string name="calculator_subtitle">Calculează cât ar trebui să doneze fiecare vestitor pentru a acoperi cheltuielile ASR</string>
+    <string name="calculator_title">Situatie Contributii per Vestitor</string>
+    <string name="calculator_subtitle">Situatia estimata cat ar trebui sa doneze fiecare vestitor pentru a acoperi cheltuielile ASR</string>
     <string name="calculator_monthly_title">Contribuție Lunară</string>
     <string name="calculator_yearly_title">Contribuție Anuală</string>
     <string name="calculator_total_expenses">Cheltuieli totale:</string>

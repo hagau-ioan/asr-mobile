@@ -2,6 +2,7 @@ package com.asr.financial.presentation.mvi.interactor
 
 import com.asr.financial.domain.model.Transaction
 import com.asr.financial.domain.model.TransactionType
+import com.asr.financial.domain.usecase.GetAllCongregationsUseCase
 import com.asr.financial.domain.usecase.GetAppConfigUseCase
 import com.asr.financial.domain.usecase.GetCongregationNamesUseCase
 import com.asr.financial.domain.usecase.GetTransactionsUseCase
@@ -25,6 +26,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 class CongregationsInteractor(
     private val getTransactionsUseCase: GetTransactionsUseCase,
     private val getCongregationNamesUseCase: GetCongregationNamesUseCase,
+    private val getAllCongregationsUseCase: GetAllCongregationsUseCase,
     private val getAppConfigUseCase: GetAppConfigUseCase,
     private val clock: Clock
 ) {
@@ -36,6 +38,16 @@ class CongregationsInteractor(
 
     private var currentYear = getCurrentYear(clock)
     private var currentMonth = getCurrentMonth(clock)
+
+    init {
+        // Calculate previous month
+        if (currentMonth == 1) {
+            currentMonth = 12
+            currentYear -= 1
+        } else {
+            currentMonth -= 1
+        }
+    }
 
     suspend fun processEvent(event: CongregationsEvent) {
         when (event) {
@@ -72,10 +84,9 @@ class CongregationsInteractor(
             it.getYear() == year && it.getMonth() == month
         }
 
-        // Load configuration from UseCases instead of hardcoded values
+        // Load congregations with their ceilings
+        val allCongregationsData = getAllCongregationsUseCase()
         val allCongregations = getCongregationNamesUseCase()
-        val appConfig = getAppConfigUseCase()
-        val expectedPerCongregation = appConfig?.financial?.expectedDonationPerCongregation ?: 500.0
 
         val congregationDonations = filteredTransactions
             .filter { it.type == TransactionType.INCOME && it.congregationName != null }
@@ -85,14 +96,18 @@ class CongregationsInteractor(
             val congTransactions = congregationDonations[congName] ?: emptyList()
             val donated = congTransactions.sumOf { it.amount }
             val lastDate = congTransactions.maxByOrNull { it.date }?.date
+            
+            // Get the monthly ceiling for this congregation
+            val congData = allCongregationsData.find { it.name == congName }
+            val expected = congData?.monthlyCeiling ?: 500.0
 
             CongregationStat(
                 name = congName,
                 donated = donated,
-                expected = expectedPerCongregation,
-                difference = donated - expectedPerCongregation,
+                expected = expected,
+                difference = donated - expected,
                 lastDonation = lastDate,
-                isMissing = donated < expectedPerCongregation
+                isMissing = donated < expected
             )
         }.sortedWith(compareBy({ !it.isMissing }, { it.difference }))
     }

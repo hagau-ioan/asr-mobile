@@ -5,10 +5,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -86,16 +89,28 @@ fun TableRow(
     backgroundColor: Color = Color.Transparent,
     content: @Composable RowScope.() -> Unit
 ) {
+    val isDarkMode = isSystemInDarkTheme()
+    val borderColor = if (isDarkMode) Color.White.copy(alpha = 0.5f) else Color.LightGray.copy(alpha = 0.5f)
+
     Row(
         modifier = Modifier
             .background(backgroundColor)
+            .drawBehind {
+                val strokeWidth = 0.5.dp.toPx()
+                val y = size.height - strokeWidth / 2
+                drawLine(
+                    color = borderColor,
+                    start = Offset(0f, y),
+                    end = Offset(size.width, y),
+                    strokeWidth = strokeWidth
+                )
+            }
             .padding(12.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         content()
     }
-    HorizontalDivider()
 }
 
 /**

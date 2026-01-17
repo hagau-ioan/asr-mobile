@@ -21,7 +21,7 @@ import com.asr.financial.presentation.ui.scaffold.ScreenLayout
 import com.asr.financial.utils.formatCurrency
 import com.asr.financial.utils.getCurrentYear
 import com.asr.financial.utils.getCurrentMonth
-import com.asr.financial.utils.getAvailableYears
+import com.asr.financial.utils.calculatePreviousMonth
 import com.asr.financial.utils.getMonthsList
 import asr_financial.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
@@ -42,12 +42,22 @@ fun HomeScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    var selectedYear by remember { mutableStateOf(getCurrentYear(clock)) }
-    var selectedMonth by remember { mutableStateOf(getCurrentMonth(clock)) }
+    // Calculate previous month for default selection
+    val (defaultYear, defaultMonth) = remember {
+        val year = getCurrentYear(clock)
+        val month = getCurrentMonth(clock)
+        if (month == 1) {
+            Pair(year - 1, 12)
+        } else {
+            Pair(year, month - 1)
+        }
+    }
+
+    var selectedYear by remember { mutableStateOf(defaultYear) }
+    var selectedMonth by remember { mutableStateOf(defaultMonth) }
     var showYearDropdown by remember { mutableStateOf(false) }
     var showMonthDropdown by remember { mutableStateOf(false) }
 
-    val years = remember { getAvailableYears(clock) }
     val months = remember { getMonthsList() }
 
     // Notify interactor when period changes
@@ -56,12 +66,18 @@ fun HomeScreen(
     }
 
     val selectedMonthName = months.find { it.first == selectedMonth }?.second?.let { stringResource(it) } ?: ""
+    
+    // Header always shows previous month
+    val (headerMonthNum, headerYear) = remember<Pair<Int, Int>> {
+        calculatePreviousMonth(getCurrentMonth(clock), getCurrentYear(clock))
+    }
+    val headerMonth = months.find { it.first == headerMonthNum }?.second?.let { stringResource(it) } ?: ""
 
     ScreenLayout(
         windowSizeClass = windowSizeClass,
         breadcrumbItems = listOf(BreadcrumbItem(stringResource(Res.string.nav_home))),
-        selectedMonth = selectedMonthName,
-        selectedYear = selectedYear,
+        selectedMonth = headerMonth,
+        selectedYear = headerYear,
         onNavigate = onNavigate,
         onMenuClick = onMenuClick
     ) {
@@ -71,7 +87,7 @@ fun HomeScreen(
                 selectedYear = selectedYear,
                 selectedMonth = selectedMonth,
                 selectedMonthName = selectedMonthName,
-                years = years,
+                years = (uiState as? HomeState.Success)?.availableYears ?: emptyList(),
                 months = months,
                 showYearDropdown = showYearDropdown,
                 showMonthDropdown = showMonthDropdown,
@@ -106,6 +122,7 @@ fun HomeScreen(
                             missingCongregationsCount = state.missingCongregations.size,
                             totalPublishers = state.totalPublishers,
                             congregationCount = state.congregationCount,
+                            publisherExpectedContribution = state.perPublisherExpense,
                             selectedMonth = selectedMonthName,
                             selectedYear = state.selectedYear
                         )
@@ -180,10 +197,10 @@ private fun StatisticsCards(
     missingCongregationsCount: Int,
     totalPublishers: Int,
     congregationCount: Int,
+    publisherExpectedContribution: Double,
     selectedMonth: String,
     selectedYear: Int
 ) {
-    val perPublisher = if (totalPublishers > 0) monthlyExpenses / totalPublishers else 0.0
 
     // Row 1: Expenses and Donations
     Row(
@@ -215,7 +232,7 @@ private fun StatisticsCards(
     ) {
         StatCard(
             title = stringResource(Res.string.stat_per_publisher),
-            amount = perPublisher.formatCurrency(),
+            amount = publisherExpectedContribution.formatCurrency(),
             amountColor = MaterialTheme.colorScheme.primary,
             subtitle = stringResource(Res.string.stat_for_publishers, totalPublishers),
             modifier = Modifier.weight(1f)
@@ -305,14 +322,19 @@ private fun MissingCongregationCard(
             )
             Column(horizontalAlignment = Alignment.End) {
                 Text(
-                    text = stringResource(Res.string.alert_missing_amount, missingCongregation.missing.formatCurrency()),
+                    text = stringResource(Res.string.alert_donated_amount, missingCongregation.donated.formatCurrency()),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
-                    text = stringResource(Res.string.alert_expected_amount, expectedAmount.formatCurrency()),
+                    text = stringResource(Res.string.alert_expected_amount, missingCongregation.expected.formatCurrency()),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    text = stringResource(Res.string.alert_missing_amount, missingCongregation.missing.formatCurrency()),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.error
                 )
             }
         }

@@ -217,7 +217,7 @@ private fun YearlyChartCard(
     val allYears = remember(yearlyStats, currentYear) {
         val dataYears = yearlyStats.map { it.year }
         val minYear = dataYears.minOrNull() ?: currentYear
-        val maxYear = maxOf(dataYears.maxOrNull() ?: currentYear, currentYear + 1)
+        val maxYear = dataYears.maxOrNull() ?: currentYear
         (minYear..maxYear).toList()
     }
     
@@ -255,14 +255,14 @@ private fun YearlyChartCard(
                         onClick = { if (startIndex > 0) startIndex-- },
                         enabled = startIndex > 0
                     ) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Previous years")
+                        Icon(Icons.Default.ArrowBack, contentDescription = stringResource(Res.string.cd_previous_years))
                     }
                     
                     IconButton(
                         onClick = { if (startIndex < allYears.size - 3) startIndex++ },
                         enabled = startIndex < allYears.size - 3
                     ) {
-                        Icon(Icons.Default.ArrowForward, contentDescription = "Next years")
+                        Icon(Icons.Default.ArrowForward, contentDescription = stringResource(Res.string.cd_next_years))
                     }
                 }
             }

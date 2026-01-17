@@ -23,4 +23,6 @@ val domainModule = module {
     factory { GetAvailableYearsUseCase(get()) }
     factory { GetExpectedDonationUseCase(get()) }
     factory { GetTotalPublishersUseCase(get()) }
+    factory { GetPublisherExpectedContributionUseCase(get()) }
+    factory { GetStartYearUseCase(get()) }
 }

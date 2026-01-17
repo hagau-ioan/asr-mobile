@@ -6,14 +6,16 @@ import kotlinx.serialization.json.Json
 
 /**
  * JSON file implementation of TransactionDataSource.
- * Loads data from transactions.json using platform-specific ResourceLoader.
+ * Loads data from asr_expenses_transactions.json and cg_donate_transactions.json
+ * using platform-specific ResourceLoader.
  */
 class JsonTransactionDataSource(
     private val resourceLoader: ResourceLoader
 ) : TransactionDataSource {
 
     private companion object {
-        const val FILE_NAME = "transactions.json"
+        const val EXPENSES_FILE = "asr_expenses_transactions.json"
+        const val DONATIONS_FILE = "cg_donate_transactions.json"
     }
 
     private val json = Json {
@@ -24,7 +26,13 @@ class JsonTransactionDataSource(
     }
 
     override suspend fun getAll(): List<Transaction> {
-        val jsonString = resourceLoader.loadResourceAsString(FILE_NAME) ?: return emptyList()
+        val expenses = loadTransactions(EXPENSES_FILE)
+        val donations = loadTransactions(DONATIONS_FILE)
+        return expenses + donations
+    }
+
+    private suspend fun loadTransactions(fileName: String): List<Transaction> {
+        val jsonString = resourceLoader.loadResourceAsString(fileName) ?: return emptyList()
         return try {
             json.decodeFromString<List<Transaction>>(jsonString)
         } catch (e: Exception) {

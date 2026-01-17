@@ -13,4 +13,6 @@ actual val platformModule = module {
     single { FileHandler() }
     single { ImageCompressor() }
     single { Logger() }
+    single { ImageCapture() }
+    single { FileSharer() }
 }

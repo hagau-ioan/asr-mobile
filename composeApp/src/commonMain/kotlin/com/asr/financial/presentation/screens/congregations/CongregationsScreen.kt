@@ -5,6 +5,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -28,8 +30,17 @@ import com.asr.financial.presentation.ui.responsive.WindowSizeClass
 import com.asr.financial.presentation.ui.scaffold.ScreenLayout
 import com.asr.financial.utils.formatCurrency
 import com.asr.financial.utils.getMonthsList
+import com.asr.financial.utils.calculatePreviousMonth
+import com.asr.financial.utils.getCurrentMonth
+import com.asr.financial.utils.getCurrentYear
+import com.asr.financial.platform.Clock
+import com.asr.financial.platform.FileSharer
 import asr_financial.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
+import com.asr.financial.utils.CongregationReportData
+import com.asr.financial.utils.generateCongregationsHtml
+import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -37,15 +48,63 @@ fun CongregationsScreen(
     windowSizeClass: WindowSizeClass,
     onNavigate: (String) -> Unit,
     onMenuClick: () -> Unit = {},
-    viewModel: CongregationsViewModel = koinViewModel()
+    viewModel: CongregationsViewModel = koinViewModel(),
+    fileSharer: FileSharer = koinInject(),
+    clock: Clock = koinInject()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val scope = rememberCoroutineScope()
     
     val months = getMonthsList()
+    
+    // Header always shows previous month
+    val (headerMonthNum, headerYear) = remember<Pair<Int, Int>> {
+        calculatePreviousMonth(getCurrentMonth(clock), getCurrentYear(clock))
+    }
+    val headerMonth = months.find { it.first == headerMonthNum }?.second?.let { stringResource(it) } ?: ""
     
     when (val state = uiState) {
         is CongregationsState.Success -> {
             val selectedMonthName = months.find { it.first == state.selectedMonth }?.second?.let { stringResource(it) } ?: ""
+            val title = stringResource(Res.string.congregations_title, "$selectedMonthName ${state.selectedYear}")
+            
+            val onExport: () -> Unit = {
+                println("Export button clicked!")
+                scope.launch {
+                    try {
+                        println("Generating PDF...")
+                        
+                        val headers = listOf("Congregație", "Donat", "Așteptat", "Diferență")
+                        val rows = state.stats.map { stat ->
+                            listOf(
+                                stat.name,
+                                "${stat.donated.toInt()} RON",
+                                "${stat.expected.toInt()} RON",
+                                "${stat.difference.toInt()} RON"
+                            )
+                        } + listOf(
+                            listOf(
+                                "TOTAL",
+                                "${state.totalDonated.toInt()} RON",
+                                "${state.totalExpected.toInt()} RON",
+                                "${state.totalDifference.toInt()} RON"
+                            )
+                        )
+                        
+                        val result = fileSharer.shareTableAsPdf(
+                            title = title,
+                            headers = headers,
+                            rows = rows,
+                            fileName = "congregatii_${state.selectedYear}_${state.selectedMonth}.pdf"
+                        )
+                        
+                        println("Share result: $result")
+                    } catch (e: Exception) {
+                        println("Error during export: ${e.message}")
+                        e.printStackTrace()
+                    }
+                }
+            }
             
             ScreenLayout(
                 windowSizeClass = windowSizeClass,
@@ -53,8 +112,8 @@ fun CongregationsScreen(
                     BreadcrumbItem(stringResource(Res.string.nav_home), "home"),
                     BreadcrumbItem(stringResource(Res.string.nav_congregations))
                 ),
-                selectedMonth = selectedMonthName,
-                selectedYear = state.selectedYear,
+                selectedMonth = headerMonth,
+                selectedYear = headerYear,
                 onNavigate = onNavigate,
                 onMenuClick = onMenuClick
             ) {
@@ -68,7 +127,8 @@ fun CongregationsScreen(
                         missingCount = state.missingCount,
                         onPeriodChange = { year, month ->
                             viewModel.handleEvent(CongregationsEvent.FilterByPeriod(year, month))
-                        }
+                        },
+                        onExportClick = onExport
                     )
                 }
             }
@@ -160,15 +220,31 @@ private fun CongregationsContent(
     totalExpected: Double,
     totalDifference: Double,
     missingCount: Int,
-    onPeriodChange: (Int, Int) -> Unit = { _, _ -> }
+    onPeriodChange: (Int, Int) -> Unit = { _, _ -> },
+    onExportClick: () -> Unit = {}
 ) {
     Column(modifier = Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        // Title
-        Text(
-            text = stringResource(Res.string.congregations_title, period),
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Bold
-        )
+        // Title with Export button
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(Res.string.congregations_title, period),
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.weight(1f)
+            )
+            
+            IconButton(onClick = onExportClick) {
+                Icon(
+                    imageVector = Icons.Default.Share,
+                    contentDescription = stringResource(Res.string.cd_export),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+        }
         
         // Status message
         Text(
@@ -246,11 +322,6 @@ private fun CongregationsContent(
                     )
                     TableHeaderCell(
                         text = stringResource(Res.string.congregations_difference),
-                        width = TABLE_AMOUNT_WIDTH_DP.dp,
-                        textAlign = TextAlign.End
-                    )
-                    TableHeaderCell(
-                        text = stringResource(Res.string.congregations_last_donation),
                         width = TABLE_AMOUNT_WIDTH_DP.dp,
                         textAlign = TextAlign.End
                     )

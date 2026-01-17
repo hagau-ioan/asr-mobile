@@ -1,6 +1,7 @@
 package com.asr.financial.presentation.screens.utilities.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -15,6 +16,7 @@ import com.asr.financial.presentation.screens.charts.LineChart
 import com.asr.financial.presentation.screens.utilities.YearlyUtilityData
 import com.asr.financial.presentation.screens.utilities.UtilitiesConstants.CHART_HEIGHT_DP
 import com.asr.financial.presentation.screens.utilities.UtilitiesConstants.LEGEND_ICON_SIZE_DP
+import com.asr.financial.presentation.theme.ChartSecondaryGreen
 import com.asr.financial.presentation.ui.constants.UIConstants.CARD_PADDING_DP
 import com.asr.financial.presentation.ui.constants.UIConstants.SECTION_SPACING_DP
 import com.asr.financial.presentation.ui.constants.UIConstants.SMALL_SPACING_DP
@@ -29,10 +31,15 @@ import org.jetbrains.compose.resources.stringResource
 fun YearlyComparisonCard(
     yearlyData: List<YearlyUtilityData>,
     comparisonYear: Int,
+    minYear: Int,
     maxYear: Int,
     onYearChange: (Int) -> Unit
 ) {
-    val minYear = 2025
+    val isDarkMode = isSystemInDarkTheme()
+    val secondaryLegendColor = if (isDarkMode) 
+        androidx.compose.ui.graphics.Color.White 
+    else 
+        ChartSecondaryGreen
 
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(CARD_PADDING_DP.dp)) {
@@ -65,7 +72,7 @@ fun YearlyComparisonCard(
                     ) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Previous year comparison"
+                            contentDescription = stringResource(Res.string.cd_previous_year)
                         )
                     }
                     IconButton(
@@ -74,7 +81,7 @@ fun YearlyComparisonCard(
                     ) {
                         Icon(
                             imageVector = Icons.Default.ArrowForward,
-                            contentDescription = "Next year comparison"
+                            contentDescription = stringResource(Res.string.cd_next_year)
                         )
                     }
                 }
@@ -126,7 +133,7 @@ fun YearlyComparisonCard(
                     Box(
                         modifier = Modifier
                             .size(LEGEND_ICON_SIZE_DP.dp)
-                            .background(MaterialTheme.colorScheme.tertiary)
+                            .background(secondaryLegendColor)
                     )
                     Text(
                         text = (comparisonYear - 1).toString(),

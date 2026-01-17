@@ -25,6 +25,7 @@ class HomeInteractor(
     private val getTransactionsUseCase: GetTransactionsUseCase,
     private val getTransactionsByMonthUseCase: GetTransactionsByMonthUseCase,
     private val getCongregationNamesUseCase: GetCongregationNamesUseCase,
+    private val getAllCongregationsUseCase: GetAllCongregationsUseCase,
     private val getAvailableYearsUseCase: GetAvailableYearsUseCase,
     private val getAppConfigUseCase: GetAppConfigUseCase,
     private val clock: Clock
@@ -37,6 +38,16 @@ class HomeInteractor(
 
     private var currentYear = getCurrentYear(clock)
     private var currentMonth = getCurrentMonth(clock)
+
+    init {
+        // Calculate previous month
+        if (currentMonth == 1) {
+            currentMonth = 12
+            currentYear -= 1
+        } else {
+            currentMonth -= 1
+        }
+    }
 
     suspend fun processEvent(event: HomeEvent) {
         when (event) {
@@ -73,10 +84,12 @@ class HomeInteractor(
 
     private suspend fun emitSuccessState(allTransactions: List<Transaction>, year: Int, month: Int) {
         // Load configuration
+        val allCongregationsData = getAllCongregationsUseCase()
         val congregationNames = getCongregationNamesUseCase()
         val appConfig = getAppConfigUseCase()
-        val expectedDonation = appConfig?.financial?.expectedDonationPerCongregation ?: 500.0
+        val availableYears = getAvailableYearsUseCase()
         val totalPublishers = appConfig?.financial?.totalPublishers ?: 785
+        val publisherExpectedContribution = appConfig?.financial?.publisherExpectedContribution ?: 30.0
         val congregationCount = congregationNames.size
 
         // Filter transactions for selected month
@@ -108,21 +121,14 @@ class HomeInteractor(
         // Calculate missing congregations
         val missingCongregations = calculateMissingCongregations(
             monthlyTransactions = monthlyTransactions,
-            congregationNames = congregationNames,
-            expectedDonation = expectedDonation
+            allCongregationsData = allCongregationsData
         )
-
-        // Calculate per publisher expense
-        val perPublisherExpense = if (totalPublishers > 0) {
-            yearlyExpenses / totalPublishers
-        } else {
-            0.0
-        }
 
         _uiState.emit(
             HomeState.Success(
                 selectedYear = year,
                 selectedMonth = month,
+                availableYears = availableYears,
                 monthlyIncome = monthlyIncome,
                 monthlyExpenses = monthlyExpenses,
                 monthlyBalance = monthlyBalance,
@@ -130,32 +136,33 @@ class HomeInteractor(
                 yearlyExpenses = yearlyExpenses,
                 yearlyBalance = yearlyBalance,
                 missingCongregations = missingCongregations,
-                expectedDonationPerCongregation = expectedDonation,
+                expectedDonationPerCongregation = allCongregationsData.sumOf { it.monthlyCeiling } / allCongregationsData.size.coerceAtLeast(1),
                 totalPublishers = totalPublishers,
                 congregationCount = congregationCount,
-                perPublisherExpense = perPublisherExpense
+                perPublisherExpense = publisherExpectedContribution
             )
         )
     }
 
     private fun calculateMissingCongregations(
         monthlyTransactions: List<Transaction>,
-        congregationNames: List<String>,
-        expectedDonation: Double
+        allCongregationsData: List<com.asr.financial.domain.models.CongregationInfo>
     ): List<MissingCongregation> {
         val congregationDonations = monthlyTransactions
             .filter { it.type == TransactionType.INCOME && it.congregationName != null }
             .groupBy { it.congregationName }
             .mapValues { (_, transactions) -> transactions.sumOf { it.amount } }
 
-        return congregationNames.mapNotNull { congName ->
-            val donated = congregationDonations[congName] ?: 0.0
-            if (donated < expectedDonation) {
+        return allCongregationsData.mapNotNull { congData ->
+            val donated = congregationDonations[congData.name] ?: 0.0
+            val expected = congData.monthlyCeiling
+            
+            if (donated < expected) {
                 MissingCongregation(
-                    name = congName,
+                    name = congData.name,
                     donated = donated,
-                    expected = expectedDonation,
-                    missing = expectedDonation - donated
+                    expected = expected,
+                    missing = expected - donated
                 )
             } else {
                 null

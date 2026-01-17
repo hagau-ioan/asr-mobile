@@ -1,12 +1,16 @@
 package com.asr.financial.presentation.screens.utilities.components
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.asr.financial.presentation.screens.utilities.UtilityComparison
 import com.asr.financial.presentation.screens.utilities.UtilitiesConstants.TABLE_AMOUNT_WIDTH_DP
@@ -44,26 +48,20 @@ fun ComparisonTable(
                 width = TABLE_CATEGORY_WIDTH_DP.dp
             )
             TableHeaderCell(
-                text = "$selectedMonthName $selectedYear",
+                text = previousMonthName,
                 width = TABLE_AMOUNT_WIDTH_DP.dp,
                 textAlign = TextAlign.End
             )
             TableHeaderCell(
-                text = "$previousMonthName $previousYear",
+                text = stringResource(Res.string.utilities_trend),
+                width = TABLE_AMOUNT_WIDTH_DP.dp,
+                textAlign = TextAlign.Center
+            )
+            TableHeaderCell(
+                text = selectedMonthName,
                 width = TABLE_AMOUNT_WIDTH_DP.dp,
                 textAlign = TextAlign.End
             )
-            TableHeaderCell(
-                text = stringResource(Res.string.utilities_difference),
-                width = TABLE_AMOUNT_WIDTH_DP.dp,
-                textAlign = TextAlign.End
-            )
-            TableHeaderCell(
-                text = stringResource(Res.string.utilities_variation),
-                width = TABLE_PERCENTAGE_WIDTH_DP.dp,
-                textAlign = TextAlign.End
-            )
-            Box(modifier = Modifier.width(24.dp))
         }
     ) {
         // Data Rows
@@ -75,39 +73,22 @@ fun ComparisonTable(
                     fontWeight = FontWeight.Medium
                 )
                 TableCell(
-                    text = comparison.currentAmount.formatCurrency(),
-                    width = TABLE_AMOUNT_WIDTH_DP.dp,
-                    textAlign = TextAlign.End
-                )
-                TableCell(
                     text = comparison.previousAmount.formatCurrency(),
                     width = TABLE_AMOUNT_WIDTH_DP.dp,
                     textAlign = TextAlign.End,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
+                TrendCell(
+                    difference = comparison.difference,
+                    percentage = comparison.percentageChange,
+                    width = TABLE_AMOUNT_WIDTH_DP.dp
+                )
                 TableCell(
-                    text = "${if (comparison.difference >= 0) "+" else ""}${comparison.difference.formatCurrency()}",
+                    text = comparison.currentAmount.formatCurrency(),
                     width = TABLE_AMOUNT_WIDTH_DP.dp,
                     textAlign = TextAlign.End,
-                    fontWeight = FontWeight.Medium,
-                    color = when {
-                        comparison.difference > 0 -> MaterialTheme.colorScheme.error
-                        comparison.difference < 0 -> MaterialTheme.colorScheme.tertiary
-                        else -> MaterialTheme.colorScheme.onSurfaceVariant
-                    }
+                    color = MaterialTheme.colorScheme.primary
                 )
-                TableCell(
-                    text = comparison.percentageChange.formatPercentage(),
-                    width = TABLE_PERCENTAGE_WIDTH_DP.dp,
-                    textAlign = TextAlign.End,
-                    fontWeight = FontWeight.Medium,
-                    color = when {
-                        comparison.percentageChange > 0 -> MaterialTheme.colorScheme.error
-                        comparison.percentageChange < 0 -> MaterialTheme.colorScheme.tertiary
-                        else -> MaterialTheme.colorScheme.onSurfaceVariant
-                    }
-                )
-                TrendIcon(comparison.difference)
             }
         }
 
@@ -121,40 +102,55 @@ fun ComparisonTable(
                 fontWeight = FontWeight.Bold
             )
             TableCell(
-                text = currentTotal.formatCurrency(),
-                width = TABLE_AMOUNT_WIDTH_DP.dp,
-                textAlign = TextAlign.End,
-                fontWeight = FontWeight.Bold
-            )
-            TableCell(
                 text = previousTotal.formatCurrency(),
                 width = TABLE_AMOUNT_WIDTH_DP.dp,
                 textAlign = TextAlign.End,
                 fontWeight = FontWeight.Bold
             )
+            TrendCell(
+                difference = totalDifference,
+                percentage = totalPercentage,
+                width = TABLE_AMOUNT_WIDTH_DP.dp,
+                isBold = true
+            )
             TableCell(
-                text = "${if (totalDifference >= 0) "+" else ""}${totalDifference.formatCurrency()}",
+                text = currentTotal.formatCurrency(),
                 width = TABLE_AMOUNT_WIDTH_DP.dp,
                 textAlign = TextAlign.End,
-                fontWeight = FontWeight.Bold,
-                color = when {
-                    totalDifference > 0 -> MaterialTheme.colorScheme.error
-                    totalDifference < 0 -> MaterialTheme.colorScheme.tertiary
-                    else -> MaterialTheme.colorScheme.onSurfaceVariant
-                }
+                fontWeight = FontWeight.Bold
             )
-            TableCell(
-                text = totalPercentage.formatPercentage(),
-                width = TABLE_PERCENTAGE_WIDTH_DP.dp,
-                textAlign = TextAlign.End,
-                fontWeight = FontWeight.Bold,
-                color = when {
-                    totalPercentage > 0 -> MaterialTheme.colorScheme.error
-                    totalPercentage < 0 -> MaterialTheme.colorScheme.tertiary
-                    else -> MaterialTheme.colorScheme.onSurfaceVariant
-                }
+        }
+    }
+}
+
+@Composable
+private fun TrendCell(
+    difference: Double,
+    percentage: Double,
+    width: Dp,
+    isBold: Boolean = false
+) {
+    val isDecrease = difference < 0
+    val trendColor = if (isDecrease) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.error
+    val trendIcon = if (isDecrease) "↓" else if (difference > 0) "↑" else "="
+    
+    Box(
+        modifier = Modifier.width(width),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                text = trendIcon,
+                style = MaterialTheme.typography.titleMedium,
+                color = trendColor,
+                fontWeight = if (isBold) FontWeight.Bold else FontWeight.Normal
             )
-            TrendIcon(totalDifference)
+            Text(
+                text = percentage.formatPercentage(),
+                style = MaterialTheme.typography.bodySmall,
+                color = trendColor,
+                fontWeight = if (isBold) FontWeight.Bold else FontWeight.Normal
+            )
         }
     }
 }

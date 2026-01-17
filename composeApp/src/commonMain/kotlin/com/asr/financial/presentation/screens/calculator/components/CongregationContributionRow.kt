@@ -14,12 +14,7 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun CongregationContributionRow(contribution: CongregationContribution) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        )
-    ) {
+    Card(modifier = Modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -29,7 +24,8 @@ fun CongregationContributionRow(contribution: CongregationContribution) {
             Column {
                 Text(
                     text = contribution.congregationName,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
+                    style = MaterialTheme.typography.bodyLarge
                 )
                 Text(
                     text = stringResource(Res.string.calculator_publishers, contribution.numberOfPublishers),
@@ -42,7 +38,8 @@ fun CongregationContributionRow(contribution: CongregationContribution) {
                 Text(
                     text = contribution.totalAmount.formatCurrency(),
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.bodyLarge
                 )
                 Text(
                     text = "${contribution.perPublisherAmount.formatCurrency()} × ${contribution.numberOfPublishers}",

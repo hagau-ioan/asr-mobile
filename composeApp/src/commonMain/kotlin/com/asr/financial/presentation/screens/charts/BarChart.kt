@@ -48,24 +48,30 @@ fun BarChart(
                 .height(height.dp)
         ) {
             val padding = 60f
-            val bottomPadding = 40f
+            val bottomPadding = 80f
             val chartWidth = size.width - padding * 2
             val chartHeight = size.height - padding - bottomPadding
 
-            val maxValue = yearlyStats.maxOfOrNull {
-                max(it.totalDonations, max(it.totalExpenses, it.balance.coerceAtLeast(0.0)))
-            } ?: 0.0
+            val maxPositive = yearlyStats.maxOfOrNull {
+                max(it.totalDonations, it.totalExpenses)
+            }?.toFloat() ?: 0f
+            
+            val minNegative = yearlyStats.minOfOrNull { it.balance }?.coerceAtMost(0.0)?.toFloat() ?: 0f
+            val maxNegative = kotlin.math.abs(minNegative)
+            
+            val maxValue = max(maxPositive, maxNegative)
 
-            if (maxValue == 0.0 || yearlyStats.isEmpty()) return@Canvas
+            if (maxValue == 0f || yearlyStats.isEmpty()) return@Canvas
 
+            val zeroY = padding + (chartHeight * (maxPositive / (maxPositive + maxNegative)))
             val barGroupWidth = chartWidth / yearlyStats.size
             val barWidth = barGroupWidth / 4
             val ySteps = 4
 
-            // Draw Y-axis labels and grid
+            // Draw Y-axis labels and grid (positive)
             for (i in 0..ySteps) {
-                val value = (maxValue / ySteps) * i
-                val y = padding + chartHeight - (i.toFloat() / ySteps * chartHeight)
+                val value = (maxPositive / ySteps) * i
+                val y = zeroY - (i.toFloat() / ySteps * (zeroY - padding))
                 
                 drawLine(
                     color = textColor.copy(alpha = 0.1f),
@@ -74,7 +80,7 @@ fun BarChart(
                     strokeWidth = 1f
                 )
                 
-                val label = value.formatForAxis()
+                val label = value.toDouble().formatForAxis()
                 val textLayoutResult = textMeasurer.measure(
                     text = label,
                     style = TextStyle(
@@ -90,34 +96,82 @@ fun BarChart(
                     )
                 )
             }
+            
+            // Draw Y-axis labels and grid (negative)
+            if (minNegative < 0) {
+                for (i in 1..2) {
+                    val value = -(maxNegative / 2) * i
+                    val y = zeroY + (i.toFloat() / 2 * (padding + chartHeight - zeroY))
+                    
+                    drawLine(
+                        color = textColor.copy(alpha = 0.1f),
+                        start = Offset(padding, y),
+                        end = Offset(padding + chartWidth, y),
+                        strokeWidth = 1f
+                    )
+                    
+                    val label = value.toDouble().formatForAxis()
+                    val textLayoutResult = textMeasurer.measure(
+                        text = label,
+                        style = TextStyle(
+                            color = textColor.copy(alpha = 0.6f),
+                            fontSize = 10.sp
+                        )
+                    )
+                    drawText(
+                        textLayoutResult = textLayoutResult,
+                        topLeft = Offset(
+                            x = padding - textLayoutResult.size.width - 8f,
+                            y = y - textLayoutResult.size.height / 2
+                        )
+                    )
+                }
+            }
+            
+            // Draw X-axis (zero line)
+            drawLine(
+                color = textColor.copy(alpha = 0.3f),
+                start = Offset(padding, zeroY),
+                end = Offset(padding + chartWidth, zeroY),
+                strokeWidth = 2f
+            )
 
             // Draw bars for each year
             yearlyStats.forEachIndexed { index, stat ->
                 val x = padding + index * barGroupWidth + barGroupWidth / 2 - barWidth * 1.5f
 
                 // Donations bar
-                val donationsHeight = (stat.totalDonations / maxValue * chartHeight).toFloat()
+                val donationsHeight = (stat.totalDonations / maxValue * (zeroY - padding)).toFloat()
                 drawRect(
                     color = donationsColor,
-                    topLeft = Offset(x, padding + chartHeight - donationsHeight),
+                    topLeft = Offset(x, zeroY - donationsHeight),
                     size = Size(barWidth, donationsHeight)
                 )
 
                 // Expenses bar
-                val expensesHeight = (stat.totalExpenses / maxValue * chartHeight).toFloat()
+                val expensesHeight = (stat.totalExpenses / maxValue * (zeroY - padding)).toFloat()
                 drawRect(
                     color = expensesColor,
-                    topLeft = Offset(x + barWidth, padding + chartHeight - expensesHeight),
+                    topLeft = Offset(x + barWidth, zeroY - expensesHeight),
                     size = Size(barWidth, expensesHeight)
                 )
 
-                // Balance bar
-                val balanceHeight = (stat.balance.coerceAtLeast(0.0) / maxValue * chartHeight).toFloat()
-                drawRect(
-                    color = balanceColor,
-                    topLeft = Offset(x + barWidth * 2, padding + chartHeight - balanceHeight),
-                    size = Size(barWidth, balanceHeight)
-                )
+                // Balance bar (positive or negative)
+                if (stat.balance >= 0) {
+                    val balanceHeight = (stat.balance / maxValue * (zeroY - padding)).toFloat()
+                    drawRect(
+                        color = balanceColor,
+                        topLeft = Offset(x + barWidth * 2, zeroY - balanceHeight),
+                        size = Size(barWidth, balanceHeight)
+                    )
+                } else {
+                    val balanceHeight = (kotlin.math.abs(stat.balance) / maxValue * (padding + chartHeight - zeroY)).toFloat()
+                    drawRect(
+                        color = balanceColor.copy(alpha = 0.7f),
+                        topLeft = Offset(x + barWidth * 2, zeroY),
+                        size = Size(barWidth, balanceHeight)
+                    )
+                }
 
                 // X-axis label (year)
                 val yearLabel = stat.year.toString()

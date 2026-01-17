@@ -14,6 +14,7 @@ sealed interface HomeState {
         // Selected period
         val selectedYear: Int,
         val selectedMonth: Int,
+        val availableYears: List<Int>,
 
         // Monthly statistics (for selected period)
         val monthlyIncome: Double,

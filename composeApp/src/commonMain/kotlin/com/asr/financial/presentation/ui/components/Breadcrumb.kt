@@ -11,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import asr_financial.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * Breadcrumb item
@@ -42,7 +44,7 @@ fun Breadcrumb(
             IconButton(onClick = onMenuClick) {
                 Icon(
                     imageVector = Icons.Default.Menu,
-                    contentDescription = "Menu",
+                    contentDescription = stringResource(Res.string.cd_menu),
                     tint = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.size(28.dp)
                 )

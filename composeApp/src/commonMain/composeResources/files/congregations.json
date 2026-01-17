@@ -1,58 +1,66 @@
 [
   {
     "id": "cong_001",
-    "name": "Congregația A",
+    "name": "Tg.Mures Centru",
     "location": "Târgu Mureș",
     "memberCount": 98,
+    "monthlyCeiling": 2360.0,
     "isActive": true
   },
   {
     "id": "cong_002",
-    "name": "Congregația B",
+    "name": "Tg.Mures Cetate",
     "location": "Târgu Mureș",
     "memberCount": 102,
+    "monthlyCeiling": 615.0,
     "isActive": true
   },
   {
     "id": "cong_003",
-    "name": "Congregația C",
+    "name": "Tg.Mures Diamant",
     "location": "Târgu Mureș",
     "memberCount": 95,
+    "monthlyCeiling": 2570.0,
     "isActive": true
   },
   {
     "id": "cong_004",
-    "name": "Congregația D",
+    "name": "Tg.Mures Est",
     "location": "Târgu Mureș",
     "memberCount": 105,
+    "monthlyCeiling": 2732.0,
     "isActive": true
   },
   {
     "id": "cong_005",
-    "name": "Congregația E",
+    "name": "Tg.Mures Izvorului",
     "location": "Târgu Mureș",
     "memberCount": 92,
+    "monthlyCeiling": 2360.0,
     "isActive": true
   },
   {
     "id": "cong_006",
-    "name": "Congregația F",
+    "name": "Tg.Mures Pietros",
     "location": "Târgu Mureș",
     "memberCount": 110,
+    "monthlyCeiling": 2642.0,
     "isActive": true
   },
   {
     "id": "cong_007",
-    "name": "Congregația G",
+    "name": "Tg.Mures Sud",
     "location": "Târgu Mureș",
     "memberCount": 88,
+    "monthlyCeiling": 3420.0,
     "isActive": true
   },
   {
     "id": "cong_008",
-    "name": "Congregația H",
+    "name": "Tg.Mures Trandafirilor",
     "location": "Târgu Mureș",
     "memberCount": 95,
+    "monthlyCeiling": 1005.0,
     "isActive": true
   }
 ]

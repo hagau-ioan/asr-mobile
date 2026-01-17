@@ -12,5 +12,6 @@ data class CongregationInfo(
     val name: String,
     val location: String,
     val memberCount: Int = 0,
+    val monthlyCeiling: Double = 0.0,
     val isActive: Boolean = true
 )

@@ -44,20 +44,12 @@ fun ComparisonCard(
         // Summary Cards
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(SMALL_SPACING_DP.dp)
+            horizontalArrangement = Arrangement.spacedBy(SMALL_SPACING_DP.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
+            // Previous Month (Left)
             SummaryCard(
-                label = stringResource(Res.string.utilities_current_month),
-                value = state.currentTotal.formatCurrency(),
-                backgroundColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
-                borderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
-                labelColor = MaterialTheme.colorScheme.primary,
-                valueColor = MaterialTheme.colorScheme.primary,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.weight(1f)
-            )
-            SummaryCard(
-                label = stringResource(Res.string.utilities_previous_month),
+                label = previousMonthName,
                 value = state.previousTotal.formatCurrency(),
                 backgroundColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.1f),
                 borderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f),
@@ -66,17 +58,52 @@ fun ComparisonCard(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.weight(1f)
             )
-            val diffColor = if (state.totalDifference >= 0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.tertiary
-            val percentageText = state.totalPercentage.formatPercentage()
+            
+            // Trend Indicator (Center)
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(horizontal = SMALL_SPACING_DP.dp)
+            ) {
+                val isDecrease = state.totalDifference < 0
+                val trendColor = if (isDecrease) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.error
+                val trendIcon = if (isDecrease) "↓" else "↑"
+                val trendText = if (isDecrease) 
+                    stringResource(Res.string.utilities_decreased) 
+                else 
+                    stringResource(Res.string.utilities_increased)
+                
+                Text(
+                    text = trendIcon,
+                    style = MaterialTheme.typography.displayMedium,
+                    color = trendColor,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = kotlin.math.abs(state.totalDifference).formatCurrency(),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = trendColor,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = trendText,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = trendColor
+                )
+                Text(
+                    text = state.totalPercentage.formatPercentage(),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = trendColor
+                )
+            }
+            
+            // Current Month (Right)
             SummaryCard(
-                label = stringResource(Res.string.utilities_difference),
-                value = state.totalDifference.formatCurrency(),
-                subtitle = percentageText,
-                backgroundColor = diffColor.copy(alpha = 0.1f),
-                borderColor = diffColor.copy(alpha = 0.3f),
-                labelColor = diffColor,
-                valueColor = diffColor,
-                subtitleColor = diffColor,
+                label = selectedMonthName,
+                value = state.currentTotal.formatCurrency(),
+                backgroundColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                borderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
+                labelColor = MaterialTheme.colorScheme.primary,
+                valueColor = MaterialTheme.colorScheme.primary,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.weight(1f)
             )

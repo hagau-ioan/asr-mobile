@@ -29,54 +29,59 @@ fun ContributionCard(
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = androidx.compose.ui.graphics.Color.White
             )
+            
+            Text(
+                text = contribution.perPublisherAmount.formatCurrency(),
+                style = MaterialTheme.typography.headlineLarge,
+                fontWeight = FontWeight.Bold,
+                color = androidx.compose.ui.graphics.Color.White,
+                maxLines = 1
+            )
+            
             Spacer(Modifier.height(SMALL_SPACING_DP.dp))
             
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(stringResource(Res.string.calculator_total_expenses))
+            Column {
                 Text(
-                    contribution.totalExpenses.formatCurrency(),
-                    fontWeight = FontWeight.Bold
-                )
-            }
-            
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(stringResource(Res.string.calculator_number_publishers))
-                Text(
-                    contribution.numberOfPublishers.toString(),
-                    fontWeight = FontWeight.Bold
-                )
-            }
-            
-            HorizontalDivider(modifier = Modifier.padding(vertical = SMALL_SPACING_DP.dp))
-            
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    stringResource(Res.string.calculator_per_publisher),
-                    fontWeight = FontWeight.Bold
+                    text = stringResource(Res.string.calculator_total_expenses),
+                    color = androidx.compose.ui.graphics.Color.White,
+                    style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
-                    contribution.perPublisherAmount.formatCurrency(),
-                    style = MaterialTheme.typography.headlineSmall,
+                    text = contribution.totalExpenses.formatCurrency(),
                     fontWeight = FontWeight.Bold,
-                    color = contentColor
+                    color = androidx.compose.ui.graphics.Color.White,
+                    maxLines = 1
                 )
             }
+            
+            Spacer(Modifier.height(SMALL_SPACING_DP.dp))
+            
+            Column {
+                Text(
+                    text = stringResource(Res.string.calculator_number_publishers),
+                    color = androidx.compose.ui.graphics.Color.White,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Text(
+                    text = contribution.numberOfPublishers.toString(),
+                    fontWeight = FontWeight.Bold,
+                    color = androidx.compose.ui.graphics.Color.White,
+                    maxLines = 1
+                )
+            }
+            
+            HorizontalDivider(
+                modifier = Modifier.padding(vertical = SMALL_SPACING_DP.dp),
+                color = androidx.compose.ui.graphics.Color.White.copy(alpha = 0.3f)
+            )
             
             Text(
                 text = periodLabel,
                 style = MaterialTheme.typography.bodySmall,
-                color = contentColor
+                color = androidx.compose.ui.graphics.Color.White
             )
         }
     }

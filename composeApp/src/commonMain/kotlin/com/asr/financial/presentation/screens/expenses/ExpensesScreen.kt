@@ -42,9 +42,11 @@ import com.asr.financial.presentation.ui.constants.UIConstants.TINY_SPACING_DP
 import com.asr.financial.presentation.ui.responsive.WindowSizeClass
 import com.asr.financial.presentation.ui.scaffold.ScreenLayout
 import com.asr.financial.utils.formatCurrency
-import com.asr.financial.utils.getAvailableYears
 import com.asr.financial.utils.getMonthsList
 import com.asr.financial.utils.percentOfAsInt
+import com.asr.financial.utils.calculatePreviousMonth
+import com.asr.financial.utils.getCurrentMonth
+import com.asr.financial.utils.getCurrentYear
 import asr_financial.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
@@ -60,16 +62,26 @@ fun ExpensesScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    var selectedYear by remember { mutableStateOf(DEFAULT_YEAR) }
-    var selectedMonth by remember { mutableStateOf(DEFAULT_MONTH) }
+    val (defaultMonth, defaultYear) = remember {
+        val (prevMonth, prevYear) = calculatePreviousMonth(getCurrentMonth(clock), getCurrentYear(clock))
+        prevMonth to prevYear
+    }
+
+    var selectedYear by remember { mutableStateOf(defaultYear) }
+    var selectedMonth by remember { mutableStateOf(defaultMonth) }
     var showYearDropdown by remember { mutableStateOf(false) }
     var showMonthDropdown by remember { mutableStateOf(false) }
 
-    val years = remember { getAvailableYears(clock) }
     val months = remember { getMonthsList() }
 
+    LaunchedEffect(Unit) {
+        viewModel.handleEvent(ExpensesEvent.FilterByPeriod(defaultYear, defaultMonth))
+    }
+
     LaunchedEffect(selectedYear, selectedMonth) {
-        viewModel.handleEvent(ExpensesEvent.FilterByPeriod(selectedYear, selectedMonth))
+        if (selectedYear != defaultYear || selectedMonth != defaultMonth) {
+            viewModel.handleEvent(ExpensesEvent.FilterByPeriod(selectedYear, selectedMonth))
+        }
     }
 
     when (val state = uiState) {
@@ -81,7 +93,7 @@ fun ExpensesScreen(
                 selectedMonth = selectedMonth,
                 showYearDropdown = showYearDropdown,
                 showMonthDropdown = showMonthDropdown,
-                years = years,
+                years = state.availableYears,
                 months = months,
                 onYearDropdownChange = { showYearDropdown = it },
                 onMonthDropdownChange = { showMonthDropdown = it },

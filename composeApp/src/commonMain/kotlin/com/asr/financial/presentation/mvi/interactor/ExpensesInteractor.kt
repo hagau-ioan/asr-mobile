@@ -8,6 +8,7 @@ import com.asr.financial.presentation.mvi.event.ExpensesEvent
 import com.asr.financial.presentation.mvi.state.ExpensesState
 import com.asr.financial.presentation.screens.expenses.ExpenseStat
 import com.asr.financial.utils.calculatePreviousMonth
+import com.asr.financial.utils.calculatePreviousMonth
 import com.asr.financial.utils.getCurrentMonth
 import com.asr.financial.utils.getCurrentYear
 import com.asr.financial.utils.isWithinLastNMonths
@@ -19,6 +20,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 
 class ExpensesInteractor(
     private val getTransactionsUseCase: GetTransactionsUseCase,
+    private val getAvailableYearsUseCase: com.asr.financial.domain.usecase.GetAvailableYearsUseCase,
     private val clock: Clock
 ) {
     private val _uiState = MutableStateFlow<ExpensesState>(ExpensesState.Loading)
@@ -27,8 +29,14 @@ class ExpensesInteractor(
     private val _uiEffectChannel = Channel<ExpensesEffect>(Channel.UNLIMITED)
     val uiEffect: Flow<ExpensesEffect> = _uiEffectChannel.receiveAsFlow()
 
-    private var currentYear = getCurrentYear(clock)
-    private var currentMonth = getCurrentMonth(clock)
+    private var currentYear: Int
+    private var currentMonth: Int
+
+    init {
+        val (prevMonth, prevYear) = calculatePreviousMonth(getCurrentMonth(clock), getCurrentYear(clock))
+        currentYear = prevYear
+        currentMonth = prevMonth
+    }
 
     suspend fun processEvent(event: ExpensesEvent) {
         when (event) {
@@ -82,6 +90,7 @@ class ExpensesInteractor(
 
     private suspend fun emitSuccessState(expenses: List<ExpenseStat>, year: Int, month: Int) {
         val totalExpenses = expenses.sumOf { it.amount }
+        val availableYears = getAvailableYearsUseCase()
         
         // Calculate last 12 months total ending at previous month
         val currentYear = getCurrentYear(clock)
@@ -117,7 +126,8 @@ class ExpensesInteractor(
                 yearlyEndMonth = endMonth,
                 yearlyEndYear = endYear,
                 selectedYear = year,
-                selectedMonth = month
+                selectedMonth = month,
+                availableYears = availableYears
             )
         )
     }

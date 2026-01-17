@@ -13,15 +13,14 @@ import com.asr.financial.presentation.mvi.viewmodel.CalculatorViewModel
 import com.asr.financial.presentation.screens.calculator.components.CongregationContributionRow
 import com.asr.financial.presentation.screens.calculator.components.ContributionCard
 import com.asr.financial.presentation.ui.components.BreadcrumbItem
-import com.asr.financial.presentation.ui.components.period.PeriodSelectorCard
 import com.asr.financial.presentation.ui.constants.UIConstants.CARD_PADDING_DP
 import com.asr.financial.presentation.ui.constants.UIConstants.SECTION_SPACING_DP
 import com.asr.financial.presentation.ui.responsive.WindowSizeClass
 import com.asr.financial.presentation.ui.scaffold.ScreenLayout
 import com.asr.financial.utils.getCurrentMonth
 import com.asr.financial.utils.getCurrentYear
-import com.asr.financial.utils.getMonthNameResource
-import com.asr.financial.utils.getMonthsList
+import com.asr.financial.utils.calculatePreviousMonth
+import com.asr.financial.utils.getMonthAbbreviationResource
 import asr_financial.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
@@ -36,16 +35,13 @@ fun CalculatorScreen(
     clock: Clock = koinInject()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    var selectedYear by remember { mutableStateOf(getCurrentYear(clock)) }
-    var selectedMonth by remember { mutableStateOf(getCurrentMonth(clock)) }
-    var showYearDropdown by remember { mutableStateOf(false) }
-    var showMonthDropdown by remember { mutableStateOf(false) }
     
-    val months = remember { getMonthsList() }
-    val years = remember { (2024..2027).toList() }
-    val selectedMonthName = getMonthNameResource(selectedMonth)?.let { stringResource(it) } ?: ""
+    val (selectedMonth, selectedYear) = remember {
+        val (prevMonth, prevYear) = calculatePreviousMonth(getCurrentMonth(clock), getCurrentYear(clock))
+        prevMonth to prevYear
+    }
 
-    LaunchedEffect(selectedYear, selectedMonth) {
+    LaunchedEffect(Unit) {
         viewModel.handleEvent(CalculatorEvent.LoadData(selectedYear, selectedMonth))
     }
 
@@ -55,15 +51,6 @@ fun CalculatorScreen(
                 state = state,
                 selectedYear = selectedYear,
                 selectedMonth = selectedMonth,
-                selectedMonthName = selectedMonthName,
-                years = years,
-                months = months,
-                showYearDropdown = showYearDropdown,
-                showMonthDropdown = showMonthDropdown,
-                onYearDropdownChange = { showYearDropdown = it },
-                onMonthDropdownChange = { showMonthDropdown = it },
-                onYearSelected = { selectedYear = it },
-                onMonthSelected = { selectedMonth = it },
                 windowSizeClass = windowSizeClass,
                 onNavigate = onNavigate,
                 onMenuClick = onMenuClick
@@ -92,19 +79,12 @@ private fun CalculatorSuccessContent(
     state: CalculatorState.Success,
     selectedYear: Int,
     selectedMonth: Int,
-    selectedMonthName: String,
-    years: List<Int>,
-    months: List<Pair<Int, org.jetbrains.compose.resources.StringResource>>,
-    showYearDropdown: Boolean,
-    showMonthDropdown: Boolean,
-    onYearDropdownChange: (Boolean) -> Unit,
-    onMonthDropdownChange: (Boolean) -> Unit,
-    onYearSelected: (Int) -> Unit,
-    onMonthSelected: (Int) -> Unit,
     windowSizeClass: WindowSizeClass,
     onNavigate: (String) -> Unit,
     onMenuClick: () -> Unit
 ) {
+    val selectedMonthName = getMonthAbbreviationResource(selectedMonth)?.let { stringResource(it) } ?: ""
+    
     ScreenLayout(
         windowSizeClass = windowSizeClass,
         breadcrumbItems = listOf(
@@ -129,25 +109,6 @@ private fun CalculatorSuccessContent(
                     )
                 }
             }
-        }
-
-        item {
-            PeriodSelectorCard(
-                selectedYear = selectedYear,
-                selectedMonth = selectedMonth,
-                selectedMonthName = selectedMonthName,
-                years = years,
-                months = months,
-                showYearDropdown = showYearDropdown,
-                showMonthDropdown = showMonthDropdown,
-                onYearDropdownChange = onYearDropdownChange,
-                onMonthDropdownChange = onMonthDropdownChange,
-                onYearSelected = onYearSelected,
-                onMonthSelected = onMonthSelected,
-                title = stringResource(Res.string.home_select_period),
-                yearLabel = stringResource(Res.string.home_year),
-                monthLabel = stringResource(Res.string.home_month)
-            )
         }
 
         item {
