@@ -42,13 +42,15 @@ fun ScreenLayout(
             onRefreshClick = onRefreshClick
         )
         
-        // Breadcrumb
-        Breadcrumb(
-            items = breadcrumbItems,
-            onNavigate = onNavigate
-        )
-        
-        HorizontalDivider()
+        // Breadcrumb (hide if only one item)
+        if (breadcrumbItems.size > 1) {
+            Breadcrumb(
+                items = breadcrumbItems,
+                onNavigate = onNavigate
+            )
+            
+            HorizontalDivider()
+        }
         
         // Scrollable content
         LazyColumn(
