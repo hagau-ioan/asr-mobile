@@ -1,7 +1,10 @@
 package com.asr.financial.presentation.mvi.interactor
 
+import com.asr.financial.domain.model.Transaction
 import com.asr.financial.domain.model.TransactionType
+import com.asr.financial.domain.usecase.GetAvailableYearsUseCase
 import com.asr.financial.domain.usecase.GetTransactionsUseCase
+import com.asr.financial.domain.usecase.RefreshDataUseCase
 import com.asr.financial.platform.Clock
 import com.asr.financial.presentation.mvi.effect.ExpensesEffect
 import com.asr.financial.presentation.mvi.event.ExpensesEvent
@@ -31,6 +34,7 @@ class ExpensesInteractor(
 
     private var currentYear: Int
     private var currentMonth: Int
+    private var cachedTransactions: List<Transaction> = emptyList()
 
     init {
         val (prevMonth, prevYear) = calculatePreviousMonth(getCurrentMonth(clock), getCurrentYear(clock))
@@ -49,6 +53,7 @@ class ExpensesInteractor(
     private suspend fun loadData(year: Int, month: Int) {
         _uiState.emit(ExpensesState.Loading)
         try {
+            cachedTransactions = getTransactionsUseCase()
             val expenses = calculateExpenses(year, month)
             emitSuccessState(expenses, year, month)
         } catch (e: Exception) {
@@ -60,7 +65,14 @@ class ExpensesInteractor(
     private suspend fun filterByPeriod(year: Int, month: Int) {
         currentYear = year
         currentMonth = month
-        loadData(year, month)
+        
+        // Use cached data for filtering
+        try {
+            val expenses = calculateExpenses(year, month)
+            emitSuccessState(expenses, year, month)
+        } catch (e: Exception) {
+            _uiState.emit(ExpensesState.Error(e.message ?: "Unknown error"))
+        }
     }
 
     private suspend fun refreshData() {
@@ -70,12 +82,13 @@ class ExpensesInteractor(
         }
         
         refreshDataUseCase()
-        loadData(currentYear, currentMonth)
+        cachedTransactions = getTransactionsUseCase()
+        val expenses = calculateExpenses(currentYear, currentMonth)
+        emitSuccessState(expenses, currentYear, currentMonth)
     }
 
     private suspend fun calculateExpenses(year: Int, month: Int): List<ExpenseStat> {
-        val transactions = getTransactionsUseCase()
-        val filteredExpenses = transactions.filter {
+        val filteredExpenses = cachedTransactions.filter {
             it.type == TransactionType.EXPENSE &&
             it.getYear() == year &&
             it.getMonth() == month

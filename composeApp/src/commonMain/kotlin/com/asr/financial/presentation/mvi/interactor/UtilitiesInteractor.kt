@@ -1,7 +1,10 @@
 package com.asr.financial.presentation.mvi.interactor
 
+import com.asr.financial.domain.model.Transaction
 import com.asr.financial.domain.model.TransactionType
+import com.asr.financial.domain.usecase.GetAvailableYearsUseCase
 import com.asr.financial.domain.usecase.GetTransactionsUseCase
+import com.asr.financial.domain.usecase.RefreshDataUseCase
 import com.asr.financial.platform.Clock
 import com.asr.financial.presentation.mvi.effect.UtilitiesEffect
 import com.asr.financial.presentation.mvi.event.UtilitiesEvent
@@ -33,6 +36,7 @@ class UtilitiesInteractor(
     private var currentYear: Int
     private var currentMonth: Int
     private var comparisonYear: Int
+    private var cachedTransactions: List<Transaction> = emptyList()
 
     init {
         val (prevMonth, prevYear) = calculatePreviousMonth(getCurrentMonth(clock), getCurrentYear(clock))
@@ -53,6 +57,7 @@ class UtilitiesInteractor(
     private suspend fun loadData(year: Int, month: Int) {
         _uiState.emit(UtilitiesState.Loading)
         try {
+            cachedTransactions = getTransactionsUseCase()
             val (prevMonth, prevYear) = calculatePreviousMonth(month, year)
             val comparisons = calculateComparisons(year, month, prevYear, prevMonth)
             val yearlyData = calculateYearlyData(year)
@@ -91,14 +96,79 @@ class UtilitiesInteractor(
     private suspend fun filterByPeriod(year: Int, month: Int) {
         currentYear = year
         currentMonth = month
-        comparisonYear = year // Reset comparison year when period changes
-        // Always reload data, even if currently in Error state
-        loadData(year, month)
+        comparisonYear = year
+        
+        // Use cached data for filtering
+        try {
+            val (prevMonth, prevYear) = calculatePreviousMonth(month, year)
+            val comparisons = calculateComparisons(year, month, prevYear, prevMonth)
+            val yearlyData = calculateYearlyData(year)
+            val comparisonYearlyData = calculateYearlyData(comparisonYear)
+            val availableYears = getAvailableYearsUseCase()
+            
+            val currentTotal = comparisons.sumOf { it.currentAmount }
+            val previousTotal = comparisons.sumOf { it.previousAmount }
+            val totalDifference = currentTotal - previousTotal
+            val totalPercentage = totalDifference.percentOf(previousTotal)
+
+            _uiState.emit(
+                UtilitiesState.Success(
+                    comparisons = comparisons,
+                    currentTotal = currentTotal,
+                    previousTotal = previousTotal,
+                    totalDifference = totalDifference,
+                    totalPercentage = totalPercentage,
+                    yearlyData = yearlyData,
+                    comparisonYearlyData = comparisonYearlyData,
+                    selectedYear = year,
+                    selectedMonth = month,
+                    previousMonth = prevMonth,
+                    previousYear = prevYear,
+                    comparisonYear = comparisonYear,
+                    availableYears = availableYears
+                )
+            )
+        } catch (e: Exception) {
+            _uiState.emit(UtilitiesState.Error(e.message ?: "Unknown error"))
+        }
     }
 
     private suspend fun changeComparisonYear(year: Int) {
         comparisonYear = year
-        loadData(currentYear, currentMonth)
+        
+        // Use cached data
+        try {
+            val (prevMonth, prevYear) = calculatePreviousMonth(currentMonth, currentYear)
+            val comparisons = calculateComparisons(currentYear, currentMonth, prevYear, prevMonth)
+            val yearlyData = calculateYearlyData(currentYear)
+            val comparisonYearlyData = calculateYearlyData(comparisonYear)
+            val availableYears = getAvailableYearsUseCase()
+            
+            val currentTotal = comparisons.sumOf { it.currentAmount }
+            val previousTotal = comparisons.sumOf { it.previousAmount }
+            val totalDifference = currentTotal - previousTotal
+            val totalPercentage = totalDifference.percentOf(previousTotal)
+
+            _uiState.emit(
+                UtilitiesState.Success(
+                    comparisons = comparisons,
+                    currentTotal = currentTotal,
+                    previousTotal = previousTotal,
+                    totalDifference = totalDifference,
+                    totalPercentage = totalPercentage,
+                    yearlyData = yearlyData,
+                    comparisonYearlyData = comparisonYearlyData,
+                    selectedYear = currentYear,
+                    selectedMonth = currentMonth,
+                    previousMonth = prevMonth,
+                    previousYear = prevYear,
+                    comparisonYear = comparisonYear,
+                    availableYears = availableYears
+                )
+            )
+        } catch (e: Exception) {
+            _uiState.emit(UtilitiesState.Error(e.message ?: "Unknown error"))
+        }
     }
 
     private suspend fun refreshData() {
@@ -108,7 +178,35 @@ class UtilitiesInteractor(
         }
         
         refreshDataUseCase()
-        loadData(currentYear, currentMonth)
+        cachedTransactions = getTransactionsUseCase()
+        val (prevMonth, prevYear) = calculatePreviousMonth(currentMonth, currentYear)
+        val comparisons = calculateComparisons(currentYear, currentMonth, prevYear, prevMonth)
+        val yearlyData = calculateYearlyData(currentYear)
+        val comparisonYearlyData = calculateYearlyData(comparisonYear)
+        val availableYears = getAvailableYearsUseCase()
+        
+        val currentTotal = comparisons.sumOf { it.currentAmount }
+        val previousTotal = comparisons.sumOf { it.previousAmount }
+        val totalDifference = currentTotal - previousTotal
+        val totalPercentage = totalDifference.percentOf(previousTotal)
+
+        _uiState.emit(
+            UtilitiesState.Success(
+                comparisons = comparisons,
+                currentTotal = currentTotal,
+                previousTotal = previousTotal,
+                totalDifference = totalDifference,
+                totalPercentage = totalPercentage,
+                yearlyData = yearlyData,
+                comparisonYearlyData = comparisonYearlyData,
+                selectedYear = currentYear,
+                selectedMonth = currentMonth,
+                previousMonth = prevMonth,
+                previousYear = prevYear,
+                comparisonYear = comparisonYear,
+                availableYears = availableYears
+            )
+        )
     }
 
     private suspend fun calculateComparisons(
@@ -117,15 +215,13 @@ class UtilitiesInteractor(
         prevYear: Int,
         prevMonth: Int
     ): List<UtilityComparison> {
-        val transactions = getTransactionsUseCase()
-        
-        val currentExpenses = transactions.filter {
+        val currentExpenses = cachedTransactions.filter {
             it.type == TransactionType.EXPENSE &&
             it.getYear() == year &&
             it.getMonth() == month
         }
 
-        val previousExpenses = transactions.filter {
+        val previousExpenses = cachedTransactions.filter {
             it.type == TransactionType.EXPENSE &&
             it.getYear() == prevYear &&
             it.getMonth() == prevMonth
@@ -156,10 +252,8 @@ class UtilitiesInteractor(
     }
 
     private suspend fun calculateYearlyData(year: Int): List<YearlyUtilityData> {
-        val transactions = getTransactionsUseCase()
-        
         return (1..12).map { month ->
-            val currentYearAmount = transactions
+            val currentYearAmount = cachedTransactions
                 .filter {
                     it.type == TransactionType.EXPENSE &&
                     it.getYear() == year &&
@@ -167,7 +261,7 @@ class UtilitiesInteractor(
                 }
                 .sumOf { it.amount }
 
-            val previousYearAmount = transactions
+            val previousYearAmount = cachedTransactions
                 .filter {
                     it.type == TransactionType.EXPENSE &&
                     it.getYear() == year - 1 &&

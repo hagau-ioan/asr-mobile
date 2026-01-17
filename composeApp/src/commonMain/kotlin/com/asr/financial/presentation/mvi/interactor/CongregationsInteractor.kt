@@ -39,6 +39,7 @@ class CongregationsInteractor(
 
     private var currentYear: Int
     private var currentMonth: Int
+    private var cachedTransactions: List<Transaction> = emptyList()
 
     init {
         val (prevMonth, prevYear) = calculatePreviousMonth(getCurrentMonth(clock), getCurrentYear(clock))
@@ -57,6 +58,7 @@ class CongregationsInteractor(
     private suspend fun loadData(year: Int, month: Int) {
         _uiState.emit(CongregationsState.Loading)
         try {
+            cachedTransactions = getTransactionsUseCase()
             val stats = calculateStats(year, month)
             emitSuccessState(stats, year, month)
         } catch (e: Exception) {
@@ -68,16 +70,24 @@ class CongregationsInteractor(
     private suspend fun filterByPeriod(year: Int, month: Int) {
         currentYear = year
         currentMonth = month
-        loadData(year, month)
+        
+        // Use cached data for filtering
+        try {
+            val stats = calculateStats(year, month)
+            emitSuccessState(stats, year, month)
+        } catch (e: Exception) {
+            _uiState.emit(CongregationsState.Error(e.message ?: "Unknown error"))
+        }
     }
 
     private suspend fun refreshData() {
-        loadData(currentYear, currentMonth)
+        cachedTransactions = getTransactionsUseCase()
+        val stats = calculateStats(currentYear, currentMonth)
+        emitSuccessState(stats, currentYear, currentMonth)
     }
 
     private suspend fun calculateStats(year: Int, month: Int): List<CongregationStat> {
-        val transactions = getTransactionsUseCase()
-        val filteredTransactions = transactions.filter {
+        val filteredTransactions = cachedTransactions.filter {
             it.getYear() == year && it.getMonth() == month
         }
 
