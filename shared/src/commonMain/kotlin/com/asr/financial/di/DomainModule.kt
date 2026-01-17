@@ -26,4 +26,7 @@ val domainModule = module {
     factory { GetPublisherExpectedContributionUseCase(get()) }
     factory { GetStartYearUseCase(get()) }
     factory { RefreshDataUseCase(get()) }
+    
+    // ASR Expenses use cases
+    factory { GetAsrExpensesUseCase(get()) }
 }

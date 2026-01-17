@@ -41,5 +41,9 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Aplicația necesită acces la cameră pentru a scana chitanțe și documente.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Aplicația necesită acces la galeria foto pentru a selecta imagini de chitanțe.</string>
 </dict>
 </plist>

@@ -11,6 +11,7 @@
     <string name="nav_utilities">Utilități &amp; Consum</string>
     <string name="nav_yearly">Comparație Anuală</string>
     <string name="nav_calculator">Situatie Donatii</string>
+    <string name="nav_asr_expenses">Cheltuieli ASR</string>
     <string name="nav_upload">Încarcă documente</string>
     
     <!-- Upload Screen -->
@@ -199,4 +200,18 @@
     <!-- Footer -->
     <string name="footer_publishers_label">Vestitori:</string>
     <string name="footer_congregations_label">Congregații:</string>
+    
+    <!-- ASR Expenses Screen -->
+    <string name="asr_expenses_summary">Rezumat Cheltuieli</string>
+    <string name="asr_expenses_total_count">Total tranzacții:</string>
+    <string name="asr_expenses_total_amount">Total cheltuieli:</string>
+    <string name="asr_expenses_col_date">Data</string>
+    <string name="asr_expenses_col_category">Categorie</string>
+    <string name="asr_expenses_col_description">Descriere</string>
+    <string name="asr_expenses_col_amount">Sumă</string>
+    <string name="filter_year">An</string>
+    <string name="filter_month">Lună</string>
+    <string name="filter_all_months">Toate lunile</string>
+    <string name="filter_all_years">Toți anii</string>
+    <string name="asr_expenses_note_12_months">Notă: Cheltuielile afișate sunt doar pentru ultimele 12 luni.</string>
 </resources>

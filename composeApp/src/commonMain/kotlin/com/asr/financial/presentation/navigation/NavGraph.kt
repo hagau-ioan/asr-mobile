@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.asr.financial.presentation.screens.asrexpenses.AsrExpensesScreen
 import com.asr.financial.presentation.screens.calculator.CalculatorScreen
 import com.asr.financial.presentation.screens.congregations.CongregationsScreen
 import com.asr.financial.presentation.screens.expenses.ExpensesScreen
@@ -86,6 +87,14 @@ fun NavGraph(
             
             composable("calculator") {
                 CalculatorScreen(
+                    windowSizeClass = windowSizeClass,
+                    onNavigate = { route -> navController.navigate(route) },
+                    onMenuClick = onMenuClick
+                )
+            }
+            
+            composable("asr-expenses") {
+                AsrExpensesScreen(
                     windowSizeClass = windowSizeClass,
                     onNavigate = { route -> navController.navigate(route) },
                     onMenuClick = onMenuClick

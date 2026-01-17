@@ -1,15 +1,19 @@
 package com.asr.financial.di
 
 import com.asr.financial.data.datasource.AppConfigDataSource
+import com.asr.financial.data.datasource.AsrExpenseDataSource
 import com.asr.financial.data.datasource.CongregationDataSource
 import com.asr.financial.data.datasource.JsonAppConfigDataSource
+import com.asr.financial.data.datasource.JsonAsrExpenseDataSource
 import com.asr.financial.data.datasource.JsonCongregationDataSource
 import com.asr.financial.data.datasource.JsonTransactionDataSource
 import com.asr.financial.data.datasource.TransactionDataSource
 import com.asr.financial.data.repository.AppConfigRepositoryImpl
+import com.asr.financial.data.repository.AsrExpenseRepositoryImpl
 import com.asr.financial.data.repository.CongregationInfoRepositoryImpl
 import com.asr.financial.data.repository.TransactionRepositoryImpl
 import com.asr.financial.domain.repository.AppConfigRepository
+import com.asr.financial.domain.repository.AsrExpenseRepository
 import com.asr.financial.domain.repository.CongregationInfoRepository
 import com.asr.financial.domain.repository.TransactionRepository
 import com.asr.financial.platform.ResourceLoader
@@ -24,9 +28,11 @@ val dataModule = module {
     single<TransactionDataSource> { JsonTransactionDataSource(get()) }
     single<CongregationDataSource> { JsonCongregationDataSource(get()) }
     single<AppConfigDataSource> { JsonAppConfigDataSource(get(), get()) }
+    single<AsrExpenseDataSource> { JsonAsrExpenseDataSource(get()) }
     
     // Repository implementations
     single<TransactionRepository> { TransactionRepositoryImpl(get()) }
     single<CongregationInfoRepository> { CongregationInfoRepositoryImpl(get()) }
     single<AppConfigRepository> { AppConfigRepositoryImpl(get()) }
+    single<AsrExpenseRepository> { AsrExpenseRepositoryImpl(get()) }
 }

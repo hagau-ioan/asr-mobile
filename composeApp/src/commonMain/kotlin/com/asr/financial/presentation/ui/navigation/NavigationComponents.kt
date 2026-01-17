@@ -32,6 +32,7 @@ sealed class NavigationItem(
     data object Utilities : NavigationItem("utilities", Res.string.nav_utilities, Icons.Default.Bolt)
     data object Yearly : NavigationItem("yearly", Res.string.nav_yearly, Icons.Default.TrendingUp)
     data object Calculator : NavigationItem("calculator", Res.string.nav_calculator, Icons.Default.Calculate)
+    data object AsrExpenses : NavigationItem("asr-expenses", Res.string.nav_asr_expenses, Icons.Default.AccountBalance)
     data object Upload : NavigationItem("upload", Res.string.nav_upload, Icons.Default.Upload)
 }
 
@@ -42,6 +43,7 @@ val navigationItems = listOf(
     NavigationItem.Utilities,
     NavigationItem.Yearly,
     NavigationItem.Calculator,
+    NavigationItem.AsrExpenses,
     NavigationItem.Upload
 )
 

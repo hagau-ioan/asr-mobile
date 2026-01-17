@@ -11,6 +11,7 @@
     <string name="nav_utilities">Közművek &amp; Fogyasztás</string>
     <string name="nav_yearly">Éves Összehasonlítás</string>
     <string name="nav_calculator">Helyzet Adomanyok</string>
+    <string name="nav_asr_expenses">ASR Kiadások</string>
     <string name="nav_upload">Dokumentumok feltöltése</string>
     
     <!-- Upload Screen -->
@@ -198,4 +199,18 @@
     <!-- Footer -->
     <string name="footer_publishers_label">Hirdetők:</string>
     <string name="footer_congregations_label">Gyülekezetek:</string>
+    
+    <!-- ASR Expenses Screen -->
+    <string name="asr_expenses_summary">Kiadások Összefoglalója</string>
+    <string name="asr_expenses_total_count">Összes tranzakció:</string>
+    <string name="asr_expenses_total_amount">Összes kiadás:</string>
+    <string name="asr_expenses_col_date">Dátum</string>
+    <string name="asr_expenses_col_category">Kategória</string>
+    <string name="asr_expenses_col_description">Leírás</string>
+    <string name="asr_expenses_col_amount">Összeg</string>
+    <string name="filter_year">Év</string>
+    <string name="filter_month">Hónap</string>
+    <string name="filter_all_months">Minden hónap</string>
+    <string name="filter_all_years">Minden év</string>
+    <string name="asr_expenses_note_12_months">Megjegyzés: A megjelenített kiadások csak az elmúlt 12 hónapra vonatkoznak.</string>
 </resources>
