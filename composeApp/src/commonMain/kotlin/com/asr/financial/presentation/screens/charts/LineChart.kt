@@ -46,15 +46,17 @@ fun LineChart(
     val textColor = MaterialTheme.colorScheme.onSurface
     val textMeasurer = rememberTextMeasurer()
     
-    var animationPlayed by remember { mutableStateOf(false) }
+    val dataKey = remember(currentYearData, previousYearData) { 
+        currentYearData.hashCode() + previousYearData.hashCode() 
+    }
+    var animationPlayed by remember(dataKey) { mutableStateOf(false) }
     val animationProgress by animateFloatAsState(
         targetValue = if (animationPlayed) 1f else 0f,
         animationSpec = tween(durationMillis = 1500),
         label = "lineChartAnimation"
     )
 
-    LaunchedEffect(currentYearData, previousYearData) {
-        animationPlayed = false
+    LaunchedEffect(dataKey) {
         animationPlayed = true
     }
     

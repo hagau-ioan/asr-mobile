@@ -46,15 +46,15 @@ fun DonutChart(
     val total = items.sumOf { it.value }
     if (total == 0.0) return
 
-    var animationPlayed by remember { mutableStateOf(false) }
+    val dataKey = remember(items) { items.hashCode() }
+    var animationPlayed by remember(dataKey) { mutableStateOf(false) }
     val animationProgress by animateFloatAsState(
         targetValue = if (animationPlayed) 1f else 0f,
         animationSpec = tween(durationMillis = 1000),
         label = "donutChartAnimation"
     )
 
-    LaunchedEffect(items) {
-        animationPlayed = false
+    LaunchedEffect(dataKey) {
         animationPlayed = true
     }
 
