@@ -2,497 +2,521 @@
   {
     "id": "txn_2024_01_001",
     "type": "EXPENSE",
-    "amount": 529.87,
+    "amount": 206.18,
     "description": "Factură apă",
-    "date": "2024-01-15",
+    "date": "2024-01-01",
     "category": "Apă"
   },
   {
     "id": "txn_2024_01_002",
     "type": "EXPENSE",
-    "amount": 14.66,
-    "description": "Comisioane bancare",
-    "date": "2024-01-15",
-    "category": "Comisioane Bancare"
+    "amount": 1237.5,
+    "description": "Factură energie electrică",
+    "date": "2024-01-01",
+    "category": "Energie Electrică"
   },
   {
     "id": "txn_2024_01_003",
     "type": "EXPENSE",
-    "amount": 1861.23,
-    "description": "Factură energie electrică",
-    "date": "2024-01-15",
-    "category": "Energie Electrică"
+    "amount": 3806.4,
+    "description": "Factură gaze naturale",
+    "date": "2024-01-01",
+    "category": "Gaze Naturale"
   },
   {
     "id": "txn_2024_01_004",
     "type": "EXPENSE",
-    "amount": 7263.06,
-    "description": "Factură gaze naturale",
-    "date": "2024-01-15",
-    "category": "Gaze Naturale"
+    "amount": 189.15,
+    "description": "Internet și telefonie",
+    "date": "2024-01-01",
+    "category": "Internet/Telecomunicații"
   },
   {
     "id": "txn_2024_01_005",
     "type": "EXPENSE",
-    "amount": 191.84,
-    "description": "Internet și telefonie",
-    "date": "2024-01-15",
-    "category": "Internet/Telecomunicații"
-  },
-  {
-    "id": "txn_2024_01_006",
-    "type": "EXPENSE",
-    "amount": 36446.87,
+    "amount": 2612.11,
     "description": "Materiale construcție",
-    "date": "2024-01-15",
+    "date": "2024-01-01",
     "category": "Materiale Construcție"
   },
   {
     "id": "txn_2024_02_001",
     "type": "EXPENSE",
-    "amount": 1085.07,
+    "amount": 211.46,
     "description": "Factură apă",
-    "date": "2024-02-15",
+    "date": "2024-02-01",
     "category": "Apă"
   },
   {
     "id": "txn_2024_02_002",
     "type": "EXPENSE",
-    "amount": 14.56,
+    "amount": 1.02,
     "description": "Comisioane bancare",
-    "date": "2024-02-15",
+    "date": "2024-02-01",
     "category": "Comisioane Bancare"
   },
   {
     "id": "txn_2024_02_003",
     "type": "EXPENSE",
-    "amount": 204.4,
+    "amount": 189.43,
     "description": "Internet și telefonie",
-    "date": "2024-02-15",
+    "date": "2024-02-01",
     "category": "Internet/Telecomunicații"
   },
   {
     "id": "txn_2024_02_004",
     "type": "EXPENSE",
-    "amount": 8916.27,
+    "amount": 6030.0,
     "description": "Materiale construcție",
-    "date": "2024-02-15",
+    "date": "2024-02-01",
     "category": "Materiale Construcție"
+  },
+  {
+    "id": "txn_2024_02_005",
+    "type": "EXPENSE",
+    "amount": 1461.0,
+    "description": "Taxe și impozite",
+    "date": "2024-02-01",
+    "category": "Taxe și Impozite"
   },
   {
     "id": "txn_2024_03_001",
     "type": "EXPENSE",
-    "amount": 818.19,
-    "description": "Factură apă",
-    "date": "2024-03-15",
-    "category": "Apă"
+    "amount": 232.3,
+    "description": "Alte Cheltuieli",
+    "date": "2024-03-01",
+    "category": "Alte Cheltuieli"
   },
   {
     "id": "txn_2024_03_002",
     "type": "EXPENSE",
-    "amount": 469.54,
-    "description": "Factură energie electrică",
-    "date": "2024-03-15",
-    "category": "Energie Electrică"
+    "amount": 230.88,
+    "description": "Factură apă",
+    "date": "2024-03-01",
+    "category": "Apă"
   },
   {
     "id": "txn_2024_03_003",
     "type": "EXPENSE",
-    "amount": 10972.81,
-    "description": "Factură gaze naturale",
-    "date": "2024-03-15",
-    "category": "Gaze Naturale"
+    "amount": 2.55,
+    "description": "Comisioane bancare",
+    "date": "2024-03-01",
+    "category": "Comisioane Bancare"
   },
   {
     "id": "txn_2024_03_004",
     "type": "EXPENSE",
-    "amount": 417.63,
-    "description": "Internet și telefonie",
-    "date": "2024-03-15",
-    "category": "Internet/Telecomunicații"
+    "amount": 831.6,
+    "description": "Factură energie electrică",
+    "date": "2024-03-01",
+    "category": "Energie Electrică"
   },
   {
     "id": "txn_2024_03_005",
     "type": "EXPENSE",
-    "amount": 9302.67,
+    "amount": 4863.3,
+    "description": "Factură gaze naturale",
+    "date": "2024-03-01",
+    "category": "Gaze Naturale"
+  },
+  {
+    "id": "txn_2024_03_006",
+    "type": "EXPENSE",
+    "amount": 378.73,
+    "description": "Internet și telefonie",
+    "date": "2024-03-01",
+    "category": "Internet/Telecomunicații"
+  },
+  {
+    "id": "txn_2024_03_007",
+    "type": "EXPENSE",
+    "amount": 10974.56,
     "description": "Materiale construcție",
-    "date": "2024-03-15",
+    "date": "2024-03-01",
     "category": "Materiale Construcție"
   },
   {
     "id": "txn_2024_04_001",
     "type": "EXPENSE",
-    "amount": 896.43,
+    "amount": 267.9,
     "description": "Factură apă",
-    "date": "2024-04-15",
+    "date": "2024-04-01",
     "category": "Apă"
   },
   {
     "id": "txn_2024_04_002",
     "type": "EXPENSE",
-    "amount": 0.58,
-    "description": "Comisioane bancare",
-    "date": "2024-04-15",
-    "category": "Comisioane Bancare"
+    "amount": 189.18,
+    "description": "Internet și telefonie",
+    "date": "2024-04-01",
+    "category": "Internet/Telecomunicații"
   },
   {
     "id": "txn_2024_04_003",
     "type": "EXPENSE",
-    "amount": 3876.79,
-    "description": "Factură energie electrică",
-    "date": "2024-04-15",
-    "category": "Energie Electrică"
-  },
-  {
-    "id": "txn_2024_04_004",
-    "type": "EXPENSE",
-    "amount": 8213.14,
-    "description": "Factură gaze naturale",
-    "date": "2024-04-15",
-    "category": "Gaze Naturale"
-  },
-  {
-    "id": "txn_2024_04_005",
-    "type": "EXPENSE",
-    "amount": 205.24,
-    "description": "Internet și telefonie",
-    "date": "2024-04-15",
-    "category": "Internet/Telecomunicații"
-  },
-  {
-    "id": "txn_2024_04_006",
-    "type": "EXPENSE",
-    "amount": 16930.0,
+    "amount": 966.74,
     "description": "Materiale construcție",
-    "date": "2024-04-15",
+    "date": "2024-04-01",
     "category": "Materiale Construcție"
   },
   {
     "id": "txn_2024_05_001",
     "type": "EXPENSE",
-    "amount": 2891.43,
-    "description": "Deconturi cheltuieli",
-    "date": "2024-05-15",
-    "category": "Deconturi Cheltuieli"
+    "amount": 0.51,
+    "description": "Comisioane bancare",
+    "date": "2024-05-01",
+    "category": "Comisioane Bancare"
   },
   {
     "id": "txn_2024_05_002",
     "type": "EXPENSE",
-    "amount": 156.83,
+    "amount": 678.7,
     "description": "Factură energie electrică",
-    "date": "2024-05-15",
+    "date": "2024-05-01",
     "category": "Energie Electrică"
   },
   {
     "id": "txn_2024_05_003",
     "type": "EXPENSE",
-    "amount": 4399.51,
+    "amount": 1981.2,
     "description": "Factură gaze naturale",
-    "date": "2024-05-15",
+    "date": "2024-05-01",
     "category": "Gaze Naturale"
   },
   {
     "id": "txn_2024_05_004",
     "type": "EXPENSE",
-    "amount": 16430.42,
+    "amount": 21297.12,
     "description": "Materiale construcție",
-    "date": "2024-05-15",
+    "date": "2024-05-01",
     "category": "Materiale Construcție"
   },
   {
     "id": "txn_2024_06_001",
     "type": "EXPENSE",
-    "amount": 1754.35,
+    "amount": 871.68,
     "description": "Factură apă",
-    "date": "2024-06-15",
+    "date": "2024-06-01",
     "category": "Apă"
   },
   {
     "id": "txn_2024_06_002",
     "type": "EXPENSE",
-    "amount": 126.33,
+    "amount": 597.3,
     "description": "Factură energie electrică",
-    "date": "2024-06-15",
+    "date": "2024-06-01",
     "category": "Energie Electrică"
   },
   {
     "id": "txn_2024_06_003",
     "type": "EXPENSE",
-    "amount": 1245.17,
+    "amount": 226.2,
     "description": "Factură gaze naturale",
-    "date": "2024-06-15",
+    "date": "2024-06-01",
     "category": "Gaze Naturale"
+  },
+  {
+    "id": "txn_2024_06_004",
+    "type": "EXPENSE",
+    "amount": 378.95,
+    "description": "Internet și telefonie",
+    "date": "2024-06-01",
+    "category": "Internet/Telecomunicații"
+  },
+  {
+    "id": "txn_2024_06_005",
+    "type": "EXPENSE",
+    "amount": 6838.31,
+    "description": "Materiale construcție",
+    "date": "2024-06-01",
+    "category": "Materiale Construcție"
   },
   {
     "id": "txn_2024_07_001",
     "type": "EXPENSE",
-    "amount": 667.31,
-    "description": "Factură apă",
-    "date": "2024-07-15",
-    "category": "Apă"
+    "amount": 269.4,
+    "description": "Alte Cheltuieli",
+    "date": "2024-07-01",
+    "category": "Alte Cheltuieli"
   },
   {
     "id": "txn_2024_07_002",
     "type": "EXPENSE",
-    "amount": 17.13,
+    "amount": 21.53,
     "description": "Comisioane bancare",
-    "date": "2024-07-15",
+    "date": "2024-07-01",
     "category": "Comisioane Bancare"
   },
   {
     "id": "txn_2024_07_003",
     "type": "EXPENSE",
-    "amount": 89.4,
+    "amount": 690.8,
     "description": "Factură energie electrică",
-    "date": "2024-07-15",
+    "date": "2024-07-01",
     "category": "Energie Electrică"
   },
   {
     "id": "txn_2024_07_004",
     "type": "EXPENSE",
-    "amount": 1204.47,
+    "amount": 50.7,
     "description": "Factură gaze naturale",
-    "date": "2024-07-15",
+    "date": "2024-07-01",
     "category": "Gaze Naturale"
   },
   {
     "id": "txn_2024_07_005",
     "type": "EXPENSE",
-    "amount": 12049.21,
+    "amount": 15047.69,
     "description": "Materiale construcție",
-    "date": "2024-07-15",
+    "date": "2024-07-01",
     "category": "Materiale Construcție"
-  },
-  {
-    "id": "txn_2024_07_006",
-    "type": "EXPENSE",
-    "amount": 588.47,
-    "description": "Transfer către congregații",
-    "date": "2024-07-15",
-    "category": "Transfer către Congregații"
   },
   {
     "id": "txn_2024_08_001",
     "type": "EXPENSE",
-    "amount": 582.84,
+    "amount": 343.32,
     "description": "Factură apă",
-    "date": "2024-08-15",
+    "date": "2024-08-01",
     "category": "Apă"
   },
   {
     "id": "txn_2024_08_002",
     "type": "EXPENSE",
-    "amount": 4171.4,
-    "description": "Deconturi cheltuieli",
-    "date": "2024-08-15",
-    "category": "Deconturi Cheltuieli"
+    "amount": 0.51,
+    "description": "Comisioane bancare",
+    "date": "2024-08-01",
+    "category": "Comisioane Bancare"
   },
   {
     "id": "txn_2024_08_003",
     "type": "EXPENSE",
-    "amount": 1303.43,
-    "description": "Echipamente electronice",
-    "date": "2024-08-15",
-    "category": "Echipamente Electronice"
+    "amount": 925.1,
+    "description": "Factură energie electrică",
+    "date": "2024-08-01",
+    "category": "Energie Electrică"
   },
   {
     "id": "txn_2024_08_004",
     "type": "EXPENSE",
-    "amount": 70.65,
-    "description": "Factură energie electrică",
-    "date": "2024-08-15",
-    "category": "Energie Electrică"
+    "amount": 27.3,
+    "description": "Factură gaze naturale",
+    "date": "2024-08-01",
+    "category": "Gaze Naturale"
   },
   {
     "id": "txn_2024_08_005",
     "type": "EXPENSE",
-    "amount": 503.19,
-    "description": "Factură gaze naturale",
-    "date": "2024-08-15",
-    "category": "Gaze Naturale"
+    "amount": 189.54,
+    "description": "Internet și telefonie",
+    "date": "2024-08-01",
+    "category": "Internet/Telecomunicații"
   },
   {
     "id": "txn_2024_08_006",
     "type": "EXPENSE",
-    "amount": 8541.03,
+    "amount": 5086.99,
     "description": "Materiale construcție",
-    "date": "2024-08-15",
+    "date": "2024-08-01",
     "category": "Materiale Construcție"
   },
   {
     "id": "txn_2024_09_001",
     "type": "EXPENSE",
-    "amount": 1940.92,
-    "description": "Echipamente electronice",
-    "date": "2024-09-15",
-    "category": "Echipamente Electronice"
+    "amount": 575.55,
+    "description": "Factură apă",
+    "date": "2024-09-01",
+    "category": "Apă"
   },
   {
     "id": "txn_2024_09_002",
     "type": "EXPENSE",
-    "amount": 66.53,
-    "description": "Factură energie electrică",
-    "date": "2024-09-15",
-    "category": "Energie Electrică"
+    "amount": 29.51,
+    "description": "Comisioane bancare",
+    "date": "2024-09-01",
+    "category": "Comisioane Bancare"
   },
   {
     "id": "txn_2024_09_003",
     "type": "EXPENSE",
-    "amount": 103.2,
-    "description": "Factură gaze naturale",
-    "date": "2024-09-15",
-    "category": "Gaze Naturale"
+    "amount": 2074.6,
+    "description": "Factură energie electrică",
+    "date": "2024-09-01",
+    "category": "Energie Electrică"
   },
   {
     "id": "txn_2024_09_004",
     "type": "EXPENSE",
-    "amount": 690.95,
-    "description": "Materiale construcție",
-    "date": "2024-09-15",
-    "category": "Materiale Construcție"
+    "amount": 58.5,
+    "description": "Factură gaze naturale",
+    "date": "2024-09-01",
+    "category": "Gaze Naturale"
   },
   {
     "id": "txn_2024_09_005",
     "type": "EXPENSE",
-    "amount": 1322.01,
-    "description": "Salubritate",
-    "date": "2024-09-15",
-    "category": "Salubritate"
+    "amount": 189.53,
+    "description": "Internet și telefonie",
+    "date": "2024-09-01",
+    "category": "Internet/Telecomunicații"
+  },
+  {
+    "id": "txn_2024_09_006",
+    "type": "EXPENSE",
+    "amount": 3443.25,
+    "description": "Materiale construcție",
+    "date": "2024-09-01",
+    "category": "Materiale Construcție"
   },
   {
     "id": "txn_2024_10_001",
     "type": "EXPENSE",
-    "amount": 7.44,
-    "description": "Comisioane bancare",
-    "date": "2024-10-15",
-    "category": "Comisioane Bancare"
+    "amount": 444.62,
+    "description": "Factură apă",
+    "date": "2024-10-01",
+    "category": "Apă"
   },
   {
     "id": "txn_2024_10_002",
     "type": "EXPENSE",
-    "amount": 66.06,
-    "description": "Factură energie electrică",
-    "date": "2024-10-15",
-    "category": "Energie Electrică"
+    "amount": 2.04,
+    "description": "Comisioane bancare",
+    "date": "2024-10-01",
+    "category": "Comisioane Bancare"
   },
   {
     "id": "txn_2024_10_003",
     "type": "EXPENSE",
-    "amount": 37.53,
-    "description": "Factură gaze naturale",
-    "date": "2024-10-15",
-    "category": "Gaze Naturale"
+    "amount": 1168.2,
+    "description": "Factură energie electrică",
+    "date": "2024-10-01",
+    "category": "Energie Electrică"
   },
   {
     "id": "txn_2024_10_004",
     "type": "EXPENSE",
-    "amount": 11305.51,
-    "description": "Materiale construcție",
-    "date": "2024-10-15",
-    "category": "Materiale Construcție"
+    "amount": 58.5,
+    "description": "Factură gaze naturale",
+    "date": "2024-10-01",
+    "category": "Gaze Naturale"
   },
   {
     "id": "txn_2024_10_005",
     "type": "EXPENSE",
-    "amount": 1234.52,
-    "description": "Salubritate",
-    "date": "2024-10-15",
-    "category": "Salubritate"
+    "amount": 189.3,
+    "description": "Internet și telefonie",
+    "date": "2024-10-01",
+    "category": "Internet/Telecomunicații"
+  },
+  {
+    "id": "txn_2024_10_006",
+    "type": "EXPENSE",
+    "amount": 14027.93,
+    "description": "Materiale construcție",
+    "date": "2024-10-01",
+    "category": "Materiale Construcție"
   },
   {
     "id": "txn_2024_11_001",
     "type": "EXPENSE",
-    "amount": 2028.63,
-    "description": "Factură apă",
-    "date": "2024-11-15",
-    "category": "Apă"
+    "amount": 400.0,
+    "description": "Alte Cheltuieli",
+    "date": "2024-11-01",
+    "category": "Alte Cheltuieli"
   },
   {
     "id": "txn_2024_11_002",
     "type": "EXPENSE",
-    "amount": 14.28,
-    "description": "Comisioane bancare",
-    "date": "2024-11-15",
-    "category": "Comisioane Bancare"
+    "amount": 765.21,
+    "description": "Factură apă",
+    "date": "2024-11-01",
+    "category": "Apă"
   },
   {
     "id": "txn_2024_11_003",
     "type": "EXPENSE",
-    "amount": 2919.52,
-    "description": "Deconturi cheltuieli",
-    "date": "2024-11-15",
-    "category": "Deconturi Cheltuieli"
+    "amount": 7.02,
+    "description": "Comisioane bancare",
+    "date": "2024-11-01",
+    "category": "Comisioane Bancare"
   },
   {
     "id": "txn_2024_11_004",
     "type": "EXPENSE",
-    "amount": 99.19,
+    "amount": 1151.7,
     "description": "Factură energie electrică",
-    "date": "2024-11-15",
+    "date": "2024-11-01",
     "category": "Energie Electrică"
   },
   {
     "id": "txn_2024_11_005",
     "type": "EXPENSE",
-    "amount": 1858.44,
-    "description": "Factură gaze naturale",
-    "date": "2024-11-15",
-    "category": "Gaze Naturale"
+    "amount": 378.95,
+    "description": "Internet și telefonie",
+    "date": "2024-11-01",
+    "category": "Internet/Telecomunicații"
   },
   {
     "id": "txn_2024_11_006",
     "type": "EXPENSE",
-    "amount": 13264.7,
+    "amount": 26661.56,
     "description": "Materiale construcție",
-    "date": "2024-11-15",
+    "date": "2024-11-01",
     "category": "Materiale Construcție"
   },
   {
     "id": "txn_2024_12_001",
     "type": "EXPENSE",
-    "amount": 611.18,
-    "description": "Factură apă",
-    "date": "2024-12-15",
-    "category": "Apă"
+    "amount": 100.06,
+    "description": "Combustibil",
+    "date": "2024-12-01",
+    "category": "Combustibil"
   },
   {
     "id": "txn_2024_12_002",
     "type": "EXPENSE",
-    "amount": 8517.97,
-    "description": "Factură gaze naturale",
-    "date": "2024-12-15",
-    "category": "Gaze Naturale"
+    "amount": 5.93,
+    "description": "Comisioane bancare",
+    "date": "2024-12-01",
+    "category": "Comisioane Bancare"
   },
   {
     "id": "txn_2024_12_003",
     "type": "EXPENSE",
-    "amount": 229.0,
-    "description": "Materiale construcție",
-    "date": "2024-12-15",
-    "category": "Materiale Construcție"
+    "amount": 1114.3,
+    "description": "Factură energie electrică",
+    "date": "2024-12-01",
+    "category": "Energie Electrică"
   },
   {
     "id": "txn_2024_12_004",
     "type": "EXPENSE",
-    "amount": 1391.49,
-    "description": "Întreținere și reparații",
-    "date": "2024-12-15",
-    "category": "Întreținere și Reparații"
+    "amount": 3143.4,
+    "description": "Factură gaze naturale",
+    "date": "2024-12-01",
+    "category": "Gaze Naturale"
   },
   {
     "id": "txn_2024_12_005",
     "type": "EXPENSE",
-    "amount": 2747.08,
-    "description": "Echipamente electronice",
-    "date": "2024-12-20",
-    "category": "Echipamente Electronice"
+    "amount": 35711.62,
+    "description": "Materiale construcție",
+    "date": "2024-12-01",
+    "category": "Materiale Construcție"
+  },
+  {
+    "id": "txn_2024_12_006",
+    "type": "EXPENSE",
+    "amount": 1045.25,
+    "description": "Întreținere și reparații",
+    "date": "2024-12-01",
+    "category": "Întreținere și Reparații"
   },
   {
     "id": "txn_2025_01_001",
     "type": "EXPENSE",
     "amount": 629.73,
     "description": "Factură apă",
-    "date": "2025-01-15",
+    "date": "2025-01-01",
     "category": "Apă"
   },
   {
@@ -500,7 +524,7 @@
     "type": "EXPENSE",
     "amount": 13.04,
     "description": "Comisioane bancare",
-    "date": "2025-01-15",
+    "date": "2025-01-01",
     "category": "Comisioane Bancare"
   },
   {
@@ -508,7 +532,7 @@
     "type": "EXPENSE",
     "amount": 2231.9,
     "description": "Factură energie electrică",
-    "date": "2025-01-15",
+    "date": "2025-01-01",
     "category": "Energie Electrică"
   },
   {
@@ -516,7 +540,7 @@
     "type": "EXPENSE",
     "amount": 8154.9,
     "description": "Factură gaze naturale",
-    "date": "2025-01-15",
+    "date": "2025-01-01",
     "category": "Gaze Naturale"
   },
   {
@@ -524,7 +548,7 @@
     "type": "EXPENSE",
     "amount": 189.53,
     "description": "Internet și telefonie",
-    "date": "2025-01-15",
+    "date": "2025-01-01",
     "category": "Internet/Telecomunicații"
   },
   {
@@ -532,7 +556,7 @@
     "type": "EXPENSE",
     "amount": 32206.56,
     "description": "Materiale construcție",
-    "date": "2025-01-15",
+    "date": "2025-01-01",
     "category": "Materiale Construcție"
   },
   {
@@ -540,7 +564,7 @@
     "type": "EXPENSE",
     "amount": 1057.17,
     "description": "Factură apă",
-    "date": "2025-02-15",
+    "date": "2025-02-01",
     "category": "Apă"
   },
   {
@@ -548,7 +572,7 @@
     "type": "EXPENSE",
     "amount": 16.85,
     "description": "Comisioane bancare",
-    "date": "2025-02-15",
+    "date": "2025-02-01",
     "category": "Comisioane Bancare"
   },
   {
@@ -556,7 +580,7 @@
     "type": "EXPENSE",
     "amount": 189.44,
     "description": "Internet și telefonie",
-    "date": "2025-02-15",
+    "date": "2025-02-01",
     "category": "Internet/Telecomunicații"
   },
   {
@@ -564,7 +588,7 @@
     "type": "EXPENSE",
     "amount": 10607.18,
     "description": "Materiale construcție",
-    "date": "2025-02-15",
+    "date": "2025-02-01",
     "category": "Materiale Construcție"
   },
   {
@@ -572,39 +596,47 @@
     "type": "EXPENSE",
     "amount": 710.74,
     "description": "Factură apă",
-    "date": "2025-03-15",
+    "date": "2025-03-01",
     "category": "Apă"
   },
   {
     "id": "txn_2025_03_002",
     "type": "EXPENSE",
-    "amount": 427.9,
-    "description": "Factură energie electrică",
-    "date": "2025-03-15",
-    "category": "Energie Electrică"
+    "amount": -22.87,
+    "description": "Comisioane bancare",
+    "date": "2025-03-01",
+    "category": "Comisioane Bancare"
   },
   {
     "id": "txn_2025_03_003",
     "type": "EXPENSE",
-    "amount": 11623.15,
-    "description": "Factură gaze naturale",
-    "date": "2025-03-15",
-    "category": "Gaze Naturale"
+    "amount": 427.9,
+    "description": "Factură energie electrică",
+    "date": "2025-03-01",
+    "category": "Energie Electrică"
   },
   {
     "id": "txn_2025_03_004",
     "type": "EXPENSE",
-    "amount": 379.03,
-    "description": "Internet și telefonie",
-    "date": "2025-03-15",
-    "category": "Internet/Telecomunicații"
+    "amount": 11623.15,
+    "description": "Factură gaze naturale",
+    "date": "2025-03-01",
+    "category": "Gaze Naturale"
   },
   {
     "id": "txn_2025_03_005",
     "type": "EXPENSE",
+    "amount": 379.03,
+    "description": "Internet și telefonie",
+    "date": "2025-03-01",
+    "category": "Internet/Telecomunicații"
+  },
+  {
+    "id": "txn_2025_03_006",
+    "type": "EXPENSE",
     "amount": 11370.39,
     "description": "Materiale construcție",
-    "date": "2025-03-15",
+    "date": "2025-03-01",
     "category": "Materiale Construcție"
   },
   {
@@ -612,7 +644,7 @@
     "type": "EXPENSE",
     "amount": 845.29,
     "description": "Factură apă",
-    "date": "2025-04-15",
+    "date": "2025-04-01",
     "category": "Apă"
   },
   {
@@ -620,7 +652,7 @@
     "type": "EXPENSE",
     "amount": 0.55,
     "description": "Comisioane bancare",
-    "date": "2025-04-15",
+    "date": "2025-04-01",
     "category": "Comisioane Bancare"
   },
   {
@@ -628,7 +660,7 @@
     "type": "EXPENSE",
     "amount": 4078.8,
     "description": "Factură energie electrică",
-    "date": "2025-04-15",
+    "date": "2025-04-01",
     "category": "Energie Electrică"
   },
   {
@@ -636,7 +668,7 @@
     "type": "EXPENSE",
     "amount": 7410.0,
     "description": "Factură gaze naturale",
-    "date": "2025-04-15",
+    "date": "2025-04-01",
     "category": "Gaze Naturale"
   },
   {
@@ -644,7 +676,7 @@
     "type": "EXPENSE",
     "amount": 189.53,
     "description": "Internet și telefonie",
-    "date": "2025-04-15",
+    "date": "2025-04-01",
     "category": "Internet/Telecomunicații"
   },
   {
@@ -652,39 +684,47 @@
     "type": "EXPENSE",
     "amount": 17238.76,
     "description": "Materiale construcție",
-    "date": "2025-04-15",
+    "date": "2025-04-01",
     "category": "Materiale Construcție"
   },
   {
     "id": "txn_2025_05_001",
     "type": "EXPENSE",
-    "amount": 2562.4,
-    "description": "Deconturi cheltuieli",
-    "date": "2025-05-15",
-    "category": "Deconturi Cheltuieli"
+    "amount": -2.98,
+    "description": "Comisioane bancare",
+    "date": "2025-05-01",
+    "category": "Comisioane Bancare"
   },
   {
     "id": "txn_2025_05_002",
     "type": "EXPENSE",
-    "amount": 134.2,
-    "description": "Factură energie electrică",
-    "date": "2025-05-15",
-    "category": "Energie Electrică"
+    "amount": 2562.4,
+    "description": "Deconturi cheltuieli",
+    "date": "2025-05-01",
+    "category": "Deconturi Cheltuieli"
   },
   {
     "id": "txn_2025_05_003",
     "type": "EXPENSE",
-    "amount": 4512.3,
-    "description": "Factură gaze naturale",
-    "date": "2025-05-15",
-    "category": "Gaze Naturale"
+    "amount": 134.2,
+    "description": "Factură energie electrică",
+    "date": "2025-05-01",
+    "category": "Energie Electrică"
   },
   {
     "id": "txn_2025_05_004",
     "type": "EXPENSE",
+    "amount": 4512.3,
+    "description": "Factură gaze naturale",
+    "date": "2025-05-01",
+    "category": "Gaze Naturale"
+  },
+  {
+    "id": "txn_2025_05_005",
+    "type": "EXPENSE",
     "amount": 16322.86,
     "description": "Materiale construcție",
-    "date": "2025-05-15",
+    "date": "2025-05-01",
     "category": "Materiale Construcție"
   },
   {
@@ -692,7 +732,7 @@
     "type": "EXPENSE",
     "amount": 1588.15,
     "description": "Factură apă",
-    "date": "2025-06-15",
+    "date": "2025-06-01",
     "category": "Apă"
   },
   {
@@ -700,7 +740,7 @@
     "type": "EXPENSE",
     "amount": 128.7,
     "description": "Factură energie electrică",
-    "date": "2025-06-15",
+    "date": "2025-06-01",
     "category": "Energie Electrică"
   },
   {
@@ -708,7 +748,7 @@
     "type": "EXPENSE",
     "amount": 1170.0,
     "description": "Factură gaze naturale",
-    "date": "2025-06-15",
+    "date": "2025-06-01",
     "category": "Gaze Naturale"
   },
   {
@@ -716,7 +756,7 @@
     "type": "EXPENSE",
     "amount": 698.78,
     "description": "Factură apă",
-    "date": "2025-07-15",
+    "date": "2025-07-01",
     "category": "Apă"
   },
   {
@@ -724,7 +764,7 @@
     "type": "EXPENSE",
     "amount": 16.0,
     "description": "Comisioane bancare",
-    "date": "2025-07-15",
+    "date": "2025-07-01",
     "category": "Comisioane Bancare"
   },
   {
@@ -732,7 +772,7 @@
     "type": "EXPENSE",
     "amount": 75.9,
     "description": "Factură energie electrică",
-    "date": "2025-07-15",
+    "date": "2025-07-01",
     "category": "Energie Electrică"
   },
   {
@@ -740,7 +780,7 @@
     "type": "EXPENSE",
     "amount": 1154.4,
     "description": "Factură gaze naturale",
-    "date": "2025-07-15",
+    "date": "2025-07-01",
     "category": "Gaze Naturale"
   },
   {
@@ -748,7 +788,7 @@
     "type": "EXPENSE",
     "amount": 10523.81,
     "description": "Materiale construcție",
-    "date": "2025-07-15",
+    "date": "2025-07-01",
     "category": "Materiale Construcție"
   },
   {
@@ -756,7 +796,7 @@
     "type": "EXPENSE",
     "amount": 550.0,
     "description": "Transfer către congregații",
-    "date": "2025-07-15",
+    "date": "2025-07-01",
     "category": "Transfer către Congregații"
   },
   {
@@ -764,31 +804,31 @@
     "type": "EXPENSE",
     "amount": 728.01,
     "description": "Factură apă",
-    "date": "2025-08-15",
+    "date": "2025-08-01",
     "category": "Apă"
   },
   {
     "id": "txn_2025_08_002",
     "type": "EXPENSE",
-    "amount": 4931.71,
-    "description": "Deconturi cheltuieli",
-    "date": "2025-08-15",
-    "category": "Deconturi Cheltuieli"
+    "amount": -12.94,
+    "description": "Comisioane bancare",
+    "date": "2025-08-01",
+    "category": "Comisioane Bancare"
   },
   {
     "id": "txn_2025_08_003",
     "type": "EXPENSE",
-    "amount": 1129.0,
-    "description": "Echipamente electronice",
-    "date": "2025-08-15",
-    "category": "Echipamente Electronice"
+    "amount": 4931.71,
+    "description": "Deconturi cheltuieli",
+    "date": "2025-08-01",
+    "category": "Deconturi Cheltuieli"
   },
   {
     "id": "txn_2025_08_004",
     "type": "EXPENSE",
     "amount": 74.48,
     "description": "Factură energie electrică",
-    "date": "2025-08-15",
+    "date": "2025-08-01",
     "category": "Energie Electrică"
   },
   {
@@ -796,7 +836,7 @@
     "type": "EXPENSE",
     "amount": 432.9,
     "description": "Factură gaze naturale",
-    "date": "2025-08-15",
+    "date": "2025-08-01",
     "category": "Gaze Naturale"
   },
   {
@@ -804,55 +844,39 @@
     "type": "EXPENSE",
     "amount": 9636.21,
     "description": "Materiale construcție",
-    "date": "2025-08-15",
+    "date": "2025-08-01",
     "category": "Materiale Construcție"
   },
   {
     "id": "txn_2025_09_001",
     "type": "EXPENSE",
-    "amount": 2419.99,
-    "description": "Echipamente electronice",
-    "date": "2025-09-15",
-    "category": "Echipamente Electronice"
+    "amount": 66.5,
+    "description": "Factură energie electrică",
+    "date": "2025-09-01",
+    "category": "Energie Electrică"
   },
   {
     "id": "txn_2025_09_002",
     "type": "EXPENSE",
-    "amount": 66.5,
-    "description": "Factură energie electrică",
-    "date": "2025-09-15",
-    "category": "Energie Electrică"
+    "amount": 89.7,
+    "description": "Factură gaze naturale",
+    "date": "2025-09-01",
+    "category": "Gaze Naturale"
   },
   {
     "id": "txn_2025_09_003",
     "type": "EXPENSE",
-    "amount": 89.7,
-    "description": "Factură gaze naturale",
-    "date": "2025-09-15",
-    "category": "Gaze Naturale"
-  },
-  {
-    "id": "txn_2025_09_004",
-    "type": "EXPENSE",
     "amount": 809.1,
     "description": "Materiale construcție",
-    "date": "2025-09-15",
+    "date": "2025-09-01",
     "category": "Materiale Construcție"
-  },
-  {
-    "id": "txn_2025_09_005",
-    "type": "EXPENSE",
-    "amount": 1112.0,
-    "description": "Salubritate",
-    "date": "2025-09-15",
-    "category": "Salubritate"
   },
   {
     "id": "txn_2025_10_001",
     "type": "EXPENSE",
     "amount": 9.13,
     "description": "Comisioane bancare",
-    "date": "2025-10-15",
+    "date": "2025-10-01",
     "category": "Comisioane Bancare"
   },
   {
@@ -860,7 +884,7 @@
     "type": "EXPENSE",
     "amount": 79.8,
     "description": "Factură energie electrică",
-    "date": "2025-10-15",
+    "date": "2025-10-01",
     "category": "Energie Electrică"
   },
   {
@@ -868,7 +892,7 @@
     "type": "EXPENSE",
     "amount": 35.1,
     "description": "Factură gaze naturale",
-    "date": "2025-10-15",
+    "date": "2025-10-01",
     "category": "Gaze Naturale"
   },
   {
@@ -876,7 +900,7 @@
     "type": "EXPENSE",
     "amount": 11758.93,
     "description": "Materiale construcție",
-    "date": "2025-10-15",
+    "date": "2025-10-01",
     "category": "Materiale Construcție"
   },
   {
@@ -884,7 +908,7 @@
     "type": "EXPENSE",
     "amount": 1112.0,
     "description": "Salubritate",
-    "date": "2025-10-15",
+    "date": "2025-10-01",
     "category": "Salubritate"
   },
   {
@@ -892,7 +916,7 @@
     "type": "EXPENSE",
     "amount": 1754.78,
     "description": "Factură apă",
-    "date": "2025-11-15",
+    "date": "2025-11-01",
     "category": "Apă"
   },
   {
@@ -900,7 +924,7 @@
     "type": "EXPENSE",
     "amount": 14.84,
     "description": "Comisioane bancare",
-    "date": "2025-11-15",
+    "date": "2025-11-01",
     "category": "Comisioane Bancare"
   },
   {
@@ -908,71 +932,95 @@
     "type": "EXPENSE",
     "amount": 3058.2,
     "description": "Deconturi cheltuieli",
-    "date": "2025-11-15",
+    "date": "2025-11-01",
     "category": "Deconturi Cheltuieli"
   },
   {
     "id": "txn_2025_11_004",
     "type": "EXPENSE",
-    "amount": 86.45,
-    "description": "Factură energie electrică",
-    "date": "2025-11-15",
-    "category": "Energie Electrică"
+    "amount": 1129.0,
+    "description": "Echipamente electronice",
+    "date": "2025-11-01",
+    "category": "Echipamente Electronice"
   },
   {
     "id": "txn_2025_11_005",
     "type": "EXPENSE",
-    "amount": 1774.5,
-    "description": "Factură gaze naturale",
-    "date": "2025-11-15",
-    "category": "Gaze Naturale"
+    "amount": 86.45,
+    "description": "Factură energie electrică",
+    "date": "2025-11-01",
+    "category": "Energie Electrică"
   },
   {
     "id": "txn_2025_11_006",
     "type": "EXPENSE",
+    "amount": 1774.5,
+    "description": "Factură gaze naturale",
+    "date": "2025-11-01",
+    "category": "Gaze Naturale"
+  },
+  {
+    "id": "txn_2025_11_007",
+    "type": "EXPENSE",
     "amount": 15295.38,
     "description": "Materiale construcție",
-    "date": "2025-11-15",
+    "date": "2025-11-01",
     "category": "Materiale Construcție"
+  },
+  {
+    "id": "txn_2025_11_008",
+    "type": "EXPENSE",
+    "amount": 1112.0,
+    "description": "Salubritate",
+    "date": "2025-11-01",
+    "category": "Salubritate"
   },
   {
     "id": "txn_2025_12_001",
     "type": "EXPENSE",
     "amount": 724.66,
     "description": "Factură apă",
-    "date": "2025-12-15",
+    "date": "2025-12-01",
     "category": "Apă"
   },
   {
     "id": "txn_2025_12_002",
     "type": "EXPENSE",
-    "amount": 10459.66,
-    "description": "Factură gaze naturale",
-    "date": "2025-12-15",
-    "category": "Gaze Naturale"
+    "amount": -20.4,
+    "description": "Comisioane bancare",
+    "date": "2025-12-01",
+    "category": "Comisioane Bancare"
   },
   {
     "id": "txn_2025_12_003",
     "type": "EXPENSE",
-    "amount": 224.72,
-    "description": "Materiale construcție",
-    "date": "2025-12-15",
-    "category": "Materiale Construcție"
+    "amount": 2419.99,
+    "description": "Echipamente electronice",
+    "date": "2025-12-01",
+    "category": "Echipamente Electronice"
   },
   {
     "id": "txn_2025_12_004",
     "type": "EXPENSE",
-    "amount": 1322.72,
-    "description": "Întreținere și reparații",
-    "date": "2025-12-15",
-    "category": "Întreținere și Reparații"
+    "amount": 10459.66,
+    "description": "Factură gaze naturale",
+    "date": "2025-12-01",
+    "category": "Gaze Naturale"
   },
   {
     "id": "txn_2025_12_005",
     "type": "EXPENSE",
-    "amount": 2419.99,
-    "description": "Echipamente electronice",
-    "date": "2025-12-20",
-    "category": "Echipamente Electronice"
+    "amount": 224.72,
+    "description": "Materiale construcție",
+    "date": "2025-12-01",
+    "category": "Materiale Construcție"
+  },
+  {
+    "id": "txn_2025_12_006",
+    "type": "EXPENSE",
+    "amount": 1322.72,
+    "description": "Întreținere și reparații",
+    "date": "2025-12-01",
+    "category": "Întreținere și Reparații"
   }
 ]

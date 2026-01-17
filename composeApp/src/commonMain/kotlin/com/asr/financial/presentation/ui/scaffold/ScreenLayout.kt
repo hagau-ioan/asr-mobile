@@ -21,8 +21,11 @@ fun ScreenLayout(
     breadcrumbItems: List<BreadcrumbItem>,
     selectedMonth: String = "Decembrie",
     selectedYear: Int = 2025,
+    showRefreshButton: Boolean = false,
+    isRefreshing: Boolean = false,
     onNavigate: (String) -> Unit,
     onMenuClick: () -> Unit = {},
+    onRefreshClick: () -> Unit = {},
     content: LazyListScope.() -> Unit
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
@@ -33,7 +36,10 @@ fun ScreenLayout(
             selectedMonth = selectedMonth,
             selectedYear = selectedYear,
             showMenuButton = windowSizeClass == WindowSizeClass.Compact,
-            onMenuClick = onMenuClick
+            showRefreshButton = showRefreshButton,
+            isRefreshing = isRefreshing,
+            onMenuClick = onMenuClick,
+            onRefreshClick = onRefreshClick
         )
         
         // Breadcrumb

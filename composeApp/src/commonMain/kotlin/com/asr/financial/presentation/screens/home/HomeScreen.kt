@@ -78,8 +78,11 @@ fun HomeScreen(
         breadcrumbItems = listOf(BreadcrumbItem(stringResource(Res.string.nav_home))),
         selectedMonth = headerMonth,
         selectedYear = headerYear,
+        showRefreshButton = true,
+        isRefreshing = (uiState as? HomeState.Success)?.isRefreshing ?: false,
         onNavigate = onNavigate,
-        onMenuClick = onMenuClick
+        onMenuClick = onMenuClick,
+        onRefreshClick = { viewModel.handleEvent(HomeEvent.Refresh) }
     ) {
         // Period Selector Card
         item {

@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 class ExpensesInteractor(
     private val getTransactionsUseCase: GetTransactionsUseCase,
     private val getAvailableYearsUseCase: com.asr.financial.domain.usecase.GetAvailableYearsUseCase,
+    private val refreshDataUseCase: com.asr.financial.domain.usecase.RefreshDataUseCase,
     private val clock: Clock
 ) {
     private val _uiState = MutableStateFlow<ExpensesState>(ExpensesState.Loading)
@@ -64,6 +65,12 @@ class ExpensesInteractor(
     }
 
     private suspend fun refreshData() {
+        val currentState = _uiState.value
+        if (currentState is ExpensesState.Success) {
+            _uiState.value = currentState.copy(isRefreshing = true)
+        }
+        
+        refreshDataUseCase()
         loadData(currentYear, currentMonth)
     }
 

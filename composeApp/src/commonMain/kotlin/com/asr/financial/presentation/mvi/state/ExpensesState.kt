@@ -15,7 +15,8 @@ sealed interface ExpensesState {
         val yearlyEndYear: Int,
         val selectedYear: Int,
         val selectedMonth: Int,
-        val availableYears: List<Int>
+        val availableYears: List<Int>,
+        val isRefreshing: Boolean = false
     ) : ExpensesState
     data class Error(val message: String) : ExpensesState
 }

@@ -21,7 +21,8 @@ sealed interface UtilitiesState {
         val previousMonth: Int,
         val previousYear: Int,
         val comparisonYear: Int,
-        val availableYears: List<Int>
+        val availableYears: List<Int>,
+        val isRefreshing: Boolean = false
     ) : UtilitiesState
     data class Error(val message: String) : UtilitiesState
 }

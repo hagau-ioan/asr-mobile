@@ -28,6 +28,7 @@ class HomeInteractor(
     private val getAllCongregationsUseCase: GetAllCongregationsUseCase,
     private val getAvailableYearsUseCase: GetAvailableYearsUseCase,
     private val getAppConfigUseCase: GetAppConfigUseCase,
+    private val refreshDataUseCase: RefreshDataUseCase,
     private val clock: Clock
 ) {
     private val _uiState = MutableStateFlow<HomeState>(HomeState.Loading)
@@ -175,6 +176,12 @@ class HomeInteractor(
     }
 
     private suspend fun refreshData() {
+        val currentState = _uiState.value
+        if (currentState is HomeState.Success) {
+            _uiState.value = currentState.copy(isRefreshing = true)
+        }
+        
+        refreshDataUseCase()
         loadData(currentYear, currentMonth)
         _uiEffectChannel.send(HomeEffect.ScrollToTop)
     }

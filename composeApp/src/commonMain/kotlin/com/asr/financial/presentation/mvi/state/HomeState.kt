@@ -35,7 +35,10 @@ sealed interface HomeState {
         val congregationCount: Int,
 
         // Computed values
-        val perPublisherExpense: Double
+        val perPublisherExpense: Double,
+        
+        // UI state
+        val isRefreshing: Boolean = false
     ) : HomeState
 
     data class Error(val message: String) : HomeState

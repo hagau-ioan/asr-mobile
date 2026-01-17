@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 class UtilitiesInteractor(
     private val getTransactionsUseCase: GetTransactionsUseCase,
     private val getAvailableYearsUseCase: com.asr.financial.domain.usecase.GetAvailableYearsUseCase,
+    private val refreshDataUseCase: com.asr.financial.domain.usecase.RefreshDataUseCase,
     private val clock: Clock
 ) {
     private val _uiState = MutableStateFlow<UtilitiesState>(UtilitiesState.Loading)
@@ -101,6 +102,12 @@ class UtilitiesInteractor(
     }
 
     private suspend fun refreshData() {
+        val currentState = _uiState.value
+        if (currentState is UtilitiesState.Success) {
+            _uiState.value = currentState.copy(isRefreshing = true)
+        }
+        
+        refreshDataUseCase()
         loadData(currentYear, currentMonth)
     }
 

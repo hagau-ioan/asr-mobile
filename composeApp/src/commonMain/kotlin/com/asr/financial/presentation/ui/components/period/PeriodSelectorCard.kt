@@ -1,5 +1,6 @@
 package com.asr.financial.presentation.ui.components.period
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -53,7 +54,7 @@ fun PeriodSelectorCard(
     ) {
         Column(
             modifier = Modifier.padding(CARD_PADDING_DP.dp),
-            verticalArrangement = Arrangement.spacedBy(SECTION_SPACING_DP.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp)  // Reduced from SECTION_SPACING_DP
         ) {
             Text(
                 text = title,
@@ -61,29 +62,39 @@ fun PeriodSelectorCard(
                 fontWeight = FontWeight.Bold
             )
 
-            Row(
+            // Fancy bordered section for period selection
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(SECTION_SPACING_DP.dp)
+                shape = MaterialTheme.shapes.medium,
+                border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)),
+                color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.1f)
             ) {
-                YearDropdown(
-                    selectedYear = selectedYear,
-                    years = years,
-                    showDropdown = showYearDropdown,
-                    onDropdownChange = onYearDropdownChange,
-                    onYearSelected = onYearSelected,
-                    label = yearLabel,
-                    modifier = Modifier.weight(1f)
-                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(SECTION_SPACING_DP.dp)
+                ) {
+                    YearDropdown(
+                        selectedYear = selectedYear,
+                        years = years,
+                        showDropdown = showYearDropdown,
+                        onDropdownChange = onYearDropdownChange,
+                        onYearSelected = onYearSelected,
+                        label = yearLabel,
+                        modifier = Modifier.weight(1f)
+                    )
 
-                MonthDropdown(
-                    selectedMonthName = selectedMonthName,
-                    months = months,
-                    showDropdown = showMonthDropdown,
-                    onDropdownChange = onMonthDropdownChange,
-                    onMonthSelected = onMonthSelected,
-                    label = monthLabel,
-                    modifier = Modifier.weight(1f)
-                )
+                    MonthDropdown(
+                        selectedMonthName = selectedMonthName,
+                        months = months,
+                        showDropdown = showMonthDropdown,
+                        onDropdownChange = onMonthDropdownChange,
+                        onMonthSelected = onMonthSelected,
+                        label = monthLabel,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
             }
         }
     }

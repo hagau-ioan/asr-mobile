@@ -3,7 +3,7 @@
     "id": "cong_001",
     "name": "Tg.Mures Centru",
     "location": "Târgu Mureș",
-    "memberCount": 98,
+    "memberCount": 124,
     "monthlyCeiling": 2360.0,
     "isActive": true
   },
@@ -11,7 +11,7 @@
     "id": "cong_002",
     "name": "Tg.Mures Cetate",
     "location": "Târgu Mureș",
-    "memberCount": 102,
+    "memberCount": 21,
     "monthlyCeiling": 615.0,
     "isActive": true
   },
@@ -19,7 +19,7 @@
     "id": "cong_003",
     "name": "Tg.Mures Diamant",
     "location": "Târgu Mureș",
-    "memberCount": 95,
+    "memberCount": 115,
     "monthlyCeiling": 2570.0,
     "isActive": true
   },
@@ -27,7 +27,7 @@
     "id": "cong_004",
     "name": "Tg.Mures Est",
     "location": "Târgu Mureș",
-    "memberCount": 105,
+    "memberCount": 124,
     "monthlyCeiling": 2732.0,
     "isActive": true
   },
@@ -35,7 +35,7 @@
     "id": "cong_005",
     "name": "Tg.Mures Izvorului",
     "location": "Târgu Mureș",
-    "memberCount": 92,
+    "memberCount": 89,
     "monthlyCeiling": 2360.0,
     "isActive": true
   },
@@ -43,7 +43,7 @@
     "id": "cong_006",
     "name": "Tg.Mures Pietros",
     "location": "Târgu Mureș",
-    "memberCount": 110,
+    "memberCount": 119,
     "monthlyCeiling": 2642.0,
     "isActive": true
   },
@@ -51,7 +51,7 @@
     "id": "cong_007",
     "name": "Tg.Mures Sud",
     "location": "Târgu Mureș",
-    "memberCount": 88,
+    "memberCount": 146,
     "monthlyCeiling": 3420.0,
     "isActive": true
   },
@@ -59,7 +59,7 @@
     "id": "cong_008",
     "name": "Tg.Mures Trandafirilor",
     "location": "Târgu Mureș",
-    "memberCount": 95,
+    "memberCount": 47,
     "monthlyCeiling": 1005.0,
     "isActive": true
   }

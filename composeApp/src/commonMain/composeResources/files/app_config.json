@@ -5,9 +5,9 @@
     "location": "Târgu Mureș"
   },
   "financial": {
-    "expectedDonationPerCongregation": 500.0,
+    "expectedDonationPerCongregation": 2000.0,
     "totalPublishers": 785,
-    "publisherExpectedContribution": 30.0,
+    "publisherExpectedContribution": 24.08,
     "currency": "RON",
     "startYear": 2024
   }

@@ -26,4 +26,10 @@ class TransactionRepositoryImpl(
     override suspend fun getTransactionById(id: String): Transaction? {
         return dataSource.getById(id)
     }
+    
+    override suspend fun refreshData() {
+        // Placeholder for future remote data refresh
+        // Will implement API call here
+        kotlinx.coroutines.delay(2000) // Simulate network delay
+    }
 }

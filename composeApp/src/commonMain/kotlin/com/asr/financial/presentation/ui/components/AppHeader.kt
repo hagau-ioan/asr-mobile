@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,7 +26,10 @@ fun AppHeader(
     selectedMonth: String,
     selectedYear: Int,
     showMenuButton: Boolean = false,
+    showRefreshButton: Boolean = false,
+    isRefreshing: Boolean = false,
     onMenuClick: () -> Unit = {},
+    onRefreshClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -75,7 +79,7 @@ fun AppHeader(
                 )
             }
             
-            // Period info
+            // Period info with refresh button
             Column(
                 horizontalAlignment = Alignment.End
             ) {
@@ -89,6 +93,32 @@ fun AppHeader(
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onPrimary
                 )
+                if (showRefreshButton) {
+                    Box(
+                        modifier = Modifier.size(32.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        if (isRefreshing) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(20.dp),
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                strokeWidth = 2.dp
+                            )
+                        } else {
+                            IconButton(
+                                onClick = onRefreshClick,
+                                modifier = Modifier.size(32.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Refresh,
+                                    contentDescription = "Refresh",
+                                    tint = MaterialTheme.colorScheme.onPrimary,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                            }
+                        }
+                    }
+                }
             }
         }
     }

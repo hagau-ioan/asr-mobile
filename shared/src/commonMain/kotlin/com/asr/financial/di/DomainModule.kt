@@ -25,4 +25,5 @@ val domainModule = module {
     factory { GetTotalPublishersUseCase(get()) }
     factory { GetPublisherExpectedContributionUseCase(get()) }
     factory { GetStartYearUseCase(get()) }
+    factory { RefreshDataUseCase(get()) }
 }

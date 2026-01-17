@@ -10,6 +10,8 @@ import com.asr.financial.presentation.mvi.event.CalculatorEvent
 import com.asr.financial.presentation.mvi.state.CalculatorState
 import com.asr.financial.presentation.screens.calculator.CongregationContribution
 import com.asr.financial.presentation.screens.calculator.ContributionCalculation
+import com.asr.financial.utils.divide
+import com.asr.financial.utils.roundTo
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -71,14 +73,15 @@ class CalculatorInteractor(
                 perPublisherAmount = publisherExpectedContribution * 12
             )
 
-            // Calculate per congregation
+            // Calculate per congregation using fixed monthly ceiling from JSON
             val congregationContributions = congregations.map { congregation ->
+                val perPublisher = congregation.monthlyCeiling.divide(congregation.memberCount.toDouble())
                 CongregationContribution(
                     congregationId = congregation.id,
                     congregationName = congregation.name,
                     numberOfPublishers = congregation.memberCount,
-                    perPublisherAmount = publisherExpectedContribution,
-                    totalAmount = publisherExpectedContribution * congregation.memberCount
+                    perPublisherAmount = perPublisher.roundTo(2),  // Plafon / Număr vestitori
+                    totalAmount = congregation.monthlyCeiling  // Fixed ceiling from JSON
                 )
             }.sortedBy { it.congregationName }
 
