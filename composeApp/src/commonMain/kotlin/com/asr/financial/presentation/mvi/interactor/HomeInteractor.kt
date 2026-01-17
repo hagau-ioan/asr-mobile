@@ -41,6 +41,7 @@ class HomeInteractor(
 
     private var currentYear: Int
     private var currentMonth: Int
+    private var cachedTransactions: List<Transaction> = emptyList()
 
     init {
         val (prevMonth, prevYear) = calculatePreviousMonth(getCurrentMonth(clock), getCurrentYear(clock))
@@ -60,8 +61,8 @@ class HomeInteractor(
     private suspend fun loadData(year: Int, month: Int) {
         _uiState.emit(HomeState.Loading)
         try {
-            val allTransactions = getTransactionsUseCase()
-            emitSuccessState(allTransactions, year, month)
+            cachedTransactions = getTransactionsUseCase()
+            emitSuccessState(cachedTransactions, year, month)
         } catch (e: Exception) {
             _uiState.emit(HomeState.Error(e.message ?: "Unknown error"))
             _uiEffectChannel.send(HomeEffect.ShowToast("Failed to load transactions"))
@@ -72,10 +73,9 @@ class HomeInteractor(
         currentYear = year
         currentMonth = month
 
-        // Don't show loading for filter changes - just update state
+        // Use cached data for filtering
         try {
-            val allTransactions = getTransactionsUseCase()
-            emitSuccessState(allTransactions, year, month)
+            emitSuccessState(cachedTransactions, year, month)
         } catch (e: Exception) {
             _uiState.emit(HomeState.Error(e.message ?: "Unknown error"))
         }
