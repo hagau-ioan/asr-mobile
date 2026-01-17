@@ -37,7 +37,7 @@ fun Breadcrumb(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 4.dp),
+            .padding(horizontal = 16.dp, vertical = 2.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (showMenuButton) {
@@ -73,7 +73,8 @@ fun Breadcrumb(
                     // Clickable breadcrumb
                     TextButton(
                         onClick = { onNavigate(item.route) },
-                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
+                        modifier = Modifier.height(32.dp)
                     ) {
                         Text(
                             text = item.label,
@@ -87,7 +88,7 @@ fun Breadcrumb(
                         text = item.label,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                        modifier = Modifier.padding(horizontal = 8.dp)
                     )
                 }
             }
