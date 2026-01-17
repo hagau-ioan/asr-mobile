@@ -1,6 +1,8 @@
 package com.asr.financial.presentation.ui.components
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -11,8 +13,12 @@ import androidx.compose.ui.graphics.drawscope.Fill
 @Composable
 fun TwoLevelHouseIcon(
     modifier: Modifier = Modifier,
-    color: Color = Color.White
+    color: Color? = null
 ) {
+    val isDark = isSystemInDarkTheme()
+    val houseColor = color ?: if (isDark) Color.Black else Color.White
+    val windowColor = if (isDark) Color.White else Color.Black
+    
     Canvas(modifier = modifier) {
         val width = size.width
         val height = size.height
@@ -24,24 +30,23 @@ fun TwoLevelHouseIcon(
             lineTo(width * 0.7f, height * 0.25f)
             close()
         }
-        drawPath(roofPath, color = color, style = Fill)
+        drawPath(roofPath, color = houseColor, style = Fill)
         
         // Second level
         drawRect(
-            color = color,
+            color = houseColor,
             topLeft = Offset(width * 0.25f, height * 0.25f),
             size = androidx.compose.ui.geometry.Size(width * 0.5f, height * 0.3f)
         )
         
         // First level
         drawRect(
-            color = color,
+            color = houseColor,
             topLeft = Offset(width * 0.2f, height * 0.55f),
             size = androidx.compose.ui.geometry.Size(width * 0.6f, height * 0.35f)
         )
         
-        // Windows second level (light for visibility on dark backgrounds)
-        val windowColor = Color(0xFFE0E7FF)
+        // Windows second level
         drawRect(
             color = windowColor,
             topLeft = Offset(width * 0.3f, height * 0.3f),
