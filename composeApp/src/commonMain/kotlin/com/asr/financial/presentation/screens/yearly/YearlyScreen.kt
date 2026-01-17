@@ -2,8 +2,8 @@ package com.asr.financial.presentation.screens.yearly
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -255,14 +255,14 @@ private fun YearlyChartCard(
                         onClick = { if (startIndex > 0) startIndex-- },
                         enabled = startIndex > 0
                     ) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = stringResource(Res.string.cd_previous_years))
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(Res.string.cd_previous_years))
                     }
                     
                     IconButton(
                         onClick = { if (startIndex < allYears.size - 3) startIndex++ },
                         enabled = startIndex < allYears.size - 3
                     ) {
-                        Icon(Icons.Default.ArrowForward, contentDescription = stringResource(Res.string.cd_next_years))
+                        Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = stringResource(Res.string.cd_next_years))
                     }
                 }
             }

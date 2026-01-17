@@ -3,6 +3,7 @@ package com.asr.financial.presentation.ui.navigation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -30,7 +31,7 @@ sealed class NavigationItem(
     data object Congregations : NavigationItem("congregations", Res.string.nav_congregations, Icons.Default.People)
     data object Expenses : NavigationItem("expenses", Res.string.nav_expenses, Icons.Default.Receipt)
     data object Utilities : NavigationItem("utilities", Res.string.nav_utilities, Icons.Default.Bolt)
-    data object Yearly : NavigationItem("yearly", Res.string.nav_yearly, Icons.Default.TrendingUp)
+    data object Yearly : NavigationItem("yearly", Res.string.nav_yearly, Icons.AutoMirrored.Filled.TrendingUp)
     data object Calculator : NavigationItem("calculator", Res.string.nav_calculator, Icons.Default.Calculate)
     data object AsrExpenses : NavigationItem("asr-expenses", Res.string.nav_asr_expenses, Icons.Default.AccountBalance)
     data object Upload : NavigationItem("upload", Res.string.nav_upload, Icons.Default.Upload)
@@ -146,7 +147,7 @@ fun DrawerNavigationContent(
                 .background(MaterialTheme.colorScheme.surfaceVariant)
                 .padding(16.dp)
         ) {
-            Divider(modifier = Modifier.padding(bottom = 12.dp))
+            HorizontalDivider(modifier = Modifier.padding(bottom = 12.dp))
             
             // Stats
             Row(

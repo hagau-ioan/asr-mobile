@@ -2,8 +2,8 @@ package com.asr.financial.presentation.screens.yearly.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.TrendingDown
-import androidx.compose.material.icons.filled.TrendingUp
+import androidx.compose.material.icons.automirrored.filled.TrendingDown
+import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -63,7 +63,7 @@ private fun VariationRow(
         
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
-                imageVector = if (change >= 0) Icons.Default.TrendingUp else Icons.Default.TrendingDown,
+                imageVector = if (change >= 0) Icons.AutoMirrored.Filled.TrendingUp else Icons.AutoMirrored.Filled.TrendingDown,
                 contentDescription = null,
                 tint = if (change >= 0) color else MaterialTheme.colorScheme.error,
                 modifier = Modifier.size(TREND_ICON_SIZE_DP.dp)

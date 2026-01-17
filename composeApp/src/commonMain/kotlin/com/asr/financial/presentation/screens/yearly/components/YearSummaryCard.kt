@@ -2,6 +2,7 @@ package com.asr.financial.presentation.screens.yearly.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -44,7 +45,7 @@ fun YearSummaryCard(stat: YearlyStat) {
                 )
             }
             
-            Divider(modifier = Modifier.padding(vertical = SMALL_SPACING_DP.dp))
+            HorizontalDivider(modifier = Modifier.padding(vertical = SMALL_SPACING_DP.dp))
             
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(stringResource(Res.string.yearly_balance), style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold)

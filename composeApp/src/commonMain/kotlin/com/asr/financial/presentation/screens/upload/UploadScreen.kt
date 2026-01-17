@@ -4,9 +4,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -182,7 +182,7 @@ private fun UploadSuccessContent(
                                 onClick = onSendClick,
                                 modifier = Modifier.weight(1f)
                             ) {
-                                Icon(Icons.Default.Send, contentDescription = null)
+                                Icon(Icons.AutoMirrored.Filled.Send, contentDescription = null)
                                 Spacer(Modifier.width(8.dp))
                                 Text(stringResource(Res.string.upload_send))
                             }

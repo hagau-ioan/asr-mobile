@@ -4,8 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -71,7 +71,7 @@ fun YearlyComparisonCard(
                         enabled = comparisonYear > minYear
                     ) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(Res.string.cd_previous_year)
                         )
                     }
@@ -80,7 +80,7 @@ fun YearlyComparisonCard(
                         enabled = comparisonYear < maxYear
                     ) {
                         Icon(
-                            imageVector = Icons.Default.ArrowForward,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                             contentDescription = stringResource(Res.string.cd_next_year)
                         )
                     }
