@@ -21,9 +21,10 @@ class AsrExpensesInteractor(
     private val _uiState = MutableStateFlow<AsrExpensesState>(AsrExpensesState.Loading)
     val uiState = _uiState.asStateFlow()
 
-    private val _uiEffectChannel = Channel<AsrExpensesEffect>(Channel.UNLIMITED)
+    private val _uiEffectChannel = Channel<AsrExpensesEffect>(Channel.BUFFERED)
     val uiEffect: Flow<AsrExpensesEffect> = _uiEffectChannel.receiveAsFlow()
 
+    @Volatile
     private var allExpenses: List<AsrExpense> = emptyList()
 
     suspend fun processEvent(event: AsrExpensesEvent) {

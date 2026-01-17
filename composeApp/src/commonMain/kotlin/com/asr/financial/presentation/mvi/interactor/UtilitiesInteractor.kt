@@ -30,12 +30,16 @@ class UtilitiesInteractor(
     private val _uiState = MutableStateFlow<UtilitiesState>(UtilitiesState.Loading)
     val uiState = _uiState.asStateFlow()
 
-    private val _uiEffectChannel = Channel<UtilitiesEffect>(Channel.UNLIMITED)
+    private val _uiEffectChannel = Channel<UtilitiesEffect>(Channel.BUFFERED)
     val uiEffect: Flow<UtilitiesEffect> = _uiEffectChannel.receiveAsFlow()
 
+    @Volatile
     private var currentYear: Int
+    @Volatile
     private var currentMonth: Int
+    @Volatile
     private var comparisonYear: Int
+    @Volatile
     private var cachedTransactions: List<Transaction> = emptyList()
 
     init {

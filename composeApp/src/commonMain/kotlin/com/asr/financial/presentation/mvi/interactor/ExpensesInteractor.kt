@@ -29,11 +29,14 @@ class ExpensesInteractor(
     private val _uiState = MutableStateFlow<ExpensesState>(ExpensesState.Loading)
     val uiState = _uiState.asStateFlow()
 
-    private val _uiEffectChannel = Channel<ExpensesEffect>(Channel.UNLIMITED)
+    private val _uiEffectChannel = Channel<ExpensesEffect>(Channel.BUFFERED)
     val uiEffect: Flow<ExpensesEffect> = _uiEffectChannel.receiveAsFlow()
 
+    @Volatile
     private var currentYear: Int
+    @Volatile
     private var currentMonth: Int
+    @Volatile
     private var cachedTransactions: List<Transaction> = emptyList()
 
     init {

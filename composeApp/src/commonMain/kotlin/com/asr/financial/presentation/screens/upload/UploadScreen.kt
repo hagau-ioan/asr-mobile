@@ -50,7 +50,6 @@ fun UploadScreen(
     ) { launchCamera ->
         LaunchedEffect(launchCameraRequested) {
             if (launchCameraRequested) {
-                launchCameraRequested = false
                 launchCamera()
             }
         }

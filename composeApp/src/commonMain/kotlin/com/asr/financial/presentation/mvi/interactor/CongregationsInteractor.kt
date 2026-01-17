@@ -34,11 +34,14 @@ class CongregationsInteractor(
     private val _uiState = MutableStateFlow<CongregationsState>(CongregationsState.Loading)
     val uiState = _uiState.asStateFlow()
 
-    private val _uiEffectChannel = Channel<CongregationsEffect>(Channel.UNLIMITED)
+    private val _uiEffectChannel = Channel<CongregationsEffect>(Channel.BUFFERED)
     val uiEffect: Flow<CongregationsEffect> = _uiEffectChannel.receiveAsFlow()
 
+    @Volatile
     private var currentYear: Int
+    @Volatile
     private var currentMonth: Int
+    @Volatile
     private var cachedTransactions: List<Transaction> = emptyList()
 
     init {

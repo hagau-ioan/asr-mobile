@@ -24,7 +24,7 @@ class UploadInteractor(
     private val _uiState = MutableStateFlow<UploadState>(UploadState.Loading)
     val uiState = _uiState.asStateFlow()
 
-    private val _uiEffectChannel = Channel<UploadEffect>(Channel.UNLIMITED)
+    private val _uiEffectChannel = Channel<UploadEffect>(Channel.BUFFERED)
     val uiEffect: Flow<UploadEffect> = _uiEffectChannel.receiveAsFlow()
 
     suspend fun processEvent(event: UploadEvent) {

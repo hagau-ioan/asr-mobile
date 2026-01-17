@@ -36,11 +36,14 @@ class HomeInteractor(
     private val _uiState = MutableStateFlow<HomeState>(HomeState.Loading)
     val uiState = _uiState.asStateFlow()
 
-    private val _uiEffectChannel = Channel<HomeEffect>(Channel.UNLIMITED)
+    private val _uiEffectChannel = Channel<HomeEffect>(Channel.BUFFERED)
     val uiEffect: Flow<HomeEffect> = _uiEffectChannel.receiveAsFlow()
 
+    @Volatile
     private var currentYear: Int
+    @Volatile
     private var currentMonth: Int
+    @Volatile
     private var cachedTransactions: List<Transaction> = emptyList()
 
     init {
