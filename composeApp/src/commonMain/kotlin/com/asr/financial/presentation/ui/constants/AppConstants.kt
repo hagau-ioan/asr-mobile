@@ -8,7 +8,7 @@ object AppConstants {
     // Time constants (milliseconds)
     object Time {
         const val SPLASH_SCREEN_MIN_DURATION_MS = 2500L
-        const val AUTH_CHECK_INTERVAL_MS = 30_000L
+        const val AUTH_CHECK_INTERVAL_MS = 60 * 60_000L
         const val SPLASH_ANIMATION_DURATION_MS = 1000
         const val SPLASH_ANIMATION_DELAY_MS = 300
         const val CHART_ANIMATION_DURATION_MS = 1500
