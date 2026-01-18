@@ -69,9 +69,9 @@ asr-financial/
 | Coroutines | kotlinx-coroutines | 1.9.0 |
 | Database | SQLDelight | 2.0.2 |
 | DI | Koin | 4.0.0 |
-| Navigation | Voyager | 1.1.0 |
-| Images | Coil 3 | 3.0.4 |
-| Charts | Vico | 2.0.0 |
+| Navigation | Navigation Compose | 2.9.1 |
+| Images | Coil 3 | 3.3.0 |
+| Charts | Custom Canvas | N/A |
 
 ## Documentation
 
