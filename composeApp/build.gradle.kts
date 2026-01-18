@@ -109,8 +109,29 @@ android {
     namespace = "com.asr.financial"
     compileSdk = 36
 
+    buildFeatures {
+        buildConfig = true  // Enable BuildConfig generation for version info
+    }
+
     defaultConfig {
         minSdk = 26
+        
+        // Read version from libs.versions.toml (or gradle.properties as fallback) and expose to BuildConfig
+        // This is only needed in the presentation layer (composeApp)
+        val versionName = try {
+            libs.versions.appVersion.get()
+        } catch (e: Exception) {
+            project.findProperty("app.version.name") as? String ?: "1.0.0"
+        }
+        
+        val versionCode = try {
+            libs.versions.appVersionCode.get().toInt()
+        } catch (e: Exception) {
+            ((project.findProperty("app.version.code") as? String) ?: "1").toInt()
+        }
+        
+        buildConfigField("String", "VERSION_NAME", "\"$versionName\"")
+        buildConfigField("int", "VERSION_CODE", "$versionCode")  // Use "int" (Java) not "Int" (Kotlin)
     }
 
     compileOptions {

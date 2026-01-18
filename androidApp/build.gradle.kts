@@ -22,8 +22,25 @@ android {
         applicationId = "com.asr.financial"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0.0"
+        // Read version from libs.versions.toml (or gradle.properties as fallback)
+        val appVersionName = try {
+            libs.versions.appVersion.get()
+        } catch (e: Exception) {
+            project.findProperty("app.version.name") as? String ?: "1.0.0"
+        }
+        
+        val appVersionCode = try {
+            libs.versions.appVersionCode.get().toInt()
+        } catch (e: Exception) {
+            (project.findProperty("app.version.code") as? String ?: "1").toInt()
+        }
+        
+        versionCode = appVersionCode
+        versionName = appVersionName
+        
+        // Expose version to BuildConfig so it's accessible in the app
+        buildConfigField("String", "VERSION_NAME", "\"$appVersionName\"")
+        buildConfigField("int", "VERSION_CODE", "$appVersionCode")  // Use "int" (Java) not "Int" (Kotlin)
     }
     
     signingConfigs {
@@ -39,6 +56,7 @@ android {
     
     buildFeatures {
         compose = true
+        buildConfig = true  // Enable BuildConfig generation
     }
     
     compileOptions {

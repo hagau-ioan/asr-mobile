@@ -1,8 +1,13 @@
 package com.asr.financial.di
 
+import com.asr.financial.AppConfig
 import com.asr.financial.data.datasource.AppConfigDataSource
 import com.asr.financial.data.datasource.AsrExpenseDataSource
 import com.asr.financial.data.datasource.CongregationDataSource
+import com.asr.financial.data.datasource.FirebaseStorageAppConfigDataSource
+import com.asr.financial.data.datasource.FirebaseStorageAsrExpenseDataSource
+import com.asr.financial.data.datasource.FirebaseStorageCongregationDataSource
+import com.asr.financial.data.datasource.FirebaseStorageTransactionDataSource
 import com.asr.financial.data.datasource.JsonAppConfigDataSource
 import com.asr.financial.data.datasource.JsonAsrExpenseDataSource
 import com.asr.financial.data.datasource.JsonCongregationDataSource
@@ -23,16 +28,30 @@ import org.koin.dsl.module
 
 /**
  * Data module - provides data sources and repository implementations.
- * ResourceLoader must be provided by the presentation layer.
+ * 
+ * Data sources are conditionally provided based on AppConfig.USE_FIREBASE_STORAGE:
+ * - If true: Uses Firebase Cloud Storage (production)
+ * - If false: Uses local JSON files (testing)
+ * 
+ * ResourceLoader must be provided by the presentation layer (for JSON mode).
  */
 val dataModule = module {
-    // Data source implementations (ResourceLoader provided by composeApp)
-    single<TransactionDataSource> { JsonTransactionDataSource(get()) }
-    single<CongregationDataSource> { JsonCongregationDataSource(get()) }
-    single<AppConfigDataSource> { JsonAppConfigDataSource(get(), get()) }
-    single<AsrExpenseDataSource> { JsonAsrExpenseDataSource(get()) }
+    // Data source implementations - conditional based on configuration
+    if (AppConfig.USE_FIREBASE_STORAGE) {
+        // Production: Firebase Cloud Storage
+        single<TransactionDataSource> { FirebaseStorageTransactionDataSource(get()) }
+        single<CongregationDataSource> { FirebaseStorageCongregationDataSource(get()) }
+        single<AppConfigDataSource> { FirebaseStorageAppConfigDataSource(get(), get()) }
+        single<AsrExpenseDataSource> { FirebaseStorageAsrExpenseDataSource(get()) }
+    } else {
+        // Testing: Local JSON files
+        single<TransactionDataSource> { JsonTransactionDataSource(get()) }
+        single<CongregationDataSource> { JsonCongregationDataSource(get()) }
+        single<AppConfigDataSource> { JsonAppConfigDataSource(get(), get()) }
+        single<AsrExpenseDataSource> { JsonAsrExpenseDataSource(get()) }
+    }
     
-    // Repository implementations
+    // Repository implementations (unchanged - they use interfaces)
     single<TransactionRepository> { TransactionRepositoryImpl(get()) }
     single<CongregationInfoRepository> { CongregationInfoRepositoryImpl(get()) }
     single<AppConfigRepository> { AppConfigRepositoryImpl(get()) }

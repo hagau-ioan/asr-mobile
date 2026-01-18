@@ -12,4 +12,10 @@ interface AppConfigRepository {
     suspend fun getTotalPublishers(): Int
     suspend fun getOrganizationName(): String
     suspend fun getOrganizationLocation(): String
+    
+    /**
+     * Refresh configuration data from remote source.
+     * Clears cache and reloads from server.
+     */
+    suspend fun refreshData()
 }

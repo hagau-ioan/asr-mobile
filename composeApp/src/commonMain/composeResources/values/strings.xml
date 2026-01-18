@@ -234,6 +234,14 @@
     <string name="login_error_network">Eroare de rețea. Te rugăm să verifici conexiunea</string>
     <string name="login_error_unknown">Eroare de autentificare</string>
     
+    <!-- Configuration Errors -->
+    <string name="config_error_load_failed">Nu s-au putut încărca datele de configurare. Te rugăm să verifici conexiunea la internet și să încerci din nou.</string>
+    <string name="data_error_load_failed">Nu s-au putut încărca datele. Te rugăm să verifici conexiunea la internet și să încerci din nou.</string>
+    
+    <!-- Calculator Errors -->
+    <string name="calculator_error_no_publishers">Nu există vestitori înregistrați</string>
+    <string name="calculator_error_unknown">Eroare necunoscută</string>
+    
     <!-- Logout -->
     <string name="nav_logout">Deconectare</string>
     <string name="user_email_label">Email utilizator</string>

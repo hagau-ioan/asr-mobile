@@ -28,6 +28,7 @@ kotlin {
     }
 
     sourceSets {
+        
         commonMain.dependencies {
             // Coroutines
             implementation(libs.kotlinx.coroutines.core)
@@ -64,6 +65,10 @@ kotlin {
             // Firebase Auth (Android)
             // Note: firebase-auth-ktx includes Firebase Core automatically
             implementation(libs.firebase.auth)
+            
+            // Firebase Storage (Android)
+            implementation(libs.firebase.storage)
+            implementation(libs.kotlinx.coroutines.play.services)
         }
 
         iosMain.dependencies {
@@ -99,3 +104,4 @@ sqldelight {
         }
     }
 }
+

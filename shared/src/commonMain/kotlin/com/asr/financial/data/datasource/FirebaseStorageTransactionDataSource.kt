@@ -1,21 +1,21 @@
 package com.asr.financial.data.datasource
 
 import com.asr.financial.domain.model.Transaction
-import com.asr.financial.platform.ResourceLoader
+import com.asr.financial.platform.FirebaseStorage
 import kotlinx.serialization.json.Json
 
 /**
- * JSON file implementation of TransactionDataSource.
- * Loads data from asr_expenses_transactions.json and cg_donate_transactions.json
- * using platform-specific ResourceLoader.
+ * Firebase Cloud Storage implementation of TransactionDataSource.
+ * Loads data from Firebase Storage: app/asr_expenses_transactions.json and app/cg_donate_transactions.json
+ * using platform-specific FirebaseStorage.
  */
-class JsonTransactionDataSource(
-    private val resourceLoader: ResourceLoader
+class FirebaseStorageTransactionDataSource(
+    private val firebaseStorage: FirebaseStorage
 ) : TransactionDataSource {
 
     private companion object {
-        const val EXPENSES_FILE = "asr_expenses_transactions.json"
-        const val DONATIONS_FILE = "cg_donate_transactions.json"
+        const val EXPENSES_FILE = "app/asr_expenses_transactions.json"
+        const val DONATIONS_FILE = "app/cg_donate_transactions.json"
     }
 
     private val json = Json {
@@ -31,14 +31,14 @@ class JsonTransactionDataSource(
         return expenses + donations
     }
 
-    private suspend fun loadTransactions(fileName: String): List<Transaction> {
-        val jsonString = resourceLoader.loadResourceAsString(fileName) ?: return emptyList()
+    private suspend fun loadTransactions(filePath: String): List<Transaction> {
+        val jsonString = firebaseStorage.downloadFileAsString(filePath) ?: return emptyList()
         return try {
-            // Try to decode as wrapped JSON first (new format)
+            // Try to decode as wrapped JSON first (Firebase Storage format)
             val wrapped = json.decodeFromString<JsonResponseWrapper<List<Transaction>>>(jsonString)
             wrapped.data
         } catch (e: Exception) {
-            // Fallback to direct array (for backward compatibility)
+            // Fallback to direct array (for backward compatibility with local files)
             try {
                 json.decodeFromString<List<Transaction>>(jsonString)
             } catch (e2: Exception) {

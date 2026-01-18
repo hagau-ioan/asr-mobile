@@ -3,6 +3,7 @@ package com.asr.financial.presentation.ui.navigation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -15,7 +16,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import asr_financial.composeapp.generated.resources.*
-import com.asr.financial.AppConfig
+import com.asr.financial.AppVersionInfo
 import com.asr.financial.presentation.navigation.Routes
 import com.asr.financial.presentation.ui.components.TwoLevelHouseIcon
 import org.jetbrains.compose.resources.stringResource
@@ -162,7 +163,7 @@ fun DrawerNavigationContent(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        imageVector = Icons.Default.ExitToApp,
+                        imageVector = Icons.AutoMirrored.Filled.ExitToApp,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.error,
                         modifier = Modifier.size(20.dp)
@@ -250,7 +251,7 @@ fun DrawerNavigationContent(
             
             // Version
             Text(
-                text = stringResource(Res.string.version, AppConfig.VERSION_NAME),
+                text = stringResource(Res.string.version, AppVersionInfo.VERSION_NAME),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                 modifier = Modifier.align(Alignment.CenterHorizontally)

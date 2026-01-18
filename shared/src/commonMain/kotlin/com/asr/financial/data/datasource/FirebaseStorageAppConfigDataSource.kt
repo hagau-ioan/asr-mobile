@@ -2,27 +2,22 @@ package com.asr.financial.data.datasource
 
 import com.asr.financial.domain.models.AppConfig
 import com.asr.financial.platform.Clock
-import com.asr.financial.platform.ResourceLoader
+import com.asr.financial.platform.FirebaseStorage
 import com.asr.financial.utils.getAvailableYears
 import kotlinx.serialization.json.Json
 
 /**
- * JSON file implementation of AppConfigDataSource.
- * Loads data from app_config.json using platform-specific ResourceLoader.
+ * Firebase Cloud Storage implementation of AppConfigDataSource.
+ * Loads data from Firebase Storage: app/app_config.json
+ * using platform-specific FirebaseStorage.
  */
-class JsonAppConfigDataSource(
+class FirebaseStorageAppConfigDataSource(
     private val clock: Clock,
-    private val resourceLoader: ResourceLoader
+    private val firebaseStorage: FirebaseStorage
 ) : AppConfigDataSource {
 
     private companion object {
-        const val FILE_NAME = "app_config.json"
-
-        // Default values if config cannot be loaded
-        const val DEFAULT_EXPECTED_DONATION = 500.0
-        const val DEFAULT_TOTAL_PUBLISHERS = 785
-        const val DEFAULT_ORG_NAME = "ASR"
-        const val DEFAULT_ORG_LOCATION = "Târgu Mureș"
+        const val FILE_PATH = "app/app_config.json"
     }
 
     private val json = Json {
@@ -33,14 +28,14 @@ class JsonAppConfigDataSource(
     }
 
     override suspend fun getConfig(): AppConfig? {
-        // Load directly from local JSON file (caching is handled at repository level)
-        val jsonString = resourceLoader.loadResourceAsString(FILE_NAME) ?: return null
+        // Load directly from Firebase Storage (caching is handled at repository level)
+        val jsonString = firebaseStorage.downloadFileAsString(FILE_PATH) ?: return null
         return try {
-            // Try to decode as wrapped JSON first (new format)
+            // Try to decode as wrapped JSON first (Firebase Storage format)
             val wrapped = json.decodeFromString<JsonResponseWrapper<AppConfig>>(jsonString)
             wrapped.data
         } catch (e: Exception) {
-            // Fallback to direct object (for backward compatibility)
+            // Fallback to direct object (for backward compatibility with local files)
             try {
                 json.decodeFromString<AppConfig>(jsonString)
             } catch (e2: Exception) {
@@ -54,18 +49,22 @@ class JsonAppConfigDataSource(
     }
 
     override suspend fun getExpectedDonationPerCongregation(): Double {
-        return getConfig()?.financial?.expectedDonationPerCongregation ?: DEFAULT_EXPECTED_DONATION
+        return getConfig()?.financial?.expectedDonationPerCongregation
+            ?: throw IllegalStateException("config_error_load_failed")
     }
 
     override suspend fun getTotalPublishers(): Int {
-        return getConfig()?.financial?.totalPublishers ?: DEFAULT_TOTAL_PUBLISHERS
+        return getConfig()?.financial?.totalPublishers
+            ?: throw IllegalStateException("config_error_load_failed")
     }
 
     override suspend fun getOrganizationName(): String {
-        return getConfig()?.organization?.name ?: DEFAULT_ORG_NAME
+        return getConfig()?.organization?.name
+            ?: throw IllegalStateException("config_error_load_failed")
     }
 
     override suspend fun getOrganizationLocation(): String {
-        return getConfig()?.organization?.location ?: DEFAULT_ORG_LOCATION
+        return getConfig()?.organization?.location
+            ?: throw IllegalStateException("config_error_load_failed")
     }
 }

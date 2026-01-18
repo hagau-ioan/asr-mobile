@@ -1,1738 +1,1744 @@
-[
-  {
-    "id": "exp_2025_02_001",
-    "type": "EXPENSE",
-    "amount": 158.0,
-    "description": "Produse/materiale cf BF nr.81/24.01.2024",
-    "date": "2025-02-01",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_02_002",
-    "type": "EXPENSE",
-    "amount": 73.43,
-    "description": "Produse/materiale cf BF nr.184/09.12.2024",
-    "date": "2025-02-01",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_02_003",
-    "type": "EXPENSE",
-    "amount": 18.81,
-    "description": "Produse/materiale - cf BF nr.298/25.01.2025",
-    "date": "2025-02-01",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_02_004",
-    "type": "EXPENSE",
-    "amount": 49.68,
-    "description": "Produse/materiale - cf BF nr.84 / 24.01.2025",
-    "date": "2025-02-01",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_02_005",
-    "type": "EXPENSE",
-    "amount": 41.9,
-    "description": "Produse/materiale - cf BF nr.0243-00104 / 25.01.2025",
-    "date": "2025-02-01",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_02_006",
-    "type": "EXPENSE",
-    "amount": 170.0,
-    "description": "Produse/materiale - cf BF nr.83/ 24.01.2025",
-    "date": "2025-02-01",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_02_007",
-    "type": "EXPENSE",
-    "amount": 900.54,
-    "description": "Produse/materiale - cf fact nr.RSTM 2245401/31.01.2025",
-    "date": "2025-02-04",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_02_008",
-    "type": "EXPENSE",
-    "amount": -8.0,
-    "description": "Comisioane bancare",
-    "date": "2025-02-04",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_02_009",
-    "type": "EXPENSE",
-    "amount": 1057.17,
-    "description": "Cheltuieli privind consumul de apa - cf fact nr.AQ1007640/22.01",
-    "date": "2025-02-06",
-    "category": "Apă"
-  },
-  {
-    "id": "exp_2025_02_010",
-    "type": "EXPENSE",
-    "amount": 189.44,
-    "description": "Telecomunicatii - internet - cf fact nr.FDB25/15003017/08.01.25",
-    "date": "2025-02-06",
-    "category": "Internet/Telecomunicații"
-  },
-  {
-    "id": "exp_2025_02_011",
-    "type": "EXPENSE",
-    "amount": 25.0,
-    "description": "Produse/materiale - cf BF nr.39 / 08.02.2025",
-    "date": "2025-02-08",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_02_012",
-    "type": "EXPENSE",
-    "amount": 1218.0,
-    "description": "Produse/materiale - cf fact FAV304/17.01.25 Meniul zilei SKE",
-    "date": "2025-02-10",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_02_013",
-    "type": "EXPENSE",
-    "amount": 0.45,
-    "description": "Comisioane bancare",
-    "date": "2025-02-10",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_02_014",
-    "type": "EXPENSE",
-    "amount": 20.72,
-    "description": "Produse/materiale - cf BF nr.178 / 16.02.2025",
-    "date": "2025-02-16",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_02_015",
-    "type": "EXPENSE",
-    "amount": 328.0,
-    "description": "Produse/materiale - cf fact nr.F.AFRCT14327/18.02.2025",
-    "date": "2025-02-19",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_02_016",
-    "type": "EXPENSE",
-    "amount": 2739.83,
-    "description": "Obiect de inventar - cf fact FD EMAG/88367 / 19.02.2025",
-    "date": "2025-02-21",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_02_017",
-    "type": "EXPENSE",
-    "amount": 944.96,
-    "description": "Produse/materiale - cf fact nr.6500453417 / 22.02.2025",
-    "date": "2025-02-22",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_02_018",
-    "type": "EXPENSE",
-    "amount": 414.58,
-    "description": "Produse/materiale - cf BF nr.232 / 22.02.2025",
-    "date": "2025-02-22",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_02_019",
-    "type": "EXPENSE",
-    "amount": 194.71,
-    "description": "Produse/materiale - cf BF nr.233 / 22.02.2025",
-    "date": "2025-02-22",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_02_020",
-    "type": "EXPENSE",
-    "amount": 99.0,
-    "description": "Produse/materiale - cf BF nr.88 / 22.02.2025",
-    "date": "2025-02-22",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_02_021",
-    "type": "EXPENSE",
-    "amount": 1671.79,
-    "description": "Obiect de inventar - cf fact nr.IDAN142064 / 24.02.2025",
-    "date": "2025-02-24",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_02_022",
-    "type": "EXPENSE",
-    "amount": 99.0,
-    "description": "Produse/materiale - cf BF nr.92 / 24.02.2025",
-    "date": "2025-02-24",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_02_023",
-    "type": "EXPENSE",
-    "amount": 330.0,
-    "description": "Produse/materiale - cf BF nr.53 / 24.02.2025",
-    "date": "2025-02-24",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_02_024",
-    "type": "EXPENSE",
-    "amount": 330.0,
-    "description": "Produse/materiale - cf BF nr.54 / 24.02.2025",
-    "date": "2025-02-24",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_02_025",
-    "type": "EXPENSE",
-    "amount": 58.23,
-    "description": "Produse/materiale - cf BF nr.73 / 24.02.2025",
-    "date": "2025-02-24",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_02_026",
-    "type": "EXPENSE",
-    "amount": 91.8,
-    "description": "Produse/materiale - cf BF nr.267 / 25.02.2025",
-    "date": "2025-02-25",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_02_027",
-    "type": "EXPENSE",
-    "amount": 367.2,
-    "description": "Produse/materiale - cf BF nr.275 / 25.02.2025",
-    "date": "2025-02-25",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_02_028",
-    "type": "EXPENSE",
-    "amount": 262.0,
-    "description": "Produse/materiale - cf BF nr.337 / 25.02.2025",
-    "date": "2025-02-25",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_02_029",
-    "type": "EXPENSE",
-    "amount": 24.4,
-    "description": "Comisioane bancare",
-    "date": "2025-02-27",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_03_001",
-    "type": "EXPENSE",
-    "amount": 42.06,
-    "description": "Produse/materiale - cf BF nr0218/25.02.2025",
-    "date": "2025-03-01",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_03_002",
-    "type": "EXPENSE",
-    "amount": 2805.98,
-    "description": "Obiect de inventar - cf fact nr.ROWHJ 259203324954/03.03.25",
-    "date": "2025-03-05",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_03_003",
-    "type": "EXPENSE",
-    "amount": -24.4,
-    "description": "Comisioane bancare",
-    "date": "2025-03-05",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_03_004",
-    "type": "EXPENSE",
-    "amount": 133.04,
-    "description": "Produse/materiale - cf fact nr.RSTM2 245777/25.02.2025",
-    "date": "2025-03-05",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_03_005",
-    "type": "EXPENSE",
-    "amount": 1800.0,
-    "description": "Produse/materiale - cf fact nr.74544 / 24.02.2025 (accesorii mob)",
-    "date": "2025-03-05",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_03_006",
-    "type": "EXPENSE",
-    "amount": 0.51,
-    "description": "Comisioane bancare",
-    "date": "2025-03-05",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_03_007",
-    "type": "EXPENSE",
-    "amount": 145.63,
-    "description": "Produse/materiale - cf fact nr.LDP25 3501716",
-    "date": "2025-03-05",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_03_008",
-    "type": "EXPENSE",
-    "amount": 0.51,
-    "description": "Comisioane bancare",
-    "date": "2025-03-05",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_03_009",
-    "type": "EXPENSE",
-    "amount": 379.03,
-    "description": "Telecomunicatii - internet- cf fact nr.FDB25 28327280 / 06.03.25",
-    "date": "2025-03-10",
-    "category": "Internet/Telecomunicații"
-  },
-  {
-    "id": "exp_2025_03_010",
-    "type": "EXPENSE",
-    "amount": 710.74,
-    "description": "Cheltuieli privind consumul de apa - cf fact AQ 1037164/20.02",
-    "date": "2025-03-10",
-    "category": "Apă"
-  },
-  {
-    "id": "exp_2025_03_011",
-    "type": "EXPENSE",
-    "amount": 11623.15,
-    "description": "Sume trimise la filiala - consum gaze naturale luna ian 2025",
-    "date": "2025-03-11",
-    "category": "Gaze Naturale"
-  },
-  {
-    "id": "exp_2025_03_012",
-    "type": "EXPENSE",
-    "amount": 427.9,
-    "description": "Sume trimise la filiala - consum energie elctrica luna ian 2025",
-    "date": "2025-03-11",
-    "category": "Energie Electrică"
-  },
-  {
-    "id": "exp_2025_03_013",
-    "type": "EXPENSE",
-    "amount": 5086.64,
-    "description": "Obiect de inventar - cf fact nr.11/06.03.2025",
-    "date": "2025-03-11",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_03_014",
-    "type": "EXPENSE",
-    "amount": 0.51,
-    "description": "Comisioane bancare",
-    "date": "2025-03-11",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_03_015",
-    "type": "EXPENSE",
-    "amount": 187.0,
-    "description": "Produse/materiale - cf fact nr.MCC2020 158043/20.03.2025",
-    "date": "2025-03-21",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_03_016",
-    "type": "EXPENSE",
-    "amount": 205.54,
-    "description": "Produse/materiale - cf BF nr.222/24.03.2025",
-    "date": "2025-03-24",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_03_017",
-    "type": "EXPENSE",
-    "amount": 211.5,
-    "description": "Produse/materiale - cf BF nr.391/24.03.2025",
-    "date": "2025-03-24",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_03_018",
-    "type": "EXPENSE",
-    "amount": 333.0,
-    "description": "Produse/materiale - cf BF nr.314/27.03.2025",
-    "date": "2025-03-27",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_03_019",
-    "type": "EXPENSE",
-    "amount": 420.0,
-    "description": "Produse/materiale - cf doc plata seria 7AB2 1093003/27.03.2025",
-    "date": "2025-03-27",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_04_001",
-    "type": "EXPENSE",
-    "amount": 932.41,
-    "description": "Produse/materiale - cf fact nr.2056744 / 28.03.2025",
-    "date": "2025-04-01",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_04_002",
-    "type": "EXPENSE",
-    "amount": 1726.52,
-    "description": "Produse/materiale cf fact nr.LPD 25 / 3503620 / 27.03.2025",
-    "date": "2025-04-01",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_04_003",
-    "type": "EXPENSE",
-    "amount": 0.51,
-    "description": "Comisioane bancare",
-    "date": "2025-04-01",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_04_004",
-    "type": "EXPENSE",
-    "amount": 268.23,
-    "description": "Produse/materiale - cf fact nr.HHZ25-01878 / 21.03.2025",
-    "date": "2025-04-01",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_04_005",
-    "type": "EXPENSE",
-    "amount": 0.51,
-    "description": "Comisioane bancare",
-    "date": "2025-04-01",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_04_006",
-    "type": "EXPENSE",
-    "amount": 225.6,
-    "description": "Produse/materiale - cf BF nr.0306/31.03.2025 Dedeman",
-    "date": "2025-04-01",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_04_007",
-    "type": "EXPENSE",
-    "amount": 764.66,
-    "description": "Produse/materiale - cf fact nr.149884/31.03.2025 Snick Ambalaje",
-    "date": "2025-04-01",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_04_008",
-    "type": "EXPENSE",
-    "amount": -6.0,
-    "description": "Comisioane bancare",
-    "date": "2025-04-03",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_04_009",
-    "type": "EXPENSE",
-    "amount": 826.42,
-    "description": "Produse/materiale cf fact nr.9736503044/29.07.24 si 97365175",
-    "date": "2025-04-04",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_04_010",
-    "type": "EXPENSE",
-    "amount": 0.51,
-    "description": "Comisioane bancare",
-    "date": "2025-04-04",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_04_011",
-    "type": "EXPENSE",
-    "amount": 845.29,
-    "description": "Cheltuieli privind consumul de apa - cf fact nr.AQ 1066716/20.03",
-    "date": "2025-04-14",
-    "category": "Apă"
-  },
-  {
-    "id": "exp_2025_04_012",
-    "type": "EXPENSE",
-    "amount": 189.53,
-    "description": "Telecomunicatii - internet - cf fact nr.FDB25 / 35004183 / 07.04",
-    "date": "2025-04-14",
-    "category": "Internet/Telecomunicații"
-  },
-  {
-    "id": "exp_2025_04_013",
-    "type": "EXPENSE",
-    "amount": 323.95,
-    "description": "Produse/materiale - cf BF nr0281/ 17.04.2025 Auchan Romania",
-    "date": "2025-04-17",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_04_014",
-    "type": "EXPENSE",
-    "amount": 4078.8,
-    "description": "Sume trimise la filiala - consum energie el. (febr-martie 2025)",
-    "date": "2025-04-19",
-    "category": "Energie Electrică"
-  },
-  {
-    "id": "exp_2025_04_015",
-    "type": "EXPENSE",
-    "amount": 7410.0,
-    "description": "Sume trimise la filiala - consum gaze naturale(febr-martie 2025)",
-    "date": "2025-04-19",
-    "category": "Gaze Naturale"
-  },
-  {
-    "id": "exp_2025_04_016",
-    "type": "EXPENSE",
-    "amount": 6707.94,
-    "description": "Produse/materiale - cf fact nr.100727883/24.04-piese poarta acces",
-    "date": "2025-04-25",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_04_017",
-    "type": "EXPENSE",
-    "amount": 0.51,
-    "description": "Comisioane bancare",
-    "date": "2025-04-25",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_04_018",
-    "type": "EXPENSE",
-    "amount": 1366.2,
-    "description": "Produse/materiale - cf fact nr.6501082846-teava dreptunghiulara",
-    "date": "2025-04-25",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_04_019",
-    "type": "EXPENSE",
-    "amount": 486.0,
-    "description": "Produse/materiale - cf BF nr.0013/26.04.2025 Dedeman",
-    "date": "2025-04-26",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_04_020",
-    "type": "EXPENSE",
-    "amount": 337.0,
-    "description": "Produse/materiale - cf BF nr.0056/26.04.2025 Country Pub",
-    "date": "2025-04-26",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_04_021",
-    "type": "EXPENSE",
-    "amount": 1109.73,
-    "description": "Produse/materiale - cf fact nr.100729172/28.04-piese poarta acces",
-    "date": "2025-04-28",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_04_022",
-    "type": "EXPENSE",
-    "amount": 0.51,
-    "description": "Comisioane bancare",
-    "date": "2025-04-28",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_04_023",
-    "type": "EXPENSE",
-    "amount": 4.0,
-    "description": "Comisioane bancare",
-    "date": "2025-04-30",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_04_024",
-    "type": "EXPENSE",
-    "amount": 445.46,
-    "description": "Produse/materiale - cf fact nr.6501082885/30.04 Dedeman",
-    "date": "2025-04-30",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_04_025",
-    "type": "EXPENSE",
-    "amount": 778.64,
-    "description": "Produse/materiale - cf fact nr.6500385620/30.04 Dedeman",
-    "date": "2025-04-30",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_04_026",
-    "type": "EXPENSE",
-    "amount": 940.0,
-    "description": "Produse/materiale - cf fact nr.4060095/30.04 Surub Trade",
-    "date": "2025-04-30",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_05_001",
-    "type": "EXPENSE",
-    "amount": 25.99,
-    "description": "Produse/materiale - cf BF nr.371/ 24.04.205 Dedeman",
-    "date": "2025-05-01",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_05_002",
-    "type": "EXPENSE",
-    "amount": 117.4,
-    "description": "Produse/materiale - cf BF nr.38/26.04.2025 Dedeman",
-    "date": "2025-05-01",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_05_003",
-    "type": "EXPENSE",
-    "amount": 41.0,
-    "description": "Produse/materiale - cf BF nr.106/26.04.2025 Dedeman",
-    "date": "2025-05-01",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_05_004",
-    "type": "EXPENSE",
-    "amount": -4.0,
-    "description": "Comisioane bancare",
-    "date": "2025-05-02",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_05_005",
-    "type": "EXPENSE",
-    "amount": 348.0,
-    "description": "Produse/materiale - cf fact FAV 398 / 07.05.2025",
-    "date": "2025-05-07",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_05_006",
-    "type": "EXPENSE",
-    "amount": 0.51,
-    "description": "Comisioane bancare",
-    "date": "2025-05-07",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_05_007",
-    "type": "EXPENSE",
-    "amount": 6750.0,
-    "description": "Produse/materiale - cf fact NAG 2025 0029/09.05.25-montaj poarta",
-    "date": "2025-05-12",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_05_008",
-    "type": "EXPENSE",
-    "amount": 40.4,
-    "description": "Produse/materiale - cf fact EGL944,EGL936,EGL1103",
-    "date": "2025-05-12",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_05_009",
-    "type": "EXPENSE",
-    "amount": 260.6,
-    "description": "Produse/materiale - cf fact RED79231;34 /12.05.2025",
-    "date": "2025-05-12",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_05_010",
-    "type": "EXPENSE",
-    "amount": 1468.34,
-    "description": "Plata decont cheltuieli - cf fact nr.6500275212/12.05.2025",
-    "date": "2025-05-12",
-    "category": "Deconturi Cheltuieli"
-  },
-  {
-    "id": "exp_2025_05_011",
-    "type": "EXPENSE",
-    "amount": 134.2,
-    "description": "Sume trimise la filiala - consum energie elctrica(martie-aprilie)",
-    "date": "2025-05-12",
-    "category": "Energie Electrică"
-  },
-  {
-    "id": "exp_2025_05_012",
-    "type": "EXPENSE",
-    "amount": 4512.3,
-    "description": "Sume trimise la filiala - consum gaze naturale(martie - aprilie)",
-    "date": "2025-05-12",
-    "category": "Gaze Naturale"
-  },
-  {
-    "id": "exp_2025_05_013",
-    "type": "EXPENSE",
-    "amount": 609.0,
-    "description": "Produse/materiale - cf fact nr.MCC2020/164390 / 15.05.2025",
-    "date": "2025-05-16",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_05_014",
-    "type": "EXPENSE",
-    "amount": 912.0,
-    "description": "Produse/materiale - cf fact nr.29FE6857/13.05.2025",
-    "date": "2025-05-19",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_05_015",
-    "type": "EXPENSE",
-    "amount": 93.73,
-    "description": "Produse/materiale - cf BF 112/24.05.205",
-    "date": "2025-05-24",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_05_016",
-    "type": "EXPENSE",
-    "amount": 7124.74,
-    "description": "Produse/materiale - cf fact CLPJ699 22.05.25 Aer conditionat",
-    "date": "2025-05-27",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_05_017",
-    "type": "EXPENSE",
-    "amount": 1094.06,
-    "description": "Plata decont cheltuieli - cf fact 6500454501, BF 9662/10.05.2025",
-    "date": "2025-05-27",
-    "category": "Deconturi Cheltuieli"
-  },
-  {
-    "id": "exp_2025_05_018",
-    "type": "EXPENSE",
-    "amount": 0.51,
-    "description": "Comisioane bancare",
-    "date": "2025-05-27",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_06_001",
-    "type": "EXPENSE",
-    "amount": 128.7,
-    "description": "Sume trimise la filiala - consum energie electrica (aprilie-mai)",
-    "date": "2025-06-06",
-    "category": "Energie Electrică"
-  },
-  {
-    "id": "exp_2025_06_002",
-    "type": "EXPENSE",
-    "amount": 1170.0,
-    "description": "Sume trimise la filiala - consum gaze naturale (aprilie-mai)",
-    "date": "2025-06-06",
-    "category": "Gaze Naturale"
-  },
-  {
-    "id": "exp_2025_06_003",
-    "type": "EXPENSE",
-    "amount": 794.21,
-    "description": "Cheltuieli privind consumul de apa - cf fact nr.AQ 1126269/19.05",
-    "date": "2025-06-11",
-    "category": "Apă"
-  },
-  {
-    "id": "exp_2025_06_004",
-    "type": "EXPENSE",
-    "amount": 793.94,
-    "description": "Cheltuieli privind consumul de apa - cf fact nr.AQ 1096485/22.04",
-    "date": "2025-06-11",
-    "category": "Apă"
-  },
-  {
-    "id": "exp_2025_07_001",
-    "type": "EXPENSE",
-    "amount": 698.78,
-    "description": "Cheltuieli privind consumul de apa - cf fact nr AQ1156904/19.06",
-    "date": "2025-07-05",
-    "category": "Apă"
-  },
-  {
-    "id": "exp_2025_07_002",
-    "type": "EXPENSE",
-    "amount": 1479.2,
-    "description": "Produse/materiale - cf. bf. nr. 2555/08.07.2025",
-    "date": "2025-07-08",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_07_003",
-    "type": "EXPENSE",
-    "amount": 75.9,
-    "description": "Cheltuieli privind consumul de energie electrica (Mai-Iunie)",
-    "date": "2025-07-09",
-    "category": "Energie Electrică"
-  },
-  {
-    "id": "exp_2025_07_004",
-    "type": "EXPENSE",
-    "amount": 1154.4,
-    "description": "Cheltuieli privind consumul de gaze naturale (Mai-Iunie)",
-    "date": "2025-07-09",
-    "category": "Gaze Naturale"
-  },
-  {
-    "id": "exp_2025_07_005",
-    "type": "EXPENSE",
-    "amount": 590.0,
-    "description": "Produse/materiale - cf. fact nr. 107/14.07.2025/Pizza",
-    "date": "2025-07-14",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_07_006",
-    "type": "EXPENSE",
-    "amount": 224.0,
-    "description": "Produse/materiale - cf. bf. nr. 6452/22.05.2025",
-    "date": "2025-07-14",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_07_007",
-    "type": "EXPENSE",
-    "amount": 300.0,
-    "description": "Produse/materiale - cf bf. nr. 13/10.05.2025/Pizza",
-    "date": "2025-07-14",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_07_008",
-    "type": "EXPENSE",
-    "amount": 79.0,
-    "description": "Produse/materiale - cf. bf. nr. 285199/12.05.2025/Palanet",
-    "date": "2025-07-14",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_07_009",
-    "type": "EXPENSE",
-    "amount": 52.8,
-    "description": "Produse/materiale - cf. bf. nr. 15/24.05.2025/Burger King",
-    "date": "2025-07-14",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_07_010",
-    "type": "EXPENSE",
-    "amount": 32.9,
-    "description": "Produse/materiale - cf. bf. nr 2220037/09.06.2025/Saci Beton",
-    "date": "2025-07-14",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_07_011",
-    "type": "EXPENSE",
-    "amount": 154.0,
-    "description": "Produse/materiale - cf. bf. nr 24/19.05.2025/Pizza",
-    "date": "2025-07-14",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_07_012",
-    "type": "EXPENSE",
-    "amount": 225.0,
-    "description": "Produse/materiale - cf. bf. nr. 9/24.05.2025/Pizza",
-    "date": "2025-07-14",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_07_013",
-    "type": "EXPENSE",
-    "amount": 183.0,
-    "description": "Produse/materiale - cf. bf. nr. 40/30.06.2025/Pizza",
-    "date": "2025-07-14",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_07_014",
-    "type": "EXPENSE",
-    "amount": 274.8,
-    "description": "Produse/materiale - cf. bf. nr. 104/07.05.2025",
-    "date": "2025-07-14",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_07_015",
-    "type": "EXPENSE",
-    "amount": 550.0,
-    "description": "Sume trimise catre congr. Targu Mures Vest",
-    "date": "2025-07-15",
-    "category": "Transfer către Congregații"
-  },
-  {
-    "id": "exp_2025_07_016",
-    "type": "EXPENSE",
-    "amount": 5288.72,
-    "description": "Produse/materiale cf. fact. nr. 250700068/21.07.2025",
-    "date": "2025-07-22",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_07_017",
-    "type": "EXPENSE",
-    "amount": 704.39,
-    "description": "Produse/materiale - cf. bf. nr. 04996/22.07.2025",
-    "date": "2025-07-22",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_07_018",
-    "type": "EXPENSE",
-    "amount": 16.0,
-    "description": "Comisioane bancare - ridicare numerar",
-    "date": "2025-07-30",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_07_019",
-    "type": "EXPENSE",
-    "amount": 555.0,
-    "description": "Produse/materiale - cf. bf. nr. 168724/26.06.2025/RodeBoomPole",
-    "date": "2025-07-30",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_07_020",
-    "type": "EXPENSE",
-    "amount": 300.0,
-    "description": "Produse/materiale - cf. bf. nr. 2025023/26.05.2025",
-    "date": "2025-07-30",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_07_021",
-    "type": "EXPENSE",
-    "amount": 81.0,
-    "description": "Produse/materiale - cf. bf. 10744/09.06.2025/NuParcatiSemn",
-    "date": "2025-07-30",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_08_001",
-    "type": "EXPENSE",
-    "amount": 401.43,
-    "description": "Produse/materiale - cf. fact. nr. 2058099/01.08.2025/vopsea",
-    "date": "2025-08-01",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_08_002",
-    "type": "EXPENSE",
-    "amount": 3750.0,
-    "description": "Produse/materiale - cf. fact. nr. Nag20250032/01.08/MontajPoarta",
-    "date": "2025-08-01",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_08_003",
-    "type": "EXPENSE",
-    "amount": 80.0,
-    "description": "Plata decont cheltuieli - Dogariu Sergiu Ionel bf. 9/12.07.2025",
-    "date": "2025-08-01",
-    "category": "Deconturi Cheltuieli"
-  },
-  {
-    "id": "exp_2025_08_004",
-    "type": "EXPENSE",
-    "amount": 0.51,
-    "description": "Comisioane bancare",
-    "date": "2025-08-01",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_08_005",
-    "type": "EXPENSE",
-    "amount": 1218.88,
-    "description": "Plata decont cheltuieli - Dogariu Sergiu Ionel",
-    "date": "2025-08-01",
-    "category": "Deconturi Cheltuieli"
-  },
-  {
-    "id": "exp_2025_08_006",
-    "type": "EXPENSE",
-    "amount": 0.51,
-    "description": "Comisioane bancare",
-    "date": "2025-08-01",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_08_007",
-    "type": "EXPENSE",
-    "amount": 912.65,
-    "description": "Produse/materiale conf. fact. 3507378/13.06.2025/prosoape",
-    "date": "2025-08-01",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_08_008",
-    "type": "EXPENSE",
-    "amount": 0.51,
-    "description": "Comisioane bancare",
-    "date": "2025-08-01",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_08_009",
-    "type": "EXPENSE",
-    "amount": 237.81,
-    "description": "Produse/materiale - cf. bf. nr. 99/02.08.2025/adeziv",
-    "date": "2025-08-02",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_08_010",
-    "type": "EXPENSE",
-    "amount": 21.39,
-    "description": "Produse/materiale - cf. bf. nr. 300/02.08.2025",
-    "date": "2025-08-02",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_08_011",
-    "type": "EXPENSE",
-    "amount": 194.0,
-    "description": "Produse/materiale cf. bf. nr. 20/02.08.2025",
-    "date": "2025-08-02",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_08_012",
-    "type": "EXPENSE",
-    "amount": 240.0,
-    "description": "Produse/materiale cf. bf. nr. 39/02.08.2025/Pizza",
-    "date": "2025-08-02",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_08_013",
-    "type": "EXPENSE",
-    "amount": 832.87,
-    "description": "Produse/materiale cf. bf. nr. 28/02.08.2025/Piese sanitare",
-    "date": "2025-08-02",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_08_014",
-    "type": "EXPENSE",
-    "amount": 162.0,
-    "description": "Produse/materiale cf. bf. nr. 116/04.08.2025",
-    "date": "2025-08-04",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_08_015",
-    "type": "EXPENSE",
-    "amount": 399.93,
-    "description": "Produse/materiale cf. chit. nr. 8001/04.08.2025",
-    "date": "2025-08-04",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_08_016",
-    "type": "EXPENSE",
-    "amount": -16.0,
-    "description": "Comisioane bancare",
-    "date": "2025-08-04",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_08_017",
-    "type": "EXPENSE",
-    "amount": 216.17,
-    "description": "Produse/materiale cf. chit. nr. 34001/05.08.2025",
-    "date": "2025-08-05",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_08_018",
-    "type": "EXPENSE",
-    "amount": 74.48,
-    "description": "Sume trimise la filiala - pentru energie electrica (Iunie-Iulie)",
-    "date": "2025-08-07",
-    "category": "Energie Electrică"
-  },
-  {
-    "id": "exp_2025_08_019",
-    "type": "EXPENSE",
-    "amount": 432.9,
-    "description": "Sume trimise la filiala - pentru consum gaz (Iunie-Iulie)",
-    "date": "2025-08-07",
-    "category": "Gaze Naturale"
-  },
-  {
-    "id": "exp_2025_08_020",
-    "type": "EXPENSE",
-    "amount": 728.01,
-    "description": "Cheltuieli privind consumul de apa cf. fact. nr. AQ1186974/18.07",
-    "date": "2025-08-07",
-    "category": "Apă"
-  },
-  {
-    "id": "exp_2025_08_021",
-    "type": "EXPENSE",
-    "amount": 126.96,
-    "description": "Produse/materiale cf. bf. nr. 208/07.08.2025",
-    "date": "2025-08-07",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_08_022",
-    "type": "EXPENSE",
-    "amount": 3632.83,
-    "description": "Plata decont cheltuieli - Dogariu Sergiu Ionel / Mat. constructie",
-    "date": "2025-08-07",
-    "category": "Deconturi Cheltuieli"
-  },
-  {
-    "id": "exp_2025_08_023",
-    "type": "EXPENSE",
-    "amount": 0.51,
-    "description": "Comisioane bancare",
-    "date": "2025-08-07",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_08_024",
-    "type": "EXPENSE",
-    "amount": 121.86,
-    "description": "Produse/materiale - conf. nr. HHZ25-04749/21.07.2025",
-    "date": "2025-08-07",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_08_025",
-    "type": "EXPENSE",
-    "amount": 0.51,
-    "description": "Comisioane bancare",
-    "date": "2025-08-07",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_08_026",
-    "type": "EXPENSE",
-    "amount": 2019.14,
-    "description": "Produse/materiale - curatenie/saci/prosop/sapun 3505071/3505071",
-    "date": "2025-08-16",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_08_027",
-    "type": "EXPENSE",
-    "amount": 0.51,
-    "description": "Comisioane bancare",
-    "date": "2025-08-16",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_09_001",
-    "type": "EXPENSE",
-    "amount": 809.1,
-    "description": "Produse/materiale cf. fact. DD2025/518/vopsele/discflex",
-    "date": "2025-09-04",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_09_002",
-    "type": "EXPENSE",
-    "amount": 66.5,
-    "description": "Sume trimise la filiala - pentru energie electrica (Iulie-August)",
-    "date": "2025-09-16",
-    "category": "Energie Electrică"
-  },
-  {
-    "id": "exp_2025_09_003",
-    "type": "EXPENSE",
-    "amount": 89.7,
-    "description": "Sume trimise la filiala - pentru consum gaz (Iulie - August)",
-    "date": "2025-09-16",
-    "category": "Gaze Naturale"
-  },
-  {
-    "id": "exp_2025_10_001",
-    "type": "EXPENSE",
-    "amount": 1452.0,
-    "description": "Produse/materiale cf. fact. 41/29.09.2025 dulap documente",
-    "date": "2025-10-03",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_10_002",
-    "type": "EXPENSE",
-    "amount": 0.51,
-    "description": "Comisioane bancare",
-    "date": "2025-10-03",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_10_003",
-    "type": "EXPENSE",
-    "amount": 817.31,
-    "description": "Produse/materiale cf. fact. RSTM2 249317/mater. instal. sanitare",
-    "date": "2025-10-03",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_10_004",
-    "type": "EXPENSE",
-    "amount": 399.68,
-    "description": "Produse/materiale cf. chit. SR301370796/Filtre dozator",
-    "date": "2025-10-13",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_10_005",
-    "type": "EXPENSE",
-    "amount": 2335.36,
-    "description": "Produse/materiale cf. fact. 250800052/18.08.2025/cablu MYF",
-    "date": "2025-10-14",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_10_006",
-    "type": "EXPENSE",
-    "amount": 1246.99,
-    "description": "Produse/materiale cf. chit. 33622/14.10.2025/pahare unica fol.",
-    "date": "2025-10-14",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_10_007",
-    "type": "EXPENSE",
-    "amount": 345.72,
-    "description": "Produse/materiale cf. chit. 260307661902/acumulatori",
-    "date": "2025-10-21",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_10_008",
-    "type": "EXPENSE",
-    "amount": 38.7,
-    "description": "Produse/materiale cf. bf. 209/22.10.2025",
-    "date": "2025-10-22",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_10_009",
-    "type": "EXPENSE",
-    "amount": 311.2,
-    "description": "Produse/materiale cf. bf. 12/23.10.2025/flori/decoratiuni",
-    "date": "2025-10-23",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_10_010",
-    "type": "EXPENSE",
-    "amount": 698.0,
-    "description": "Produse/materiale cf. chit. 3553455/23.10.2025/plante perene",
-    "date": "2025-10-23",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_10_011",
-    "type": "EXPENSE",
-    "amount": 7.6,
-    "description": "Comisioane bancare",
-    "date": "2025-10-29",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_10_012",
-    "type": "EXPENSE",
-    "amount": 79.8,
-    "description": "Sume trimise la filiala - pentru energie electrica (August-Sept.)",
-    "date": "2025-10-29",
-    "category": "Energie Electrică"
-  },
-  {
-    "id": "exp_2025_10_013",
-    "type": "EXPENSE",
-    "amount": 35.1,
-    "description": "Sume trimise la filiala - pentru consum gaz (August-Sept.)",
-    "date": "2025-10-29",
-    "category": "Gaze Naturale"
-  },
-  {
-    "id": "exp_2025_10_014",
-    "type": "EXPENSE",
-    "amount": 0.51,
-    "description": "Comisioane bancare",
-    "date": "2025-10-29",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_10_015",
-    "type": "EXPENSE",
-    "amount": 169.19,
-    "description": "Produse/materiale cf. bf. 383/29.08.2025",
-    "date": "2025-10-29",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_10_016",
-    "type": "EXPENSE",
-    "amount": 203.0,
-    "description": "Produse/materiale cf. chit. SR299475137/06.08.2025",
-    "date": "2025-10-29",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_10_017",
-    "type": "EXPENSE",
-    "amount": 657.26,
-    "description": "Produse/materiale cf. bf. 241/29.09.2025/pompa circulatie/baterii",
-    "date": "2025-10-29",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_10_018",
-    "type": "EXPENSE",
-    "amount": 711.88,
-    "description": "Produse/materiale - cf. fact. 3509650 / manusi, prosoape, sapun",
-    "date": "2025-10-29",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_10_019",
-    "type": "EXPENSE",
-    "amount": 1136.57,
-    "description": "Produse/materiale - cf. fact. 3512420 / manusi, prosoape, sapun",
-    "date": "2025-10-29",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_10_020",
-    "type": "EXPENSE",
-    "amount": 1236.07,
-    "description": "Produse/materiale - cf. fact. 3510444 / manusi, prosoape, sapun",
-    "date": "2025-10-29",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_10_021",
-    "type": "EXPENSE",
-    "amount": 1112.0,
-    "description": "Taxe si impozite - taxa speciala salubrizare",
-    "date": "2025-10-30",
-    "category": "Salubritate"
-  },
-  {
-    "id": "exp_2025_10_022",
-    "type": "EXPENSE",
-    "amount": 0.51,
-    "description": "Comisioane bancare",
-    "date": "2025-10-30",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_11_001",
-    "type": "EXPENSE",
-    "amount": 100.04,
-    "description": "Produse/materiale - cf. bf. 30336/02.11.2025",
-    "date": "2025-11-02",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_11_002",
-    "type": "EXPENSE",
-    "amount": 216.98,
-    "description": "Produse/materiale cf. chit. 867001/04.11.2025/mufe",
-    "date": "2025-11-04",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_11_003",
-    "type": "EXPENSE",
-    "amount": 445.0,
-    "description": "Produse/materiale cf. chit. 510856/04.11.2025/rack/power",
-    "date": "2025-11-04",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_11_004",
-    "type": "EXPENSE",
-    "amount": -7.6,
-    "description": "Comisioane bancare",
-    "date": "2025-11-04",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_11_005",
-    "type": "EXPENSE",
-    "amount": 215.88,
-    "description": "Produse/materiale cf.chit. 510855/05.11.2025",
-    "date": "2025-11-05",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_11_006",
-    "type": "EXPENSE",
-    "amount": 1112.0,
-    "description": "Taxe si impozite - taxa special salubritate",
-    "date": "2025-11-10",
-    "category": "Salubritate"
-  },
-  {
-    "id": "exp_2025_11_007",
-    "type": "EXPENSE",
-    "amount": 0.51,
-    "description": "Comisioane bancare",
-    "date": "2025-11-10",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_11_008",
-    "type": "EXPENSE",
-    "amount": 303.0,
-    "description": "Produse/materiale cf. bf. 43/11.11.2025",
-    "date": "2025-11-11",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_11_009",
-    "type": "EXPENSE",
-    "amount": 84.36,
-    "description": "Produse/materiale cf. bf. 154/11.11.2025",
-    "date": "2025-11-11",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_11_010",
-    "type": "EXPENSE",
-    "amount": 1754.78,
-    "description": "Cheltuieli privind consumul de apa cf. fact. AQ1250484/17.10",
-    "date": "2025-11-12",
-    "category": "Apă"
-  },
-  {
-    "id": "exp_2025_11_011",
-    "type": "EXPENSE",
-    "amount": 4000.0,
-    "description": "Produse/materiale cf. fact. zef1841/11.11.2025/2 usi pvc",
-    "date": "2025-11-12",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_11_012",
-    "type": "EXPENSE",
-    "amount": 0.51,
-    "description": "Comisioane bancare",
-    "date": "2025-11-12",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_11_013",
-    "type": "EXPENSE",
-    "amount": 256.67,
-    "description": "Produse/materiale cf. chit. 5628270/10.11.2025/cabluri/acc",
-    "date": "2025-11-12",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_11_014",
-    "type": "EXPENSE",
-    "amount": 1694.0,
-    "description": "Produse/materiale - cf. fact. 47/13.11.2025/doua dulapuri",
-    "date": "2025-11-13",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_11_015",
-    "type": "EXPENSE",
-    "amount": 79.0,
-    "description": "Produse/materiale cf. bf. 44/13.11.2025 palanete",
-    "date": "2025-11-13",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_11_016",
-    "type": "EXPENSE",
-    "amount": 165.0,
-    "description": "Produse/materiale cf. chit. 60210/13.11.2025/electronice",
-    "date": "2025-11-13",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_11_017",
-    "type": "EXPENSE",
-    "amount": 0.51,
-    "description": "Comisioane bancare",
-    "date": "2025-11-13",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_11_018",
-    "type": "EXPENSE",
-    "amount": 1888.98,
-    "description": "Produse/materiale cf. fact. 1814/14.11.2025/scule/vopsele",
-    "date": "2025-11-14",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_11_019",
-    "type": "EXPENSE",
-    "amount": 395.31,
-    "description": "Produse/materiale cf. bf. 92/15.11.2025/materiale constructii",
-    "date": "2025-11-15",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_11_020",
-    "type": "EXPENSE",
-    "amount": 363.1,
-    "description": "Produse/materiale cf. bf. 286/15.11.2025/alimente",
-    "date": "2025-11-15",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_11_021",
-    "type": "EXPENSE",
-    "amount": 316.95,
-    "description": "Produse/materiale cf. bf. 26/15.11.2025/alimente",
-    "date": "2025-11-15",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_11_022",
-    "type": "EXPENSE",
-    "amount": 58.0,
-    "description": "Produse/materiale cf. bf. 48/15.11.2025/marke-re",
-    "date": "2025-11-15",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_11_023",
-    "type": "EXPENSE",
-    "amount": 668.99,
-    "description": "Produse/materiale cf. bf. 27/15.11.2025/pizza",
-    "date": "2025-11-15",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_11_024",
-    "type": "EXPENSE",
-    "amount": 428.0,
-    "description": "Produse/materiale - cf. chit. 13239/17.11.2025/folie magnetica",
-    "date": "2025-11-18",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_11_025",
-    "type": "EXPENSE",
-    "amount": 86.45,
-    "description": "Sume trimise la filiala - pentru energie electrica (Sept. -Oct.)",
-    "date": "2025-11-18",
-    "category": "Energie Electrică"
-  },
-  {
-    "id": "exp_2025_11_026",
-    "type": "EXPENSE",
-    "amount": 1774.5,
-    "description": "Sume trimise la filiala - pentru consum gaz (Sept.-Oct.)",
-    "date": "2025-11-18",
-    "category": "Gaze Naturale"
-  },
-  {
-    "id": "exp_2025_11_027",
-    "type": "EXPENSE",
-    "amount": 319.99,
-    "description": "Produse/materiale - cf. fact. 145804/19.11.2025/router wifi",
-    "date": "2025-11-19",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_11_028",
-    "type": "EXPENSE",
-    "amount": 49.9,
-    "description": "Produse/materiale - cf. bf. 282/08.09.2025",
-    "date": "2025-11-19",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_11_029",
-    "type": "EXPENSE",
-    "amount": 1431.7,
-    "description": "Produse/materiale cf. chit. 0211914/20.11.2025/sonorizare",
-    "date": "2025-11-20",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_11_030",
-    "type": "EXPENSE",
-    "amount": 50.0,
-    "description": "Produse/materiale - cf. bf. 10/21.11.2025/banda magnet",
-    "date": "2025-11-21",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_11_031",
-    "type": "EXPENSE",
-    "amount": 949.79,
-    "description": "Produse/materiale - cf. bf. 41/22.11.2025/pensule/diluant",
-    "date": "2025-11-22",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_11_032",
-    "type": "EXPENSE",
-    "amount": 303.0,
-    "description": "Produse/materiale - cf. bf. 16/22.11.2025/pizza/crispy",
-    "date": "2025-11-22",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_11_033",
-    "type": "EXPENSE",
-    "amount": 114.0,
-    "description": "Produse/materiale - cf. bf. 5/22.11.2025/mancare",
-    "date": "2025-11-22",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_11_034",
-    "type": "EXPENSE",
-    "amount": 197.65,
-    "description": "Produse/materiale - cf. bf. 72/22.11.2027/adezivi/poli./diblu",
-    "date": "2025-11-22",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_11_035",
-    "type": "EXPENSE",
-    "amount": 200.09,
-    "description": "Produse/materiale - cf. bf. 32642/23.11.2025/constructie",
-    "date": "2025-11-23",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_11_036",
-    "type": "EXPENSE",
-    "amount": 1129.0,
-    "description": "Produse/materiale - cf. fact.85449812/21.11.2025/Conv. audio",
-    "date": "2025-11-24",
-    "category": "Echipamente Electronice"
-  },
-  {
-    "id": "exp_2025_11_037",
-    "type": "EXPENSE",
-    "amount": 218.23,
-    "description": "Plata decont cheltuieli - Dogariu Ionel Sergiu bf.62/ipsos/regips",
-    "date": "2025-11-25",
-    "category": "Deconturi Cheltuieli"
-  },
-  {
-    "id": "exp_2025_11_038",
-    "type": "EXPENSE",
-    "amount": 379.99,
-    "description": "Plata decont cheltuieli - Dogariu Ionel Sergiu ft.97520/Garantie",
-    "date": "2025-11-25",
-    "category": "Deconturi Cheltuieli"
-  },
-  {
-    "id": "exp_2025_11_039",
-    "type": "EXPENSE",
-    "amount": 2459.98,
-    "description": "Plata decont cheltuieli - Dogariu Ionel Sergiu ft.79264/Aspirator",
-    "date": "2025-11-25",
-    "category": "Deconturi Cheltuieli"
-  },
-  {
-    "id": "exp_2025_11_040",
-    "type": "EXPENSE",
-    "amount": 0.51,
-    "description": "Comisioane bancare",
-    "date": "2025-11-25",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_11_041",
-    "type": "EXPENSE",
-    "amount": 20.4,
-    "description": "Comisioane bancare",
-    "date": "2025-11-30",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_12_001",
-    "type": "EXPENSE",
-    "amount": -20.4,
-    "description": "restituire comision conf. extras bancar 12",
-    "date": "2025-12-04",
-    "category": "Comisioane Bancare"
-  },
-  {
-    "id": "exp_2025_12_002",
-    "type": "EXPENSE",
-    "amount": 724.66,
-    "description": "Aquaserv: Chelutieli privind consumul de apa - extras nr. 12 conf. fact. AQ1280631/10.11.2025",
-    "date": "2025-12-08",
-    "category": "Apă"
-  },
-  {
-    "id": "exp_2025_12_003",
-    "type": "EXPENSE",
-    "amount": 224.72,
-    "description": "Eagletronic: cablu UTP, TAVA RACK FIX - extras nr. 12 conf. fact. 251200009/03.12.2025",
-    "date": "2025-12-08",
-    "category": "Materiale Construcție"
-  },
-  {
-    "id": "exp_2025_12_004",
-    "type": "EXPENSE",
-    "amount": 800.0,
-    "description": "Instal Global: Verificare ISCIR Centrale - extras nr. 12 conf. fact. 11359/05.12.2025",
-    "date": "2025-12-08",
-    "category": "Întreținere și Reparații"
-  },
-  {
-    "id": "exp_2025_12_005",
-    "type": "EXPENSE",
-    "amount": 10459.66,
-    "description": "Transfer ASR pentru energie si gaz catere cong. de contact",
-    "date": "2025-12-08",
-    "category": "Gaze Naturale"
-  },
-  {
-    "id": "exp_2025_12_006",
-    "type": "EXPENSE",
-    "amount": 522.72,
-    "description": "Fire Safety: verificare stingator - extras nr. 12 conf. fact. 136824/16.12.2025",
-    "date": "2025-12-19",
-    "category": "Întreținere și Reparații"
-  },
-  {
-    "id": "exp_2025_12_007",
-    "type": "EXPENSE",
-    "amount": 2419.99,
-    "description": "Emag: televizor Samsung pentru afisarea programului - extras nr. 12 conf. fact. 269202432052",
-    "date": "2025-12-19",
-    "category": "Echipamente Electronice"
-  }
-]
+{
+  "_meta": {
+    "version": "2026-01-18T23:15:17.126601",
+    "generated_at": "2026-01-18T23:15:17.126601"
+  },
+  "data": [
+    {
+      "id": "exp_2025_02_001",
+      "type": "EXPENSE",
+      "amount": 158.0,
+      "description": "Produse/materiale cf BF nr.81/24.01.2024",
+      "date": "2025-02-01",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_02_002",
+      "type": "EXPENSE",
+      "amount": 73.43,
+      "description": "Produse/materiale cf BF nr.184/09.12.2024",
+      "date": "2025-02-01",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_02_003",
+      "type": "EXPENSE",
+      "amount": 18.81,
+      "description": "Produse/materiale - cf BF nr.298/25.01.2025",
+      "date": "2025-02-01",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_02_004",
+      "type": "EXPENSE",
+      "amount": 49.68,
+      "description": "Produse/materiale - cf BF nr.84 / 24.01.2025",
+      "date": "2025-02-01",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_02_005",
+      "type": "EXPENSE",
+      "amount": 41.9,
+      "description": "Produse/materiale - cf BF nr.0243-00104 / 25.01.2025",
+      "date": "2025-02-01",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_02_006",
+      "type": "EXPENSE",
+      "amount": 170.0,
+      "description": "Produse/materiale - cf BF nr.83/ 24.01.2025",
+      "date": "2025-02-01",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_02_007",
+      "type": "EXPENSE",
+      "amount": 900.54,
+      "description": "Produse/materiale - cf fact nr.RSTM 2245401/31.01.2025",
+      "date": "2025-02-04",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_02_008",
+      "type": "EXPENSE",
+      "amount": -8.0,
+      "description": "Comisioane bancare",
+      "date": "2025-02-04",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_02_009",
+      "type": "EXPENSE",
+      "amount": 1057.17,
+      "description": "Cheltuieli privind consumul de apa - cf fact nr.AQ1007640/22.01",
+      "date": "2025-02-06",
+      "category": "Apă"
+    },
+    {
+      "id": "exp_2025_02_010",
+      "type": "EXPENSE",
+      "amount": 189.44,
+      "description": "Telecomunicatii - internet - cf fact nr.FDB25/15003017/08.01.25",
+      "date": "2025-02-06",
+      "category": "Internet/Telecomunicații"
+    },
+    {
+      "id": "exp_2025_02_011",
+      "type": "EXPENSE",
+      "amount": 25.0,
+      "description": "Produse/materiale - cf BF nr.39 / 08.02.2025",
+      "date": "2025-02-08",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_02_012",
+      "type": "EXPENSE",
+      "amount": 1218.0,
+      "description": "Produse/materiale - cf fact FAV304/17.01.25 Meniul zilei SKE",
+      "date": "2025-02-10",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_02_013",
+      "type": "EXPENSE",
+      "amount": 0.45,
+      "description": "Comisioane bancare",
+      "date": "2025-02-10",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_02_014",
+      "type": "EXPENSE",
+      "amount": 20.72,
+      "description": "Produse/materiale - cf BF nr.178 / 16.02.2025",
+      "date": "2025-02-16",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_02_015",
+      "type": "EXPENSE",
+      "amount": 328.0,
+      "description": "Produse/materiale - cf fact nr.F.AFRCT14327/18.02.2025",
+      "date": "2025-02-19",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_02_016",
+      "type": "EXPENSE",
+      "amount": 2739.83,
+      "description": "Obiect de inventar - cf fact FD EMAG/88367 / 19.02.2025",
+      "date": "2025-02-21",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_02_017",
+      "type": "EXPENSE",
+      "amount": 944.96,
+      "description": "Produse/materiale - cf fact nr.6500453417 / 22.02.2025",
+      "date": "2025-02-22",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_02_018",
+      "type": "EXPENSE",
+      "amount": 414.58,
+      "description": "Produse/materiale - cf BF nr.232 / 22.02.2025",
+      "date": "2025-02-22",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_02_019",
+      "type": "EXPENSE",
+      "amount": 194.71,
+      "description": "Produse/materiale - cf BF nr.233 / 22.02.2025",
+      "date": "2025-02-22",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_02_020",
+      "type": "EXPENSE",
+      "amount": 99.0,
+      "description": "Produse/materiale - cf BF nr.88 / 22.02.2025",
+      "date": "2025-02-22",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_02_021",
+      "type": "EXPENSE",
+      "amount": 1671.79,
+      "description": "Obiect de inventar - cf fact nr.IDAN142064 / 24.02.2025",
+      "date": "2025-02-24",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_02_022",
+      "type": "EXPENSE",
+      "amount": 99.0,
+      "description": "Produse/materiale - cf BF nr.92 / 24.02.2025",
+      "date": "2025-02-24",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_02_023",
+      "type": "EXPENSE",
+      "amount": 330.0,
+      "description": "Produse/materiale - cf BF nr.53 / 24.02.2025",
+      "date": "2025-02-24",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_02_024",
+      "type": "EXPENSE",
+      "amount": 330.0,
+      "description": "Produse/materiale - cf BF nr.54 / 24.02.2025",
+      "date": "2025-02-24",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_02_025",
+      "type": "EXPENSE",
+      "amount": 58.23,
+      "description": "Produse/materiale - cf BF nr.73 / 24.02.2025",
+      "date": "2025-02-24",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_02_026",
+      "type": "EXPENSE",
+      "amount": 91.8,
+      "description": "Produse/materiale - cf BF nr.267 / 25.02.2025",
+      "date": "2025-02-25",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_02_027",
+      "type": "EXPENSE",
+      "amount": 367.2,
+      "description": "Produse/materiale - cf BF nr.275 / 25.02.2025",
+      "date": "2025-02-25",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_02_028",
+      "type": "EXPENSE",
+      "amount": 262.0,
+      "description": "Produse/materiale - cf BF nr.337 / 25.02.2025",
+      "date": "2025-02-25",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_02_029",
+      "type": "EXPENSE",
+      "amount": 24.4,
+      "description": "Comisioane bancare",
+      "date": "2025-02-27",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_03_001",
+      "type": "EXPENSE",
+      "amount": 42.06,
+      "description": "Produse/materiale - cf BF nr0218/25.02.2025",
+      "date": "2025-03-01",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_03_002",
+      "type": "EXPENSE",
+      "amount": 2805.98,
+      "description": "Obiect de inventar - cf fact nr.ROWHJ 259203324954/03.03.25",
+      "date": "2025-03-05",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_03_003",
+      "type": "EXPENSE",
+      "amount": -24.4,
+      "description": "Comisioane bancare",
+      "date": "2025-03-05",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_03_004",
+      "type": "EXPENSE",
+      "amount": 133.04,
+      "description": "Produse/materiale - cf fact nr.RSTM2 245777/25.02.2025",
+      "date": "2025-03-05",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_03_005",
+      "type": "EXPENSE",
+      "amount": 1800.0,
+      "description": "Produse/materiale - cf fact nr.74544 / 24.02.2025 (accesorii mob)",
+      "date": "2025-03-05",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_03_006",
+      "type": "EXPENSE",
+      "amount": 0.51,
+      "description": "Comisioane bancare",
+      "date": "2025-03-05",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_03_007",
+      "type": "EXPENSE",
+      "amount": 145.63,
+      "description": "Produse/materiale - cf fact nr.LDP25 3501716",
+      "date": "2025-03-05",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_03_008",
+      "type": "EXPENSE",
+      "amount": 0.51,
+      "description": "Comisioane bancare",
+      "date": "2025-03-05",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_03_009",
+      "type": "EXPENSE",
+      "amount": 379.03,
+      "description": "Telecomunicatii - internet- cf fact nr.FDB25 28327280 / 06.03.25",
+      "date": "2025-03-10",
+      "category": "Internet/Telecomunicații"
+    },
+    {
+      "id": "exp_2025_03_010",
+      "type": "EXPENSE",
+      "amount": 710.74,
+      "description": "Cheltuieli privind consumul de apa - cf fact AQ 1037164/20.02",
+      "date": "2025-03-10",
+      "category": "Apă"
+    },
+    {
+      "id": "exp_2025_03_011",
+      "type": "EXPENSE",
+      "amount": 11623.15,
+      "description": "Sume trimise la filiala - consum gaze naturale luna ian 2025",
+      "date": "2025-03-11",
+      "category": "Gaze Naturale"
+    },
+    {
+      "id": "exp_2025_03_012",
+      "type": "EXPENSE",
+      "amount": 427.9,
+      "description": "Sume trimise la filiala - consum energie elctrica luna ian 2025",
+      "date": "2025-03-11",
+      "category": "Energie Electrică"
+    },
+    {
+      "id": "exp_2025_03_013",
+      "type": "EXPENSE",
+      "amount": 5086.64,
+      "description": "Obiect de inventar - cf fact nr.11/06.03.2025",
+      "date": "2025-03-11",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_03_014",
+      "type": "EXPENSE",
+      "amount": 0.51,
+      "description": "Comisioane bancare",
+      "date": "2025-03-11",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_03_015",
+      "type": "EXPENSE",
+      "amount": 187.0,
+      "description": "Produse/materiale - cf fact nr.MCC2020 158043/20.03.2025",
+      "date": "2025-03-21",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_03_016",
+      "type": "EXPENSE",
+      "amount": 205.54,
+      "description": "Produse/materiale - cf BF nr.222/24.03.2025",
+      "date": "2025-03-24",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_03_017",
+      "type": "EXPENSE",
+      "amount": 211.5,
+      "description": "Produse/materiale - cf BF nr.391/24.03.2025",
+      "date": "2025-03-24",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_03_018",
+      "type": "EXPENSE",
+      "amount": 333.0,
+      "description": "Produse/materiale - cf BF nr.314/27.03.2025",
+      "date": "2025-03-27",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_03_019",
+      "type": "EXPENSE",
+      "amount": 420.0,
+      "description": "Produse/materiale - cf doc plata seria 7AB2 1093003/27.03.2025",
+      "date": "2025-03-27",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_04_001",
+      "type": "EXPENSE",
+      "amount": 932.41,
+      "description": "Produse/materiale - cf fact nr.2056744 / 28.03.2025",
+      "date": "2025-04-01",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_04_002",
+      "type": "EXPENSE",
+      "amount": 1726.52,
+      "description": "Produse/materiale cf fact nr.LPD 25 / 3503620 / 27.03.2025",
+      "date": "2025-04-01",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_04_003",
+      "type": "EXPENSE",
+      "amount": 0.51,
+      "description": "Comisioane bancare",
+      "date": "2025-04-01",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_04_004",
+      "type": "EXPENSE",
+      "amount": 268.23,
+      "description": "Produse/materiale - cf fact nr.HHZ25-01878 / 21.03.2025",
+      "date": "2025-04-01",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_04_005",
+      "type": "EXPENSE",
+      "amount": 0.51,
+      "description": "Comisioane bancare",
+      "date": "2025-04-01",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_04_006",
+      "type": "EXPENSE",
+      "amount": 225.6,
+      "description": "Produse/materiale - cf BF nr.0306/31.03.2025 Dedeman",
+      "date": "2025-04-01",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_04_007",
+      "type": "EXPENSE",
+      "amount": 764.66,
+      "description": "Produse/materiale - cf fact nr.149884/31.03.2025 Snick Ambalaje",
+      "date": "2025-04-01",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_04_008",
+      "type": "EXPENSE",
+      "amount": -6.0,
+      "description": "Comisioane bancare",
+      "date": "2025-04-03",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_04_009",
+      "type": "EXPENSE",
+      "amount": 826.42,
+      "description": "Produse/materiale cf fact nr.9736503044/29.07.24 si 97365175",
+      "date": "2025-04-04",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_04_010",
+      "type": "EXPENSE",
+      "amount": 0.51,
+      "description": "Comisioane bancare",
+      "date": "2025-04-04",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_04_011",
+      "type": "EXPENSE",
+      "amount": 845.29,
+      "description": "Cheltuieli privind consumul de apa - cf fact nr.AQ 1066716/20.03",
+      "date": "2025-04-14",
+      "category": "Apă"
+    },
+    {
+      "id": "exp_2025_04_012",
+      "type": "EXPENSE",
+      "amount": 189.53,
+      "description": "Telecomunicatii - internet - cf fact nr.FDB25 / 35004183 / 07.04",
+      "date": "2025-04-14",
+      "category": "Internet/Telecomunicații"
+    },
+    {
+      "id": "exp_2025_04_013",
+      "type": "EXPENSE",
+      "amount": 323.95,
+      "description": "Produse/materiale - cf BF nr0281/ 17.04.2025 Auchan Romania",
+      "date": "2025-04-17",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_04_014",
+      "type": "EXPENSE",
+      "amount": 4078.8,
+      "description": "Sume trimise la filiala - consum energie el. (febr-martie 2025)",
+      "date": "2025-04-19",
+      "category": "Energie Electrică"
+    },
+    {
+      "id": "exp_2025_04_015",
+      "type": "EXPENSE",
+      "amount": 7410.0,
+      "description": "Sume trimise la filiala - consum gaze naturale(febr-martie 2025)",
+      "date": "2025-04-19",
+      "category": "Gaze Naturale"
+    },
+    {
+      "id": "exp_2025_04_016",
+      "type": "EXPENSE",
+      "amount": 6707.94,
+      "description": "Produse/materiale - cf fact nr.100727883/24.04-piese poarta acces",
+      "date": "2025-04-25",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_04_017",
+      "type": "EXPENSE",
+      "amount": 0.51,
+      "description": "Comisioane bancare",
+      "date": "2025-04-25",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_04_018",
+      "type": "EXPENSE",
+      "amount": 1366.2,
+      "description": "Produse/materiale - cf fact nr.6501082846-teava dreptunghiulara",
+      "date": "2025-04-25",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_04_019",
+      "type": "EXPENSE",
+      "amount": 486.0,
+      "description": "Produse/materiale - cf BF nr.0013/26.04.2025 Dedeman",
+      "date": "2025-04-26",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_04_020",
+      "type": "EXPENSE",
+      "amount": 337.0,
+      "description": "Produse/materiale - cf BF nr.0056/26.04.2025 Country Pub",
+      "date": "2025-04-26",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_04_021",
+      "type": "EXPENSE",
+      "amount": 1109.73,
+      "description": "Produse/materiale - cf fact nr.100729172/28.04-piese poarta acces",
+      "date": "2025-04-28",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_04_022",
+      "type": "EXPENSE",
+      "amount": 0.51,
+      "description": "Comisioane bancare",
+      "date": "2025-04-28",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_04_023",
+      "type": "EXPENSE",
+      "amount": 4.0,
+      "description": "Comisioane bancare",
+      "date": "2025-04-30",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_04_024",
+      "type": "EXPENSE",
+      "amount": 445.46,
+      "description": "Produse/materiale - cf fact nr.6501082885/30.04 Dedeman",
+      "date": "2025-04-30",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_04_025",
+      "type": "EXPENSE",
+      "amount": 778.64,
+      "description": "Produse/materiale - cf fact nr.6500385620/30.04 Dedeman",
+      "date": "2025-04-30",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_04_026",
+      "type": "EXPENSE",
+      "amount": 940.0,
+      "description": "Produse/materiale - cf fact nr.4060095/30.04 Surub Trade",
+      "date": "2025-04-30",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_05_001",
+      "type": "EXPENSE",
+      "amount": 25.99,
+      "description": "Produse/materiale - cf BF nr.371/ 24.04.205 Dedeman",
+      "date": "2025-05-01",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_05_002",
+      "type": "EXPENSE",
+      "amount": 117.4,
+      "description": "Produse/materiale - cf BF nr.38/26.04.2025 Dedeman",
+      "date": "2025-05-01",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_05_003",
+      "type": "EXPENSE",
+      "amount": 41.0,
+      "description": "Produse/materiale - cf BF nr.106/26.04.2025 Dedeman",
+      "date": "2025-05-01",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_05_004",
+      "type": "EXPENSE",
+      "amount": -4.0,
+      "description": "Comisioane bancare",
+      "date": "2025-05-02",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_05_005",
+      "type": "EXPENSE",
+      "amount": 348.0,
+      "description": "Produse/materiale - cf fact FAV 398 / 07.05.2025",
+      "date": "2025-05-07",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_05_006",
+      "type": "EXPENSE",
+      "amount": 0.51,
+      "description": "Comisioane bancare",
+      "date": "2025-05-07",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_05_007",
+      "type": "EXPENSE",
+      "amount": 6750.0,
+      "description": "Produse/materiale - cf fact NAG 2025 0029/09.05.25-montaj poarta",
+      "date": "2025-05-12",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_05_008",
+      "type": "EXPENSE",
+      "amount": 40.4,
+      "description": "Produse/materiale - cf fact EGL944,EGL936,EGL1103",
+      "date": "2025-05-12",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_05_009",
+      "type": "EXPENSE",
+      "amount": 260.6,
+      "description": "Produse/materiale - cf fact RED79231;34 /12.05.2025",
+      "date": "2025-05-12",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_05_010",
+      "type": "EXPENSE",
+      "amount": 1468.34,
+      "description": "Plata decont cheltuieli - cf fact nr.6500275212/12.05.2025",
+      "date": "2025-05-12",
+      "category": "Deconturi Cheltuieli"
+    },
+    {
+      "id": "exp_2025_05_011",
+      "type": "EXPENSE",
+      "amount": 134.2,
+      "description": "Sume trimise la filiala - consum energie elctrica(martie-aprilie)",
+      "date": "2025-05-12",
+      "category": "Energie Electrică"
+    },
+    {
+      "id": "exp_2025_05_012",
+      "type": "EXPENSE",
+      "amount": 4512.3,
+      "description": "Sume trimise la filiala - consum gaze naturale(martie - aprilie)",
+      "date": "2025-05-12",
+      "category": "Gaze Naturale"
+    },
+    {
+      "id": "exp_2025_05_013",
+      "type": "EXPENSE",
+      "amount": 609.0,
+      "description": "Produse/materiale - cf fact nr.MCC2020/164390 / 15.05.2025",
+      "date": "2025-05-16",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_05_014",
+      "type": "EXPENSE",
+      "amount": 912.0,
+      "description": "Produse/materiale - cf fact nr.29FE6857/13.05.2025",
+      "date": "2025-05-19",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_05_015",
+      "type": "EXPENSE",
+      "amount": 93.73,
+      "description": "Produse/materiale - cf BF 112/24.05.205",
+      "date": "2025-05-24",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_05_016",
+      "type": "EXPENSE",
+      "amount": 7124.74,
+      "description": "Produse/materiale - cf fact CLPJ699 22.05.25 Aer conditionat",
+      "date": "2025-05-27",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_05_017",
+      "type": "EXPENSE",
+      "amount": 1094.06,
+      "description": "Plata decont cheltuieli - cf fact 6500454501, BF 9662/10.05.2025",
+      "date": "2025-05-27",
+      "category": "Deconturi Cheltuieli"
+    },
+    {
+      "id": "exp_2025_05_018",
+      "type": "EXPENSE",
+      "amount": 0.51,
+      "description": "Comisioane bancare",
+      "date": "2025-05-27",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_06_001",
+      "type": "EXPENSE",
+      "amount": 128.7,
+      "description": "Sume trimise la filiala - consum energie electrica (aprilie-mai)",
+      "date": "2025-06-06",
+      "category": "Energie Electrică"
+    },
+    {
+      "id": "exp_2025_06_002",
+      "type": "EXPENSE",
+      "amount": 1170.0,
+      "description": "Sume trimise la filiala - consum gaze naturale (aprilie-mai)",
+      "date": "2025-06-06",
+      "category": "Gaze Naturale"
+    },
+    {
+      "id": "exp_2025_06_003",
+      "type": "EXPENSE",
+      "amount": 794.21,
+      "description": "Cheltuieli privind consumul de apa - cf fact nr.AQ 1126269/19.05",
+      "date": "2025-06-11",
+      "category": "Apă"
+    },
+    {
+      "id": "exp_2025_06_004",
+      "type": "EXPENSE",
+      "amount": 793.94,
+      "description": "Cheltuieli privind consumul de apa - cf fact nr.AQ 1096485/22.04",
+      "date": "2025-06-11",
+      "category": "Apă"
+    },
+    {
+      "id": "exp_2025_07_001",
+      "type": "EXPENSE",
+      "amount": 698.78,
+      "description": "Cheltuieli privind consumul de apa - cf fact nr AQ1156904/19.06",
+      "date": "2025-07-05",
+      "category": "Apă"
+    },
+    {
+      "id": "exp_2025_07_002",
+      "type": "EXPENSE",
+      "amount": 1479.2,
+      "description": "Produse/materiale - cf. bf. nr. 2555/08.07.2025",
+      "date": "2025-07-08",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_07_003",
+      "type": "EXPENSE",
+      "amount": 75.9,
+      "description": "Cheltuieli privind consumul de energie electrica (Mai-Iunie)",
+      "date": "2025-07-09",
+      "category": "Energie Electrică"
+    },
+    {
+      "id": "exp_2025_07_004",
+      "type": "EXPENSE",
+      "amount": 1154.4,
+      "description": "Cheltuieli privind consumul de gaze naturale (Mai-Iunie)",
+      "date": "2025-07-09",
+      "category": "Gaze Naturale"
+    },
+    {
+      "id": "exp_2025_07_005",
+      "type": "EXPENSE",
+      "amount": 590.0,
+      "description": "Produse/materiale - cf. fact nr. 107/14.07.2025/Pizza",
+      "date": "2025-07-14",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_07_006",
+      "type": "EXPENSE",
+      "amount": 224.0,
+      "description": "Produse/materiale - cf. bf. nr. 6452/22.05.2025",
+      "date": "2025-07-14",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_07_007",
+      "type": "EXPENSE",
+      "amount": 300.0,
+      "description": "Produse/materiale - cf bf. nr. 13/10.05.2025/Pizza",
+      "date": "2025-07-14",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_07_008",
+      "type": "EXPENSE",
+      "amount": 79.0,
+      "description": "Produse/materiale - cf. bf. nr. 285199/12.05.2025/Palanet",
+      "date": "2025-07-14",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_07_009",
+      "type": "EXPENSE",
+      "amount": 52.8,
+      "description": "Produse/materiale - cf. bf. nr. 15/24.05.2025/Burger King",
+      "date": "2025-07-14",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_07_010",
+      "type": "EXPENSE",
+      "amount": 32.9,
+      "description": "Produse/materiale - cf. bf. nr 2220037/09.06.2025/Saci Beton",
+      "date": "2025-07-14",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_07_011",
+      "type": "EXPENSE",
+      "amount": 154.0,
+      "description": "Produse/materiale - cf. bf. nr 24/19.05.2025/Pizza",
+      "date": "2025-07-14",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_07_012",
+      "type": "EXPENSE",
+      "amount": 225.0,
+      "description": "Produse/materiale - cf. bf. nr. 9/24.05.2025/Pizza",
+      "date": "2025-07-14",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_07_013",
+      "type": "EXPENSE",
+      "amount": 183.0,
+      "description": "Produse/materiale - cf. bf. nr. 40/30.06.2025/Pizza",
+      "date": "2025-07-14",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_07_014",
+      "type": "EXPENSE",
+      "amount": 274.8,
+      "description": "Produse/materiale - cf. bf. nr. 104/07.05.2025",
+      "date": "2025-07-14",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_07_015",
+      "type": "EXPENSE",
+      "amount": 550.0,
+      "description": "Sume trimise catre congr. Targu Mures Vest",
+      "date": "2025-07-15",
+      "category": "Transfer către Congregații"
+    },
+    {
+      "id": "exp_2025_07_016",
+      "type": "EXPENSE",
+      "amount": 5288.72,
+      "description": "Produse/materiale cf. fact. nr. 250700068/21.07.2025",
+      "date": "2025-07-22",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_07_017",
+      "type": "EXPENSE",
+      "amount": 704.39,
+      "description": "Produse/materiale - cf. bf. nr. 04996/22.07.2025",
+      "date": "2025-07-22",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_07_018",
+      "type": "EXPENSE",
+      "amount": 16.0,
+      "description": "Comisioane bancare - ridicare numerar",
+      "date": "2025-07-30",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_07_019",
+      "type": "EXPENSE",
+      "amount": 555.0,
+      "description": "Produse/materiale - cf. bf. nr. 168724/26.06.2025/RodeBoomPole",
+      "date": "2025-07-30",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_07_020",
+      "type": "EXPENSE",
+      "amount": 300.0,
+      "description": "Produse/materiale - cf. bf. nr. 2025023/26.05.2025",
+      "date": "2025-07-30",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_07_021",
+      "type": "EXPENSE",
+      "amount": 81.0,
+      "description": "Produse/materiale - cf. bf. 10744/09.06.2025/NuParcatiSemn",
+      "date": "2025-07-30",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_08_001",
+      "type": "EXPENSE",
+      "amount": 401.43,
+      "description": "Produse/materiale - cf. fact. nr. 2058099/01.08.2025/vopsea",
+      "date": "2025-08-01",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_08_002",
+      "type": "EXPENSE",
+      "amount": 3750.0,
+      "description": "Produse/materiale - cf. fact. nr. Nag20250032/01.08/MontajPoarta",
+      "date": "2025-08-01",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_08_003",
+      "type": "EXPENSE",
+      "amount": 80.0,
+      "description": "Plata decont cheltuieli - Dogariu Sergiu Ionel bf. 9/12.07.2025",
+      "date": "2025-08-01",
+      "category": "Deconturi Cheltuieli"
+    },
+    {
+      "id": "exp_2025_08_004",
+      "type": "EXPENSE",
+      "amount": 0.51,
+      "description": "Comisioane bancare",
+      "date": "2025-08-01",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_08_005",
+      "type": "EXPENSE",
+      "amount": 1218.88,
+      "description": "Plata decont cheltuieli - Dogariu Sergiu Ionel",
+      "date": "2025-08-01",
+      "category": "Deconturi Cheltuieli"
+    },
+    {
+      "id": "exp_2025_08_006",
+      "type": "EXPENSE",
+      "amount": 0.51,
+      "description": "Comisioane bancare",
+      "date": "2025-08-01",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_08_007",
+      "type": "EXPENSE",
+      "amount": 912.65,
+      "description": "Produse/materiale conf. fact. 3507378/13.06.2025/prosoape",
+      "date": "2025-08-01",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_08_008",
+      "type": "EXPENSE",
+      "amount": 0.51,
+      "description": "Comisioane bancare",
+      "date": "2025-08-01",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_08_009",
+      "type": "EXPENSE",
+      "amount": 237.81,
+      "description": "Produse/materiale - cf. bf. nr. 99/02.08.2025/adeziv",
+      "date": "2025-08-02",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_08_010",
+      "type": "EXPENSE",
+      "amount": 21.39,
+      "description": "Produse/materiale - cf. bf. nr. 300/02.08.2025",
+      "date": "2025-08-02",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_08_011",
+      "type": "EXPENSE",
+      "amount": 194.0,
+      "description": "Produse/materiale cf. bf. nr. 20/02.08.2025",
+      "date": "2025-08-02",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_08_012",
+      "type": "EXPENSE",
+      "amount": 240.0,
+      "description": "Produse/materiale cf. bf. nr. 39/02.08.2025/Pizza",
+      "date": "2025-08-02",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_08_013",
+      "type": "EXPENSE",
+      "amount": 832.87,
+      "description": "Produse/materiale cf. bf. nr. 28/02.08.2025/Piese sanitare",
+      "date": "2025-08-02",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_08_014",
+      "type": "EXPENSE",
+      "amount": 162.0,
+      "description": "Produse/materiale cf. bf. nr. 116/04.08.2025",
+      "date": "2025-08-04",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_08_015",
+      "type": "EXPENSE",
+      "amount": 399.93,
+      "description": "Produse/materiale cf. chit. nr. 8001/04.08.2025",
+      "date": "2025-08-04",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_08_016",
+      "type": "EXPENSE",
+      "amount": -16.0,
+      "description": "Comisioane bancare",
+      "date": "2025-08-04",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_08_017",
+      "type": "EXPENSE",
+      "amount": 216.17,
+      "description": "Produse/materiale cf. chit. nr. 34001/05.08.2025",
+      "date": "2025-08-05",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_08_018",
+      "type": "EXPENSE",
+      "amount": 74.48,
+      "description": "Sume trimise la filiala - pentru energie electrica (Iunie-Iulie)",
+      "date": "2025-08-07",
+      "category": "Energie Electrică"
+    },
+    {
+      "id": "exp_2025_08_019",
+      "type": "EXPENSE",
+      "amount": 432.9,
+      "description": "Sume trimise la filiala - pentru consum gaz (Iunie-Iulie)",
+      "date": "2025-08-07",
+      "category": "Gaze Naturale"
+    },
+    {
+      "id": "exp_2025_08_020",
+      "type": "EXPENSE",
+      "amount": 728.01,
+      "description": "Cheltuieli privind consumul de apa cf. fact. nr. AQ1186974/18.07",
+      "date": "2025-08-07",
+      "category": "Apă"
+    },
+    {
+      "id": "exp_2025_08_021",
+      "type": "EXPENSE",
+      "amount": 126.96,
+      "description": "Produse/materiale cf. bf. nr. 208/07.08.2025",
+      "date": "2025-08-07",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_08_022",
+      "type": "EXPENSE",
+      "amount": 3632.83,
+      "description": "Plata decont cheltuieli - Dogariu Sergiu Ionel / Mat. constructie",
+      "date": "2025-08-07",
+      "category": "Deconturi Cheltuieli"
+    },
+    {
+      "id": "exp_2025_08_023",
+      "type": "EXPENSE",
+      "amount": 0.51,
+      "description": "Comisioane bancare",
+      "date": "2025-08-07",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_08_024",
+      "type": "EXPENSE",
+      "amount": 121.86,
+      "description": "Produse/materiale - conf. nr. HHZ25-04749/21.07.2025",
+      "date": "2025-08-07",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_08_025",
+      "type": "EXPENSE",
+      "amount": 0.51,
+      "description": "Comisioane bancare",
+      "date": "2025-08-07",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_08_026",
+      "type": "EXPENSE",
+      "amount": 2019.14,
+      "description": "Produse/materiale - curatenie/saci/prosop/sapun 3505071/3505071",
+      "date": "2025-08-16",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_08_027",
+      "type": "EXPENSE",
+      "amount": 0.51,
+      "description": "Comisioane bancare",
+      "date": "2025-08-16",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_09_001",
+      "type": "EXPENSE",
+      "amount": 809.1,
+      "description": "Produse/materiale cf. fact. DD2025/518/vopsele/discflex",
+      "date": "2025-09-04",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_09_002",
+      "type": "EXPENSE",
+      "amount": 66.5,
+      "description": "Sume trimise la filiala - pentru energie electrica (Iulie-August)",
+      "date": "2025-09-16",
+      "category": "Energie Electrică"
+    },
+    {
+      "id": "exp_2025_09_003",
+      "type": "EXPENSE",
+      "amount": 89.7,
+      "description": "Sume trimise la filiala - pentru consum gaz (Iulie - August)",
+      "date": "2025-09-16",
+      "category": "Gaze Naturale"
+    },
+    {
+      "id": "exp_2025_10_001",
+      "type": "EXPENSE",
+      "amount": 1452.0,
+      "description": "Produse/materiale cf. fact. 41/29.09.2025 dulap documente",
+      "date": "2025-10-03",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_10_002",
+      "type": "EXPENSE",
+      "amount": 0.51,
+      "description": "Comisioane bancare",
+      "date": "2025-10-03",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_10_003",
+      "type": "EXPENSE",
+      "amount": 817.31,
+      "description": "Produse/materiale cf. fact. RSTM2 249317/mater. instal. sanitare",
+      "date": "2025-10-03",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_10_004",
+      "type": "EXPENSE",
+      "amount": 399.68,
+      "description": "Produse/materiale cf. chit. SR301370796/Filtre dozator",
+      "date": "2025-10-13",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_10_005",
+      "type": "EXPENSE",
+      "amount": 2335.36,
+      "description": "Produse/materiale cf. fact. 250800052/18.08.2025/cablu MYF",
+      "date": "2025-10-14",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_10_006",
+      "type": "EXPENSE",
+      "amount": 1246.99,
+      "description": "Produse/materiale cf. chit. 33622/14.10.2025/pahare unica fol.",
+      "date": "2025-10-14",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_10_007",
+      "type": "EXPENSE",
+      "amount": 345.72,
+      "description": "Produse/materiale cf. chit. 260307661902/acumulatori",
+      "date": "2025-10-21",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_10_008",
+      "type": "EXPENSE",
+      "amount": 38.7,
+      "description": "Produse/materiale cf. bf. 209/22.10.2025",
+      "date": "2025-10-22",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_10_009",
+      "type": "EXPENSE",
+      "amount": 311.2,
+      "description": "Produse/materiale cf. bf. 12/23.10.2025/flori/decoratiuni",
+      "date": "2025-10-23",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_10_010",
+      "type": "EXPENSE",
+      "amount": 698.0,
+      "description": "Produse/materiale cf. chit. 3553455/23.10.2025/plante perene",
+      "date": "2025-10-23",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_10_011",
+      "type": "EXPENSE",
+      "amount": 7.6,
+      "description": "Comisioane bancare",
+      "date": "2025-10-29",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_10_012",
+      "type": "EXPENSE",
+      "amount": 79.8,
+      "description": "Sume trimise la filiala - pentru energie electrica (August-Sept.)",
+      "date": "2025-10-29",
+      "category": "Energie Electrică"
+    },
+    {
+      "id": "exp_2025_10_013",
+      "type": "EXPENSE",
+      "amount": 35.1,
+      "description": "Sume trimise la filiala - pentru consum gaz (August-Sept.)",
+      "date": "2025-10-29",
+      "category": "Gaze Naturale"
+    },
+    {
+      "id": "exp_2025_10_014",
+      "type": "EXPENSE",
+      "amount": 0.51,
+      "description": "Comisioane bancare",
+      "date": "2025-10-29",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_10_015",
+      "type": "EXPENSE",
+      "amount": 169.19,
+      "description": "Produse/materiale cf. bf. 383/29.08.2025",
+      "date": "2025-10-29",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_10_016",
+      "type": "EXPENSE",
+      "amount": 203.0,
+      "description": "Produse/materiale cf. chit. SR299475137/06.08.2025",
+      "date": "2025-10-29",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_10_017",
+      "type": "EXPENSE",
+      "amount": 657.26,
+      "description": "Produse/materiale cf. bf. 241/29.09.2025/pompa circulatie/baterii",
+      "date": "2025-10-29",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_10_018",
+      "type": "EXPENSE",
+      "amount": 711.88,
+      "description": "Produse/materiale - cf. fact. 3509650 / manusi, prosoape, sapun",
+      "date": "2025-10-29",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_10_019",
+      "type": "EXPENSE",
+      "amount": 1136.57,
+      "description": "Produse/materiale - cf. fact. 3512420 / manusi, prosoape, sapun",
+      "date": "2025-10-29",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_10_020",
+      "type": "EXPENSE",
+      "amount": 1236.07,
+      "description": "Produse/materiale - cf. fact. 3510444 / manusi, prosoape, sapun",
+      "date": "2025-10-29",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_10_021",
+      "type": "EXPENSE",
+      "amount": 1112.0,
+      "description": "Taxe si impozite - taxa speciala salubrizare",
+      "date": "2025-10-30",
+      "category": "Salubritate"
+    },
+    {
+      "id": "exp_2025_10_022",
+      "type": "EXPENSE",
+      "amount": 0.51,
+      "description": "Comisioane bancare",
+      "date": "2025-10-30",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_11_001",
+      "type": "EXPENSE",
+      "amount": 100.04,
+      "description": "Produse/materiale - cf. bf. 30336/02.11.2025",
+      "date": "2025-11-02",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_11_002",
+      "type": "EXPENSE",
+      "amount": 216.98,
+      "description": "Produse/materiale cf. chit. 867001/04.11.2025/mufe",
+      "date": "2025-11-04",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_11_003",
+      "type": "EXPENSE",
+      "amount": 445.0,
+      "description": "Produse/materiale cf. chit. 510856/04.11.2025/rack/power",
+      "date": "2025-11-04",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_11_004",
+      "type": "EXPENSE",
+      "amount": -7.6,
+      "description": "Comisioane bancare",
+      "date": "2025-11-04",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_11_005",
+      "type": "EXPENSE",
+      "amount": 215.88,
+      "description": "Produse/materiale cf.chit. 510855/05.11.2025",
+      "date": "2025-11-05",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_11_006",
+      "type": "EXPENSE",
+      "amount": 1112.0,
+      "description": "Taxe si impozite - taxa special salubritate",
+      "date": "2025-11-10",
+      "category": "Salubritate"
+    },
+    {
+      "id": "exp_2025_11_007",
+      "type": "EXPENSE",
+      "amount": 0.51,
+      "description": "Comisioane bancare",
+      "date": "2025-11-10",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_11_008",
+      "type": "EXPENSE",
+      "amount": 303.0,
+      "description": "Produse/materiale cf. bf. 43/11.11.2025",
+      "date": "2025-11-11",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_11_009",
+      "type": "EXPENSE",
+      "amount": 84.36,
+      "description": "Produse/materiale cf. bf. 154/11.11.2025",
+      "date": "2025-11-11",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_11_010",
+      "type": "EXPENSE",
+      "amount": 1754.78,
+      "description": "Cheltuieli privind consumul de apa cf. fact. AQ1250484/17.10",
+      "date": "2025-11-12",
+      "category": "Apă"
+    },
+    {
+      "id": "exp_2025_11_011",
+      "type": "EXPENSE",
+      "amount": 4000.0,
+      "description": "Produse/materiale cf. fact. zef1841/11.11.2025/2 usi pvc",
+      "date": "2025-11-12",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_11_012",
+      "type": "EXPENSE",
+      "amount": 0.51,
+      "description": "Comisioane bancare",
+      "date": "2025-11-12",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_11_013",
+      "type": "EXPENSE",
+      "amount": 256.67,
+      "description": "Produse/materiale cf. chit. 5628270/10.11.2025/cabluri/acc",
+      "date": "2025-11-12",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_11_014",
+      "type": "EXPENSE",
+      "amount": 1694.0,
+      "description": "Produse/materiale - cf. fact. 47/13.11.2025/doua dulapuri",
+      "date": "2025-11-13",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_11_015",
+      "type": "EXPENSE",
+      "amount": 79.0,
+      "description": "Produse/materiale cf. bf. 44/13.11.2025 palanete",
+      "date": "2025-11-13",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_11_016",
+      "type": "EXPENSE",
+      "amount": 165.0,
+      "description": "Produse/materiale cf. chit. 60210/13.11.2025/electronice",
+      "date": "2025-11-13",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_11_017",
+      "type": "EXPENSE",
+      "amount": 0.51,
+      "description": "Comisioane bancare",
+      "date": "2025-11-13",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_11_018",
+      "type": "EXPENSE",
+      "amount": 1888.98,
+      "description": "Produse/materiale cf. fact. 1814/14.11.2025/scule/vopsele",
+      "date": "2025-11-14",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_11_019",
+      "type": "EXPENSE",
+      "amount": 395.31,
+      "description": "Produse/materiale cf. bf. 92/15.11.2025/materiale constructii",
+      "date": "2025-11-15",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_11_020",
+      "type": "EXPENSE",
+      "amount": 363.1,
+      "description": "Produse/materiale cf. bf. 286/15.11.2025/alimente",
+      "date": "2025-11-15",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_11_021",
+      "type": "EXPENSE",
+      "amount": 316.95,
+      "description": "Produse/materiale cf. bf. 26/15.11.2025/alimente",
+      "date": "2025-11-15",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_11_022",
+      "type": "EXPENSE",
+      "amount": 58.0,
+      "description": "Produse/materiale cf. bf. 48/15.11.2025/marke-re",
+      "date": "2025-11-15",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_11_023",
+      "type": "EXPENSE",
+      "amount": 668.99,
+      "description": "Produse/materiale cf. bf. 27/15.11.2025/pizza",
+      "date": "2025-11-15",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_11_024",
+      "type": "EXPENSE",
+      "amount": 428.0,
+      "description": "Produse/materiale - cf. chit. 13239/17.11.2025/folie magnetica",
+      "date": "2025-11-18",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_11_025",
+      "type": "EXPENSE",
+      "amount": 86.45,
+      "description": "Sume trimise la filiala - pentru energie electrica (Sept. -Oct.)",
+      "date": "2025-11-18",
+      "category": "Energie Electrică"
+    },
+    {
+      "id": "exp_2025_11_026",
+      "type": "EXPENSE",
+      "amount": 1774.5,
+      "description": "Sume trimise la filiala - pentru consum gaz (Sept.-Oct.)",
+      "date": "2025-11-18",
+      "category": "Gaze Naturale"
+    },
+    {
+      "id": "exp_2025_11_027",
+      "type": "EXPENSE",
+      "amount": 319.99,
+      "description": "Produse/materiale - cf. fact. 145804/19.11.2025/router wifi",
+      "date": "2025-11-19",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_11_028",
+      "type": "EXPENSE",
+      "amount": 49.9,
+      "description": "Produse/materiale - cf. bf. 282/08.09.2025",
+      "date": "2025-11-19",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_11_029",
+      "type": "EXPENSE",
+      "amount": 1431.7,
+      "description": "Produse/materiale cf. chit. 0211914/20.11.2025/sonorizare",
+      "date": "2025-11-20",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_11_030",
+      "type": "EXPENSE",
+      "amount": 50.0,
+      "description": "Produse/materiale - cf. bf. 10/21.11.2025/banda magnet",
+      "date": "2025-11-21",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_11_031",
+      "type": "EXPENSE",
+      "amount": 949.79,
+      "description": "Produse/materiale - cf. bf. 41/22.11.2025/pensule/diluant",
+      "date": "2025-11-22",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_11_032",
+      "type": "EXPENSE",
+      "amount": 303.0,
+      "description": "Produse/materiale - cf. bf. 16/22.11.2025/pizza/crispy",
+      "date": "2025-11-22",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_11_033",
+      "type": "EXPENSE",
+      "amount": 114.0,
+      "description": "Produse/materiale - cf. bf. 5/22.11.2025/mancare",
+      "date": "2025-11-22",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_11_034",
+      "type": "EXPENSE",
+      "amount": 197.65,
+      "description": "Produse/materiale - cf. bf. 72/22.11.2027/adezivi/poli./diblu",
+      "date": "2025-11-22",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_11_035",
+      "type": "EXPENSE",
+      "amount": 200.09,
+      "description": "Produse/materiale - cf. bf. 32642/23.11.2025/constructie",
+      "date": "2025-11-23",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_11_036",
+      "type": "EXPENSE",
+      "amount": 1129.0,
+      "description": "Produse/materiale - cf. fact.85449812/21.11.2025/Conv. audio",
+      "date": "2025-11-24",
+      "category": "Echipamente Electronice"
+    },
+    {
+      "id": "exp_2025_11_037",
+      "type": "EXPENSE",
+      "amount": 218.23,
+      "description": "Plata decont cheltuieli - Dogariu Ionel Sergiu bf.62/ipsos/regips",
+      "date": "2025-11-25",
+      "category": "Deconturi Cheltuieli"
+    },
+    {
+      "id": "exp_2025_11_038",
+      "type": "EXPENSE",
+      "amount": 379.99,
+      "description": "Plata decont cheltuieli - Dogariu Ionel Sergiu ft.97520/Garantie",
+      "date": "2025-11-25",
+      "category": "Deconturi Cheltuieli"
+    },
+    {
+      "id": "exp_2025_11_039",
+      "type": "EXPENSE",
+      "amount": 2459.98,
+      "description": "Plata decont cheltuieli - Dogariu Ionel Sergiu ft.79264/Aspirator",
+      "date": "2025-11-25",
+      "category": "Deconturi Cheltuieli"
+    },
+    {
+      "id": "exp_2025_11_040",
+      "type": "EXPENSE",
+      "amount": 0.51,
+      "description": "Comisioane bancare",
+      "date": "2025-11-25",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_11_041",
+      "type": "EXPENSE",
+      "amount": 20.4,
+      "description": "Comisioane bancare",
+      "date": "2025-11-30",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_12_001",
+      "type": "EXPENSE",
+      "amount": -20.4,
+      "description": "restituire comision conf. extras bancar 12",
+      "date": "2025-12-04",
+      "category": "Comisioane Bancare"
+    },
+    {
+      "id": "exp_2025_12_002",
+      "type": "EXPENSE",
+      "amount": 724.66,
+      "description": "Aquaserv: Chelutieli privind consumul de apa - extras nr. 12 conf. fact. AQ1280631/10.11.2025",
+      "date": "2025-12-08",
+      "category": "Apă"
+    },
+    {
+      "id": "exp_2025_12_003",
+      "type": "EXPENSE",
+      "amount": 224.72,
+      "description": "Eagletronic: cablu UTP, TAVA RACK FIX - extras nr. 12 conf. fact. 251200009/03.12.2025",
+      "date": "2025-12-08",
+      "category": "Materiale Construcție"
+    },
+    {
+      "id": "exp_2025_12_004",
+      "type": "EXPENSE",
+      "amount": 800.0,
+      "description": "Instal Global: Verificare ISCIR Centrale - extras nr. 12 conf. fact. 11359/05.12.2025",
+      "date": "2025-12-08",
+      "category": "Întreținere și Reparații"
+    },
+    {
+      "id": "exp_2025_12_005",
+      "type": "EXPENSE",
+      "amount": 10459.66,
+      "description": "Transfer ASR pentru energie si gaz catere cong. de contact",
+      "date": "2025-12-08",
+      "category": "Gaze Naturale"
+    },
+    {
+      "id": "exp_2025_12_006",
+      "type": "EXPENSE",
+      "amount": 522.72,
+      "description": "Fire Safety: verificare stingator - extras nr. 12 conf. fact. 136824/16.12.2025",
+      "date": "2025-12-19",
+      "category": "Întreținere și Reparații"
+    },
+    {
+      "id": "exp_2025_12_007",
+      "type": "EXPENSE",
+      "amount": 2419.99,
+      "description": "Emag: televizor Samsung pentru afisarea programului - extras nr. 12 conf. fact. 269202432052",
+      "date": "2025-12-19",
+      "category": "Echipamente Electronice"
+    }
+  ]
+}

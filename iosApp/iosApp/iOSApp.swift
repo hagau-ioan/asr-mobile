@@ -12,6 +12,10 @@ struct iOSApp: App {
         // Initialize Firebase Auth Bridge for Kotlin/Native interop
         // This sets up the notification observers for communication between Swift and Kotlin
         _ = FirebaseAuthBridge.shared
+        
+        // Initialize Firebase Storage Bridge for Kotlin/Native interop
+        // This sets up the notification observers for communication between Swift and Kotlin
+        _ = FirebaseStorageBridge.shared
     }
     
     var body: some Scene {

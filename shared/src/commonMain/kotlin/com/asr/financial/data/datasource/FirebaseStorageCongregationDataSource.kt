@@ -1,19 +1,20 @@
 package com.asr.financial.data.datasource
 
 import com.asr.financial.domain.models.CongregationInfo
-import com.asr.financial.platform.ResourceLoader
+import com.asr.financial.platform.FirebaseStorage
 import kotlinx.serialization.json.Json
 
 /**
- * JSON file implementation of CongregationDataSource.
- * Loads data from congregations.json using platform-specific ResourceLoader.
+ * Firebase Cloud Storage implementation of CongregationDataSource.
+ * Loads data from Firebase Storage: json/congregations.json
+ * using platform-specific FirebaseStorage.
  */
-class JsonCongregationDataSource(
-    private val resourceLoader: ResourceLoader
+class FirebaseStorageCongregationDataSource(
+    private val firebaseStorage: FirebaseStorage
 ) : CongregationDataSource {
 
     private companion object {
-        const val FILE_NAME = "congregations.json"
+        const val FILE_PATH = "app/congregations.json"
     }
 
     private val json = Json {
@@ -24,13 +25,13 @@ class JsonCongregationDataSource(
     }
 
     override suspend fun getAll(): List<CongregationInfo> {
-        val jsonString = resourceLoader.loadResourceAsString(FILE_NAME) ?: return emptyList()
+        val jsonString = firebaseStorage.downloadFileAsString(FILE_PATH) ?: return emptyList()
         return try {
-            // Try to decode as wrapped JSON first (new format)
+            // Try to decode as wrapped JSON first (Firebase Storage format)
             val wrapped = json.decodeFromString<JsonResponseWrapper<List<CongregationInfo>>>(jsonString)
             wrapped.data
         } catch (e: Exception) {
-            // Fallback to direct array (for backward compatibility)
+            // Fallback to direct array (for backward compatibility with local files)
             try {
                 json.decodeFromString<List<CongregationInfo>>(jsonString)
             } catch (e2: Exception) {

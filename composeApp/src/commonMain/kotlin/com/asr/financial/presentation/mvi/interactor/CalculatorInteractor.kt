@@ -56,7 +56,7 @@ class CalculatorInteractor(
                 .sumOf { it.amount }
 
             if (totalPublishers == 0) {
-                _uiState.emit(CalculatorState.Error("Nu există vestitori înregistrați"))
+                _uiState.emit(CalculatorState.Error("calculator_error_no_publishers"))
                 return
             }
 
@@ -93,8 +93,11 @@ class CalculatorInteractor(
                 )
             )
         } catch (e: Exception) {
-            _uiState.emit(CalculatorState.Error(e.message ?: "Eroare necunoscută"))
-            _effect.send(CalculatorEffect.ShowError(e.message ?: "Eroare necunoscută"))
+            // Use exception message as error key (if it's a known error key) or default to unknown error
+            val errorKey = e.message?.takeIf { it.startsWith("config_error_") || it.startsWith("data_error_") || it.startsWith("calculator_error_") }
+                ?: "calculator_error_unknown"
+            _uiState.emit(CalculatorState.Error(errorKey))
+            _effect.send(CalculatorEffect.ShowError(errorKey))
         }
     }
 }

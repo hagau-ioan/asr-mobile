@@ -13,4 +13,10 @@ interface CongregationInfoRepository {
     suspend fun getAllNames(): List<String>
     suspend fun getCount(): Int
     suspend fun getTotalMemberCount(): Int
+    
+    /**
+     * Refresh congregation data from remote source.
+     * Clears cache and reloads from server.
+     */
+    suspend fun refreshData()
 }

@@ -233,6 +233,14 @@
     <string name="login_error_network">Hálózati hiba. Kérjük, ellenőrizze az internetkapcsolatot</string>
     <string name="login_error_unknown">Bejelentkezési hiba</string>
     
+    <!-- Configuration Errors -->
+    <string name="config_error_load_failed">A konfigurációs adatok betöltése nem sikerült. Kérjük, ellenőrizze az internetkapcsolatot és próbálja újra.</string>
+    <string name="data_error_load_failed">Az adatok betöltése nem sikerült. Kérjük, ellenőrizze az internetkapcsolatot és próbálja újra.</string>
+    
+    <!-- Calculator Errors -->
+    <string name="calculator_error_no_publishers">Nincsenek regisztrált hirdetők</string>
+    <string name="calculator_error_unknown">Ismeretlen hiba</string>
+    
     <!-- Logout -->
     <string name="nav_logout">Kijelentkezés</string>
     <string name="user_email_label">Felhasználó email</string>

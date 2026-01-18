@@ -85,7 +85,7 @@ fun CalculatorScreen(
                 onMenuClick = onMenuClick
             ) {
                 item {
-                    ErrorContent(message = state.message)
+                    ErrorContent(message = getErrorMessage(state.message))
                 }
             }
         }
@@ -173,5 +173,19 @@ private fun CalculatorSuccessContent(
                 CongregationContributionRow(contribution = contribution)
             }
         }
+    }
+}
+
+/**
+ * Get error message from error key
+ */
+@Composable
+private fun getErrorMessage(errorKey: String): String {
+    return when (errorKey) {
+        "config_error_load_failed" -> stringResource(Res.string.config_error_load_failed)
+        "data_error_load_failed" -> stringResource(Res.string.data_error_load_failed)
+        "calculator_error_no_publishers" -> stringResource(Res.string.calculator_error_no_publishers)
+        "calculator_error_unknown" -> stringResource(Res.string.calculator_error_unknown)
+        else -> stringResource(Res.string.calculator_error_unknown)
     }
 }
