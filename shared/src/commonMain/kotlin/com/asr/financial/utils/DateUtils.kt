@@ -2,6 +2,7 @@ package com.asr.financial.utils
 
 import com.asr.financial.platform.Clock
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
 
 /**
@@ -19,7 +20,7 @@ fun getCurrentYear(clock: Clock): Int {
 fun getCurrentMonth(clock: Clock): Int {
     return clock.now()
         .toLocalDateTime(TimeZone.currentSystemDefault())
-        .monthNumber
+        .month.number
 }
 
 /**

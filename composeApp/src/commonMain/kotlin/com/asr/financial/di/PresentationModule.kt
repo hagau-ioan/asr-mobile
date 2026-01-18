@@ -7,6 +7,7 @@ import com.asr.financial.presentation.mvi.interactor.CalculatorInteractor
 import com.asr.financial.presentation.mvi.interactor.CongregationsInteractor
 import com.asr.financial.presentation.mvi.interactor.ExpensesInteractor
 import com.asr.financial.presentation.mvi.interactor.HomeInteractor
+import com.asr.financial.presentation.mvi.interactor.LoginInteractor
 import com.asr.financial.presentation.mvi.interactor.UploadInteractor
 import com.asr.financial.presentation.mvi.interactor.UtilitiesInteractor
 import com.asr.financial.presentation.mvi.interactor.YearlyInteractor
@@ -15,6 +16,7 @@ import com.asr.financial.presentation.mvi.viewmodel.CalculatorViewModel
 import com.asr.financial.presentation.mvi.viewmodel.CongregationsViewModel
 import com.asr.financial.presentation.mvi.viewmodel.ExpensesViewModel
 import com.asr.financial.presentation.mvi.viewmodel.HomeViewModel
+import com.asr.financial.presentation.mvi.viewmodel.LoginViewModel
 import com.asr.financial.presentation.mvi.viewmodel.UploadViewModel
 import com.asr.financial.presentation.mvi.viewmodel.UtilitiesViewModel
 import com.asr.financial.presentation.mvi.viewmodel.YearlyViewModel
@@ -42,6 +44,7 @@ val presentationModule = module {
     factory { CalculatorInteractor(get(), get(), get(), get()) }
     factory { AsrExpensesInteractor(get()) }
     factory { UploadInteractor(get()) }
+    factory { LoginInteractor(get()) }
 
     // ═══════════════════════════════════════════════════════════════════
     // VIEWMODELS
@@ -54,4 +57,5 @@ val presentationModule = module {
     viewModel { CalculatorViewModel(get()) }
     viewModel { AsrExpensesViewModel(get()) }
     viewModel { UploadViewModel(get()) }
+    viewModel { LoginViewModel(get()) }
 }

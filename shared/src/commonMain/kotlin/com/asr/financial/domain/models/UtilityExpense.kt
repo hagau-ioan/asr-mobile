@@ -5,6 +5,7 @@ import kotlinx.datetime.Instant
 /**
  * Domain model for Utility Expense
  */
+@Suppress("DEPRECATION") // kotlinx.datetime.Instant is the correct multiplatform type
 data class UtilityExpense(
     val id: Long = 0,
     val utilityType: UtilityType,

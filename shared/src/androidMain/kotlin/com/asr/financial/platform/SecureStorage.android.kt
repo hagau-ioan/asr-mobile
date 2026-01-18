@@ -8,6 +8,7 @@ import androidx.security.crypto.MasterKey
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+@Suppress("DEPRECATION") // EncryptedSharedPreferences and MasterKey are deprecated but still functional
 actual class SecureStorage(private val context: Context) {
     
     private val masterKey = MasterKey.Builder(context)

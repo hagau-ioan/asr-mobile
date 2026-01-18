@@ -1,0 +1,14 @@
+{
+  "_comment": "This is a placeholder file. Replace this with your actual google-services.json from Firebase Console.",
+  "_instructions": [
+    "1. Go to Firebase Console: https://console.firebase.google.com/",
+    "2. Select your project (or create a new one)",
+    "3. Go to Project Settings (gear icon)",
+    "4. Under 'Your apps', click on Android app (or add Android app if not exists)",
+    "5. Download the google-services.json file",
+    "6. Replace this placeholder file with the downloaded google-services.json",
+    "7. Ensure the file is named exactly 'google-services.json' (without .placeholder extension)",
+    "8. The file should be placed in: androidApp/google-services.json"
+  ],
+  "_note": "This file is already in .gitignore and will not be committed to version control."
+}

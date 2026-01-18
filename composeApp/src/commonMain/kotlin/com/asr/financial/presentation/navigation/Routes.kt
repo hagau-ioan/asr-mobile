@@ -5,6 +5,7 @@ package com.asr.financial.presentation.navigation
  * Use these constants instead of hardcoded strings throughout the app.
  */
 object Routes {
+    const val LOGIN = "login"
     const val HOME = "home"
     const val CONGREGATIONS = "congregations"
     const val EXPENSES = "expenses"

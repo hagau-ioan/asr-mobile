@@ -56,6 +56,8 @@ val navigationItems = listOf(
 fun DrawerNavigationContent(
     selectedRoute: String,
     onNavigate: (String) -> Unit,
+    onLogout: () -> Unit = {},
+    currentUserEmail: String? = null,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxSize()) {
@@ -139,9 +141,42 @@ fun DrawerNavigationContent(
                     }
                 }
             }
+            
+            // Logout button
+            Spacer(Modifier.height(8.dp))
+            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+            
+            Button(
+                onClick = onLogout,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Transparent,
+                    contentColor = MaterialTheme.colorScheme.error
+                ),
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
+                elevation = ButtonDefaults.buttonElevation(0.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ExitToApp,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(Modifier.width(12.dp))
+                    Text(
+                        text = stringResource(Res.string.nav_logout),
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+            }
         }
         
-        // Footer with stats and version
+        // Footer with stats, user email, and version
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -149,6 +184,30 @@ fun DrawerNavigationContent(
                 .padding(16.dp)
         ) {
             HorizontalDivider(modifier = Modifier.padding(bottom = 12.dp))
+            
+            // User email
+            currentUserEmail?.let { email ->
+                Column(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = stringResource(Res.string.user_email_label),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                    )
+                    Spacer(Modifier.height(4.dp))
+                    Text(
+                        text = email,
+                        style = MaterialTheme.typography.bodySmall,
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1
+                    )
+                }
+                Spacer(Modifier.height(12.dp))
+                HorizontalDivider()
+                Spacer(Modifier.height(12.dp))
+            }
             
             // Stats
             Row(
@@ -205,9 +264,10 @@ fun DrawerNavigationContent(
  */
 @Composable
 fun PermanentNavigationDrawer(
-
     selectedRoute: String,
     onNavigate: (String) -> Unit,
+    onLogout: () -> Unit = {},
+    currentUserEmail: String? = null,
     modifier: Modifier = Modifier
 ) {
     PermanentDrawerSheet(
@@ -216,7 +276,9 @@ fun PermanentNavigationDrawer(
     ) {
         DrawerNavigationContent(
             selectedRoute = selectedRoute,
-            onNavigate = onNavigate
+            onNavigate = onNavigate,
+            onLogout = onLogout,
+            currentUserEmail = currentUserEmail
         )
     }
 }

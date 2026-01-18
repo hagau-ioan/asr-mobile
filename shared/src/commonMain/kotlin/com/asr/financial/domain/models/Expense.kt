@@ -5,6 +5,7 @@ import kotlinx.datetime.Instant
 /**
  * Domain model for Expense
  */
+@Suppress("DEPRECATION") // kotlinx.datetime.Instant is the correct multiplatform type
 data class Expense(
     val id: Long = 0,
     val description: String,

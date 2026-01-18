@@ -214,4 +214,27 @@
     <string name="filter_all_months">Toate lunile</string>
     <string name="filter_all_years">Toți anii</string>
     <string name="asr_expenses_note_12_months">Notă: Cheltuielile afișate sunt doar pentru ultimele 12 luni.</string>
+    
+    <!-- Login Screen -->
+    <string name="login_title">Autentificare</string>
+    <string name="login_email">Email</string>
+    <string name="login_password">Parolă</string>
+    <string name="login_button">Autentifică-te</string>
+    <string name="login_show_password">Afișează parola</string>
+    <string name="login_hide_password">Ascunde parola</string>
+    <string name="login_error_empty_email">Email-ul este obligatoriu</string>
+    <string name="login_error_empty_password">Parola este obligatorie</string>
+    <string name="login_error_invalid_email">Format email invalid</string>
+    <string name="login_error_wrong_password">Parolă incorectă</string>
+    <string name="login_error_invalid_credential">Email sau parolă incorectă. Te rugăm să verifici datele introduse</string>
+    <string name="login_error_user_not_found">Utilizatorul nu a fost găsit</string>
+    <string name="login_error_user_disabled">Contul utilizatorului a fost dezactivat</string>
+    <string name="login_error_too_many_requests">Prea multe încercări. Te rugăm să încerci mai târziu</string>
+    <string name="login_error_operation_not_allowed">Operațiunea nu este permisă</string>
+    <string name="login_error_network">Eroare de rețea. Te rugăm să verifici conexiunea</string>
+    <string name="login_error_unknown">Eroare de autentificare</string>
+    
+    <!-- Logout -->
+    <string name="nav_logout">Deconectare</string>
+    <string name="user_email_label">Email utilizator</string>
 </resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- This is a placeholder file. Replace this with your actual GoogleService-Info.plist from Firebase Console. -->
+	<key>_instructions</key>
+	<array>
+		<string>1. Go to Firebase Console: https://console.firebase.google.com/</string>
+		<string>2. Select your project (or create a new one)</string>
+		<string>3. Go to Project Settings (gear icon)</string>
+		<string>4. Under 'Your apps', click on iOS app (or add iOS app if not exists)</string>
+		<string>5. Download the GoogleService-Info.plist file</string>
+		<string>6. Replace this placeholder file with the downloaded GoogleService-Info.plist</string>
+		<string>7. Ensure the file is named exactly 'GoogleService-Info.plist' (without .placeholder extension)</string>
+		<string>8. The file should be placed in: iosApp/iosApp/GoogleService-Info.plist</string>
+		<string>9. Add the file to Xcode project (drag & drop, ensure "Copy items if needed" is checked)</string>
+		<string>10. Ensure it's added to the target in Xcode</string>
+	</array>
+	<key>_note</key>
+	<string>This file is already in .gitignore and will not be committed to version control.</string>
+</dict>
+</plist>

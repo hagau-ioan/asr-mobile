@@ -213,4 +213,27 @@
     <string name="filter_all_months">Minden hónap</string>
     <string name="filter_all_years">Minden év</string>
     <string name="asr_expenses_note_12_months">Megjegyzés: A megjelenített kiadások csak az elmúlt 12 hónapra vonatkoznak.</string>
+    
+    <!-- Login Screen -->
+    <string name="login_title">Bejelentkezés</string>
+    <string name="login_email">Email</string>
+    <string name="login_password">Jelszó</string>
+    <string name="login_button">Bejelentkezés</string>
+    <string name="login_show_password">Jelszó megjelenítése</string>
+    <string name="login_hide_password">Jelszó elrejtése</string>
+    <string name="login_error_empty_email">Az email kötelező</string>
+    <string name="login_error_empty_password">A jelszó kötelező</string>
+    <string name="login_error_invalid_email">Érvénytelen email formátum</string>
+    <string name="login_error_wrong_password">Helytelen jelszó</string>
+    <string name="login_error_invalid_credential">Helytelen email vagy jelszó. Kérjük, ellenőrizze a megadott adatokat</string>
+    <string name="login_error_user_not_found">A felhasználó nem található</string>
+    <string name="login_error_user_disabled">A felhasználói fiók le van tiltva</string>
+    <string name="login_error_too_many_requests">Túl sok kísérlet. Kérjük, próbálja újra később</string>
+    <string name="login_error_operation_not_allowed">A művelet nem engedélyezett</string>
+    <string name="login_error_network">Hálózati hiba. Kérjük, ellenőrizze az internetkapcsolatot</string>
+    <string name="login_error_unknown">Bejelentkezési hiba</string>
+    
+    <!-- Logout -->
+    <string name="nav_logout">Kijelentkezés</string>
+    <string name="user_email_label">Felhasználó email</string>
 </resources>

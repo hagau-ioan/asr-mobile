@@ -6,8 +6,9 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlin.time.Clock as KotlinClock
 
+@Suppress("DEPRECATION") // kotlinx.datetime.Instant is the correct multiplatform type, not kotlin.time.Instant
 actual class Clock {
-    private val romanianLocale = Locale("ro", "RO")
+    private val romanianLocale = Locale.Builder().setLanguage("ro").setRegion("RO").build()
     private val zoneId = ZoneId.of("Europe/Bucharest")
 
     actual fun now(): Instant {

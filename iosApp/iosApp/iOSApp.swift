@@ -1,9 +1,19 @@
 import SwiftUI
 import ComposeApp
 import UIKit
+import FirebaseCore
 
 @main
 struct iOSApp: App {
+    init() {
+        // Initialize Firebase
+        FirebaseApp.configure()
+        
+        // Initialize Firebase Auth Bridge for Kotlin/Native interop
+        // This sets up the notification observers for communication between Swift and Kotlin
+        _ = FirebaseAuthBridge.shared
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()

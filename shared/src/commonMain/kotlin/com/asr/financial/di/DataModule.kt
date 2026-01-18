@@ -10,10 +10,12 @@ import com.asr.financial.data.datasource.JsonTransactionDataSource
 import com.asr.financial.data.datasource.TransactionDataSource
 import com.asr.financial.data.repository.AppConfigRepositoryImpl
 import com.asr.financial.data.repository.AsrExpenseRepositoryImpl
+import com.asr.financial.data.repository.AuthRepositoryImpl
 import com.asr.financial.data.repository.CongregationInfoRepositoryImpl
 import com.asr.financial.data.repository.TransactionRepositoryImpl
 import com.asr.financial.domain.repository.AppConfigRepository
 import com.asr.financial.domain.repository.AsrExpenseRepository
+import com.asr.financial.domain.repository.AuthRepository
 import com.asr.financial.domain.repository.CongregationInfoRepository
 import com.asr.financial.domain.repository.TransactionRepository
 import com.asr.financial.platform.ResourceLoader
@@ -35,4 +37,5 @@ val dataModule = module {
     single<CongregationInfoRepository> { CongregationInfoRepositoryImpl(get()) }
     single<AppConfigRepository> { AppConfigRepositoryImpl(get()) }
     single<AsrExpenseRepository> { AsrExpenseRepositoryImpl(get()) }
+    single<AuthRepository> { AuthRepositoryImpl(get()) }
 }

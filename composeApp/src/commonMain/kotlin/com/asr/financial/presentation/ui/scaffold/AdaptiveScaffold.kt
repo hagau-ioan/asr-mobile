@@ -18,6 +18,8 @@ fun AdaptiveScaffold(
     windowSizeClass: WindowSizeClass,
     selectedRoute: String,
     onNavigate: (String) -> Unit,
+    onLogout: () -> Unit = {},
+    currentUserEmail: String? = null,
     content: @Composable (PaddingValues, onMenuClick: () -> Unit) -> Unit
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -39,7 +41,12 @@ fun AdaptiveScaffold(
                             onNavigate = { route ->
                                 scope.launch { drawerState.close() }
                                 onNavigate(route)
-                            }
+                            },
+                            onLogout = {
+                                scope.launch { drawerState.close() }
+                                onLogout()
+                            },
+                            currentUserEmail = currentUserEmail
                         )
                     }
                 }
@@ -69,7 +76,9 @@ fun AdaptiveScaffold(
             Row {
                 PermanentNavigationDrawer(
                     selectedRoute = selectedRoute,
-                    onNavigate = onNavigate
+                    onNavigate = onNavigate,
+                    onLogout = onLogout,
+                    currentUserEmail = currentUserEmail
                 )
                 
                 Scaffold { paddingValues ->

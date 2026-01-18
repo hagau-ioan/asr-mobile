@@ -29,4 +29,11 @@ val domainModule = module {
     
     // ASR Expenses use cases
     factory { GetAsrExpensesUseCase(get()) }
+    
+    // Auth use cases
+    factory { LoginUseCase(get()) }
+    factory { LogoutUseCase(get()) }
+    factory { CheckAuthStatusUseCase(get()) }
+    factory { GetCurrentUserUseCase(get()) }
+    factory { RefreshTokenUseCase(get()) }
 }

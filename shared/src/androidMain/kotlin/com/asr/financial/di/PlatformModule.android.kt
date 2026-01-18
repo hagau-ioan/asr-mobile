@@ -15,4 +15,5 @@ actual val platformModule = module {
     single { Logger() }
     single { FileSharer(get()) }
     single { ImageCapture(get()) }
+    single { FirebaseAuth() }
 }

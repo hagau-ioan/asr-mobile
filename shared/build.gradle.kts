@@ -60,6 +60,10 @@ kotlin {
             implementation(libs.androidx.security.crypto)
             implementation(libs.androidx.core.ktx)
             implementation(libs.ktor.client.okhttp)
+            
+            // Firebase Auth (Android)
+            // Note: firebase-auth-ktx includes Firebase Core automatically
+            implementation(libs.firebase.auth)
         }
 
         iosMain.dependencies {

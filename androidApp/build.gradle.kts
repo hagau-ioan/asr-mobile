@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.google.services)
 }
 
 // Load keystore properties
@@ -70,4 +71,8 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(libs.koin.android)
+    
+    // Firebase (for MainActivity initialization)
+    // Note: firebase-auth-ktx includes Firebase Core automatically
+    implementation(libs.firebase.auth)
 }
