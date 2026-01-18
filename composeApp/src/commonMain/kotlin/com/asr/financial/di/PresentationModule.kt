@@ -36,14 +36,14 @@ val presentationModule = module {
     // ═══════════════════════════════════════════════════════════════════
     // INTERACTORS
     // ═══════════════════════════════════════════════════════════════════
-    factory { HomeInteractor(get(), get(), get(), get(), get(), get(), get(), get()) }
+    factory { HomeInteractor(get(), get(), get(), get(), get(), get(), get()) }
     factory { CongregationsInteractor(get(), get(), get(), get(), get()) }
     factory { ExpensesInteractor(get(), get(), get(), get()) }
     factory { UtilitiesInteractor(get(), get(), get(), get()) }
     factory { YearlyInteractor(get()) }
     factory { CalculatorInteractor(get(), get(), get(), get()) }
     factory { AsrExpensesInteractor(get()) }
-    factory { UploadInteractor(get()) }
+    factory { UploadInteractor(get(), get(), get()) }
     factory { LoginInteractor(get()) }
 
     // ═══════════════════════════════════════════════════════════════════

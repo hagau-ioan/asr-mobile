@@ -6,6 +6,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Fill
@@ -36,50 +37,50 @@ fun TwoLevelHouseIcon(
         drawRect(
             color = houseColor,
             topLeft = Offset(width * 0.25f, height * 0.25f),
-            size = androidx.compose.ui.geometry.Size(width * 0.5f, height * 0.3f)
+            size = Size(width * 0.5f, height * 0.3f)
         )
         
         // First level
         drawRect(
             color = houseColor,
             topLeft = Offset(width * 0.2f, height * 0.55f),
-            size = androidx.compose.ui.geometry.Size(width * 0.6f, height * 0.35f)
+            size = Size(width * 0.6f, height * 0.35f)
         )
         
         // Windows second level
         drawRect(
             color = windowColor,
             topLeft = Offset(width * 0.3f, height * 0.3f),
-            size = androidx.compose.ui.geometry.Size(width * 0.08f, height * 0.15f)
+            size = Size(width * 0.08f, height * 0.15f)
         )
         drawRect(
             color = windowColor,
             topLeft = Offset(width * 0.46f, height * 0.3f),
-            size = androidx.compose.ui.geometry.Size(width * 0.08f, height * 0.15f)
+            size = Size(width * 0.08f, height * 0.15f)
         )
         drawRect(
             color = windowColor,
             topLeft = Offset(width * 0.62f, height * 0.3f),
-            size = androidx.compose.ui.geometry.Size(width * 0.08f, height * 0.15f)
+            size = Size(width * 0.08f, height * 0.15f)
         )
         
         // Door
         drawRect(
             color = windowColor,
             topLeft = Offset(width * 0.44f, height * 0.65f),
-            size = androidx.compose.ui.geometry.Size(width * 0.12f, height * 0.25f)
+            size = Size(width * 0.12f, height * 0.25f)
         )
         
         // Windows first level
         drawRect(
             color = windowColor,
             topLeft = Offset(width * 0.26f, height * 0.65f),
-            size = androidx.compose.ui.geometry.Size(width * 0.1f, height * 0.12f)
+            size = Size(width * 0.1f, height * 0.12f)
         )
         drawRect(
             color = windowColor,
             topLeft = Offset(width * 0.64f, height * 0.65f),
-            size = androidx.compose.ui.geometry.Size(width * 0.1f, height * 0.12f)
+            size = Size(width * 0.1f, height * 0.12f)
         )
     }
 }

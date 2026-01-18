@@ -3,6 +3,7 @@ package com.asr.financial.presentation.screens.calculator.components
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -34,7 +35,7 @@ fun CongregationContributionRow(contribution: CongregationContribution) {
                 )
             }
             
-            Column(horizontalAlignment = androidx.compose.ui.Alignment.End) {
+            Column(horizontalAlignment = Alignment.End) {
                 Text(
                     text = contribution.totalAmount.formatCurrency(),
                     fontWeight = FontWeight.Bold,

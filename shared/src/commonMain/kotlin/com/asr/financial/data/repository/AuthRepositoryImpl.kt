@@ -45,7 +45,9 @@ class AuthRepositoryImpl(
     }
     
     override suspend fun isAuthenticated(): Boolean {
-        return firebaseAuth.isUserSignedIn()
+        // Use verifySession to check with server if user still exists
+        // This will return false if user was deleted from Firebase Auth
+        return firebaseAuth.verifySession()
     }
     
     override suspend fun refreshAuthToken(): Result<String> {

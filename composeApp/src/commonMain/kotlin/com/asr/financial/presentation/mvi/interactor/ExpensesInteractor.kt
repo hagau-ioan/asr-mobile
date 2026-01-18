@@ -1,7 +1,7 @@
 package com.asr.financial.presentation.mvi.interactor
 
-import com.asr.financial.domain.model.Transaction
-import com.asr.financial.domain.model.TransactionType
+import com.asr.financial.domain.models.Transaction
+import com.asr.financial.domain.models.TransactionType
 import com.asr.financial.domain.usecase.GetAvailableYearsUseCase
 import com.asr.financial.domain.usecase.GetTransactionsUseCase
 import com.asr.financial.domain.usecase.RefreshDataUseCase
@@ -60,8 +60,8 @@ class ExpensesInteractor(
             val expenses = calculateExpenses(year, month)
             emitSuccessState(expenses, year, month)
         } catch (e: Exception) {
-            _uiState.emit(ExpensesState.Error(e.message ?: "Unknown error"))
-            _uiEffectChannel.send(ExpensesEffect.ShowToast("Failed to load expenses"))
+            _uiState.emit(ExpensesState.Error(e.message ?: com.asr.financial.presentation.ui.constants.AppConstants.ErrorMessages.UNKNOWN_ERROR))
+            _uiEffectChannel.send(ExpensesEffect.ShowToast(com.asr.financial.presentation.ui.constants.AppConstants.ErrorMessages.FAILED_TO_LOAD_EXPENSES))
         }
     }
 
@@ -74,7 +74,7 @@ class ExpensesInteractor(
             val expenses = calculateExpenses(year, month)
             emitSuccessState(expenses, year, month)
         } catch (e: Exception) {
-            _uiState.emit(ExpensesState.Error(e.message ?: "Unknown error"))
+            _uiState.emit(ExpensesState.Error(e.message ?: com.asr.financial.presentation.ui.constants.AppConstants.ErrorMessages.UNKNOWN_ERROR))
         }
     }
 
@@ -135,7 +135,7 @@ class ExpensesInteractor(
                     targetYear = txnYear,
                     referenceMonth = endMonth,
                     referenceYear = endYear,
-                    monthsBack = 12
+                    monthsBack = com.asr.financial.presentation.ui.constants.AppConstants.Business.MONTHS_IN_YEAR
                 )
             }
             .sumOf { it.amount }

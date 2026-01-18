@@ -50,6 +50,7 @@ import com.asr.financial.utils.calculatePreviousMonth
 import com.asr.financial.utils.getCurrentMonth
 import com.asr.financial.utils.getCurrentYear
 import com.asr.financial.utils.getMonthsList
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
@@ -149,7 +150,7 @@ private fun ExpensesSuccessContent(
     showYearDropdown: Boolean,
     showMonthDropdown: Boolean,
     years: List<Int>,
-    months: List<Pair<Int, org.jetbrains.compose.resources.StringResource>>,
+    months: List<Pair<Int, StringResource>>,
     onYearDropdownChange: (Boolean) -> Unit,
     onMonthDropdownChange: (Boolean) -> Unit,
     onYearSelected: (Int) -> Unit,

@@ -1,6 +1,6 @@
 package com.asr.financial.domain.repository
 
-import com.asr.financial.domain.model.Transaction
+import com.asr.financial.domain.models.Transaction
 
 /**
  * Repository for Transaction data

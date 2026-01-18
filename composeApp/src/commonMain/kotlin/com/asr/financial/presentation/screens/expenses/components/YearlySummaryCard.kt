@@ -12,6 +12,7 @@ import com.asr.financial.utils.calculateStartMonthFor12Months
 import com.asr.financial.utils.calculateStartYearFor12Months
 import com.asr.financial.utils.formatCurrency
 import asr_financial.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 
 /**
@@ -22,7 +23,7 @@ fun YearlySummaryCard(
     yearlyTotal: Double,
     yearlyEndMonth: Int,
     yearlyEndYear: Int,
-    months: List<Pair<Int, org.jetbrains.compose.resources.StringResource>>
+    months: List<Pair<Int, StringResource>>
 ) {
     val endMonthName = months.find { it.first == yearlyEndMonth }?.second?.let { stringResource(it) } ?: ""
     val startYear = calculateStartYearFor12Months(yearlyEndMonth, yearlyEndYear)

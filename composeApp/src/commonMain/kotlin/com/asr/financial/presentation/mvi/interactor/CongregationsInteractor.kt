@@ -1,7 +1,7 @@
 package com.asr.financial.presentation.mvi.interactor
 
-import com.asr.financial.domain.model.Transaction
-import com.asr.financial.domain.model.TransactionType
+import com.asr.financial.domain.models.Transaction
+import com.asr.financial.domain.models.TransactionType
 import com.asr.financial.domain.usecase.GetAllCongregationsUseCase
 import com.asr.financial.domain.usecase.GetAppConfigUseCase
 import com.asr.financial.domain.usecase.GetCongregationNamesUseCase
@@ -65,8 +65,8 @@ class CongregationsInteractor(
             val stats = calculateStats(year, month)
             emitSuccessState(stats, year, month)
         } catch (e: Exception) {
-            _uiState.emit(CongregationsState.Error(e.message ?: "Unknown error"))
-            _uiEffectChannel.send(CongregationsEffect.ShowToast("Failed to load data"))
+            _uiState.emit(CongregationsState.Error(e.message ?: com.asr.financial.presentation.ui.constants.AppConstants.ErrorMessages.UNKNOWN_ERROR))
+            _uiEffectChannel.send(CongregationsEffect.ShowToast(com.asr.financial.presentation.ui.constants.AppConstants.ErrorMessages.FAILED_TO_LOAD_DATA))
         }
     }
 
@@ -79,7 +79,7 @@ class CongregationsInteractor(
             val stats = calculateStats(year, month)
             emitSuccessState(stats, year, month)
         } catch (e: Exception) {
-            _uiState.emit(CongregationsState.Error(e.message ?: "Unknown error"))
+            _uiState.emit(CongregationsState.Error(e.message ?: com.asr.financial.presentation.ui.constants.AppConstants.ErrorMessages.UNKNOWN_ERROR))
         }
     }
 
@@ -109,7 +109,7 @@ class CongregationsInteractor(
             
             // Get the monthly ceiling for this congregation
             val congData = allCongregationsData.find { it.name == congName }
-            val expected = congData?.monthlyCeiling ?: 500.0
+            val expected = congData?.monthlyCeiling ?: com.asr.financial.presentation.ui.constants.AppConstants.Business.DEFAULT_MONTHLY_CEILING
 
             CongregationStat(
                 name = congName,

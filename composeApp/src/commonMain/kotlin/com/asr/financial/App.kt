@@ -8,6 +8,9 @@ import com.asr.financial.presentation.navigation.NavGraph
 import com.asr.financial.presentation.navigation.Routes
 import com.asr.financial.presentation.screens.splash.SplashScreen
 import com.asr.financial.presentation.theme.AppTheme
+import com.asr.financial.presentation.ui.constants.AppConstants
+import kotlin.time.Clock
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
@@ -19,14 +22,14 @@ fun App() {
     
     // Check authentication status during splash screen
     LaunchedEffect(Unit) {
-        val startTime = kotlin.time.Clock.System.now().toEpochMilliseconds()
+        val startTime = Clock.System.now().toEpochMilliseconds()
         // Check auth status immediately when app starts
         isAuthenticated = checkAuthStatusUseCase()
-        // Ensure splash screen is visible for minimum duration (2.5 seconds)
-        val elapsedTime = kotlin.time.Clock.System.now().toEpochMilliseconds() - startTime
-        val remainingTime = (2500 - elapsedTime).coerceAtLeast(0)
+        // Ensure splash screen is visible for minimum duration
+        val elapsedTime = Clock.System.now().toEpochMilliseconds() - startTime
+        val remainingTime = (AppConstants.Time.SPLASH_SCREEN_MIN_DURATION_MS - elapsedTime).coerceAtLeast(0)
         if (remainingTime > 0) {
-            kotlinx.coroutines.delay(remainingTime)
+            delay(remainingTime)
         }
         showSplash = false
     }
@@ -42,6 +45,25 @@ fun App() {
                 val navController = rememberNavController()
                 val logoutUseCase: LogoutUseCase = koinInject()
                 val scope = rememberCoroutineScope()
+                
+                // Periodically verify session is still valid
+                // This will detect if user was deleted from Firebase Auth
+                LaunchedEffect(Unit) {
+                    while (true) {
+                        delay(AppConstants.Time.AUTH_CHECK_INTERVAL_MS)
+                        val stillAuthenticated = checkAuthStatusUseCase()
+                        if (!stillAuthenticated) {
+                            // User was deleted or session invalid, logout and navigate to login
+                            scope.launch {
+                                logoutUseCase()
+                                navController.navigate(Routes.LOGIN) {
+                                    popUpTo(AppConstants.Navigation.ROOT_ROUTE_INDEX) { inclusive = true }
+                                }
+                            }
+                            break
+                        }
+                    }
+                }
                 
                 NavGraph(
                     navController = navController,

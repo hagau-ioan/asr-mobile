@@ -17,8 +17,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import asr_financial.composeapp.generated.resources.*
 import com.asr.financial.AppVersionInfo
+import com.asr.financial.domain.models.access.AppSection
+import com.asr.financial.domain.models.access.UserRole
+import com.asr.financial.domain.models.access.UserRoleUtils
+import com.asr.financial.domain.usecase.CheckPermissionUseCase
+import org.koin.compose.koinInject
 import com.asr.financial.presentation.navigation.Routes
 import com.asr.financial.presentation.ui.components.TwoLevelHouseIcon
+import com.asr.financial.presentation.ui.constants.AppConstants
+import com.asr.financial.presentation.ui.constants.UIConstants
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 
 /**
@@ -26,7 +34,7 @@ import org.jetbrains.compose.resources.stringResource
  */
 sealed class NavigationItem(
     val route: String,
-    val titleRes: org.jetbrains.compose.resources.StringResource,
+    val titleRes: StringResource,
     val icon: ImageVector
 ) {
     data object Home : NavigationItem(Routes.HOME, Res.string.nav_home, Icons.Default.Home)
@@ -51,6 +59,40 @@ val navigationItems = listOf(
 )
 
 /**
+ * Maps NavigationItem to AppSection for permission checking
+ */
+private fun NavigationItem.toAppSection(): AppSection {
+    return when (this) {
+        NavigationItem.Home -> AppSection.NAV_HOME
+        NavigationItem.Congregations -> AppSection.NAV_CONGREGATIONS
+        NavigationItem.Expenses -> AppSection.NAV_EXPENSES
+        NavigationItem.Utilities -> AppSection.NAV_UTILITIES
+        NavigationItem.Yearly -> AppSection.NAV_YEARLY
+        NavigationItem.Calculator -> AppSection.NAV_CALCULATOR
+        NavigationItem.AsrExpenses -> AppSection.NAV_ASR_EXPENSES
+        NavigationItem.Upload -> AppSection.NAV_UPLOAD
+    }
+}
+
+/**
+ * Filter navigation items based on user permissions.
+ * Uses CheckPermissionUseCase to check access for each section.
+ * 
+ * @param currentUserEmail User email address to determine role and access level
+ * @param checkPermissionUseCase Use case for checking permissions
+ * @return Filtered list of navigation items based on user permissions
+ */
+fun getFilteredNavigationItems(
+    currentUserEmail: String?,
+    checkPermissionUseCase: CheckPermissionUseCase
+): List<NavigationItem> {
+    return navigationItems.filter { item ->
+        val section = item.toAppSection()
+        checkPermissionUseCase.checkPermission(section, currentUserEmail)
+    }
+}
+
+/**
  * Drawer Navigation Content - matches Financial Tracking App design
  */
 @Composable
@@ -59,14 +101,15 @@ fun DrawerNavigationContent(
     onNavigate: (String) -> Unit,
     onLogout: () -> Unit = {},
     currentUserEmail: String? = null,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    checkPermissionUseCase: CheckPermissionUseCase = koinInject()
 ) {
     Column(modifier = modifier.fillMaxSize()) {
         // Header with gradient background - fixed height to match AppHeader
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(100.dp)
+                .height(AppConstants.UI.DRAWER_HEADER_HEIGHT_DP.dp)
                 .background(
                     brush = Brush.horizontalGradient(
                         colors = listOf(
@@ -83,7 +126,7 @@ fun DrawerNavigationContent(
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 TwoLevelHouseIcon(
-                    modifier = Modifier.size(56.dp),
+                    modifier = Modifier.size(AppConstants.UI.DRAWER_ICON_SIZE_DP.dp),
                     color = MaterialTheme.colorScheme.onPrimary
                 )
                 
@@ -97,7 +140,7 @@ fun DrawerNavigationContent(
                     Text(
                         text = stringResource(Res.string.app_subtitle),
                         style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
+                        color = MaterialTheme.colorScheme.onPrimary.copy(alpha = AppConstants.UI.DEFAULT_ALPHA)
                     )
                 }
             }
@@ -110,7 +153,7 @@ fun DrawerNavigationContent(
                 .padding(vertical = 16.dp, horizontal = 12.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            navigationItems.forEach { item ->
+            getFilteredNavigationItems(currentUserEmail, checkPermissionUseCase).forEach { item ->
                 val isSelected = selectedRoute == item.route
                 
                 Button(
@@ -132,9 +175,9 @@ fun DrawerNavigationContent(
                             imageVector = item.icon,
                             contentDescription = null,
                             tint = if (isSelected) MaterialTheme.colorScheme.onTertiary else MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(AppConstants.UI.NAVIGATION_ICON_SIZE_DP.dp)
                         )
-                        Spacer(Modifier.width(12.dp))
+                        Spacer(Modifier.width(AppConstants.UI.NAVIGATION_SPACING_DP.dp))
                         Text(
                             text = stringResource(item.titleRes),
                             fontWeight = FontWeight.Medium
@@ -166,9 +209,9 @@ fun DrawerNavigationContent(
                         imageVector = Icons.AutoMirrored.Filled.ExitToApp,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(AppConstants.UI.NAVIGATION_ICON_SIZE_DP.dp)
                     )
-                    Spacer(Modifier.width(12.dp))
+                    Spacer(Modifier.width(AppConstants.UI.NAVIGATION_SPACING_DP.dp))
                     Text(
                         text = stringResource(Res.string.nav_logout),
                         fontWeight = FontWeight.Medium
@@ -221,7 +264,7 @@ fun DrawerNavigationContent(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
-                    text = "785",
+                    text = UIConstants.DEFAULT_TOTAL_PUBLISHERS.toString(),
                     style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -240,7 +283,7 @@ fun DrawerNavigationContent(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
-                    text = "8",
+                    text = "8", // TODO: Replace with actual congregation count from data
                     style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -269,17 +312,19 @@ fun PermanentNavigationDrawer(
     onNavigate: (String) -> Unit,
     onLogout: () -> Unit = {},
     currentUserEmail: String? = null,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    checkPermissionUseCase: CheckPermissionUseCase = koinInject()
 ) {
     PermanentDrawerSheet(
-        modifier = modifier.width(240.dp),
+        modifier = modifier.width(AppConstants.UI.NAVIGATION_DRAWER_WIDTH_DP.dp),
         drawerContainerColor = MaterialTheme.colorScheme.surface,
     ) {
         DrawerNavigationContent(
             selectedRoute = selectedRoute,
             onNavigate = onNavigate,
             onLogout = onLogout,
-            currentUserEmail = currentUserEmail
+            currentUserEmail = currentUserEmail,
+            checkPermissionUseCase = checkPermissionUseCase
         )
     }
 }
@@ -291,7 +336,9 @@ fun PermanentNavigationDrawer(
 fun AppNavigationRail(
     selectedRoute: String,
     onNavigate: (String) -> Unit,
-    modifier: Modifier = Modifier
+    currentUserEmail: String? = null,
+    modifier: Modifier = Modifier,
+    checkPermissionUseCase: CheckPermissionUseCase = koinInject()
 ) {
     NavigationRail(
         modifier = modifier,
@@ -299,7 +346,7 @@ fun AppNavigationRail(
     ) {
         Spacer(Modifier.height(16.dp))
         
-        navigationItems.forEach { item ->
+        getFilteredNavigationItems(currentUserEmail, checkPermissionUseCase).forEach { item ->
             NavigationRailItem(
                 icon = { Icon(item.icon, contentDescription = stringResource(item.titleRes)) },
                 label = { Text(stringResource(item.titleRes)) },

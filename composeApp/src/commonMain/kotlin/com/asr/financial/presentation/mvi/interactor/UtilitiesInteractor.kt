@@ -1,7 +1,7 @@
 package com.asr.financial.presentation.mvi.interactor
 
-import com.asr.financial.domain.model.Transaction
-import com.asr.financial.domain.model.TransactionType
+import com.asr.financial.domain.models.Transaction
+import com.asr.financial.domain.models.TransactionType
 import com.asr.financial.domain.usecase.GetAvailableYearsUseCase
 import com.asr.financial.domain.usecase.GetTransactionsUseCase
 import com.asr.financial.domain.usecase.RefreshDataUseCase
@@ -20,12 +20,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlin.concurrent.Volatile
 
 class UtilitiesInteractor(
     private val getTransactionsUseCase: GetTransactionsUseCase,
-    private val getAvailableYearsUseCase: com.asr.financial.domain.usecase.GetAvailableYearsUseCase,
-    private val refreshDataUseCase: com.asr.financial.domain.usecase.RefreshDataUseCase,
-    private val clock: Clock
+    private val getAvailableYearsUseCase: GetAvailableYearsUseCase,
+    private val refreshDataUseCase: RefreshDataUseCase,
+    clock: Clock
 ) {
     private val _uiState = MutableStateFlow<UtilitiesState>(UtilitiesState.Loading)
     val uiState = _uiState.asStateFlow()
@@ -92,8 +93,8 @@ class UtilitiesInteractor(
                 )
             )
         } catch (e: Exception) {
-            _uiState.emit(UtilitiesState.Error(e.message ?: "Unknown error"))
-            _uiEffectChannel.send(UtilitiesEffect.ShowError("Failed to load utilities"))
+            _uiState.emit(UtilitiesState.Error(e.message ?: com.asr.financial.presentation.ui.constants.AppConstants.ErrorMessages.UNKNOWN_ERROR))
+            _uiEffectChannel.send(UtilitiesEffect.ShowError(com.asr.financial.presentation.ui.constants.AppConstants.ErrorMessages.FAILED_TO_LOAD_UTILITIES))
         }
     }
 
@@ -133,7 +134,7 @@ class UtilitiesInteractor(
                 )
             )
         } catch (e: Exception) {
-            _uiState.emit(UtilitiesState.Error(e.message ?: "Unknown error"))
+            _uiState.emit(UtilitiesState.Error(e.message ?: com.asr.financial.presentation.ui.constants.AppConstants.ErrorMessages.UNKNOWN_ERROR))
         }
     }
 
@@ -171,7 +172,7 @@ class UtilitiesInteractor(
                 )
             )
         } catch (e: Exception) {
-            _uiState.emit(UtilitiesState.Error(e.message ?: "Unknown error"))
+            _uiState.emit(UtilitiesState.Error(e.message ?: com.asr.financial.presentation.ui.constants.AppConstants.ErrorMessages.UNKNOWN_ERROR))
         }
     }
 
@@ -213,7 +214,7 @@ class UtilitiesInteractor(
         )
     }
 
-    private suspend fun calculateComparisons(
+    private fun calculateComparisons(
         year: Int,
         month: Int,
         prevYear: Int,
@@ -255,8 +256,8 @@ class UtilitiesInteractor(
         }
     }
 
-    private suspend fun calculateYearlyData(year: Int): List<YearlyUtilityData> {
-        return (1..12).map { month ->
+    private fun calculateYearlyData(year: Int): List<YearlyUtilityData> {
+        return (1..com.asr.financial.presentation.ui.constants.AppConstants.Business.MONTHS_IN_YEAR).map { month ->
             val currentYearAmount = cachedTransactions
                 .filter {
                     it.type == TransactionType.EXPENSE &&

@@ -1,6 +1,6 @@
 package com.asr.financial.presentation.mvi.interactor
 
-import com.asr.financial.domain.model.TransactionType
+import com.asr.financial.domain.models.TransactionType
 import com.asr.financial.domain.usecase.GetTransactionsUseCase
 import com.asr.financial.presentation.mvi.effect.YearlyEffect
 import com.asr.financial.presentation.mvi.event.YearlyEvent
@@ -88,8 +88,9 @@ class YearlyInteractor(
                 )
             )
         } catch (e: Exception) {
-            _uiState.emit(YearlyState.Error(e.message ?: "Unknown error"))
-            _effect.send(YearlyEffect.ShowError(e.message ?: "Unknown error"))
+            val errorMessage = e.message ?: com.asr.financial.presentation.ui.constants.AppConstants.ErrorMessages.UNKNOWN_ERROR
+            _uiState.emit(YearlyState.Error(errorMessage))
+            _effect.send(YearlyEffect.ShowError(errorMessage))
         }
     }
 }

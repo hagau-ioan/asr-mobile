@@ -11,7 +11,9 @@ sealed interface UploadState {
     data object Loading : UploadState
     data class Success(
         val currentReceiptPath: String? = null,
-        val isCapturing: Boolean = false
+        val isCapturing: Boolean = false,
+        val isUploading: Boolean = false,
+        val uploadProgress: Float = 0f
     ) : UploadState
     data class Error(val message: String) : UploadState
 }

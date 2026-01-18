@@ -19,10 +19,12 @@ import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
+import kotlin.math.abs
 import androidx.compose.ui.unit.sp
 import asr_financial.composeapp.generated.resources.Res
 import asr_financial.composeapp.generated.resources.*
 import com.asr.financial.presentation.screens.yearly.YearlyStat
+import com.asr.financial.presentation.ui.constants.AppConstants
 import com.asr.financial.presentation.ui.constants.UIConstants.SMALL_SPACING_DP
 import com.asr.financial.presentation.ui.constants.UIConstants.TINY_SPACING_DP
 import com.asr.financial.utils.formatForAxis
@@ -36,7 +38,7 @@ import kotlin.math.max
 fun BarChart(
     yearlyStats: List<YearlyStat>,
     modifier: Modifier = Modifier,
-    height: Int = 350
+    height: Int = AppConstants.UI.CHART_DEFAULT_HEIGHT
 ) {
     val donationsColor = MaterialTheme.colorScheme.tertiary
     val expensesColor = MaterialTheme.colorScheme.error
@@ -50,7 +52,7 @@ fun BarChart(
     
     val animationProgress by animateFloatAsState(
         targetValue = if (animationTriggered) 1f else 0f,
-        animationSpec = tween(durationMillis = 1200),
+        animationSpec = tween(durationMillis = AppConstants.Time.BAR_CHART_ANIMATION_DURATION_MS),
         label = "barChartAnimation"
     )
 
@@ -73,8 +75,8 @@ fun BarChart(
                 max(it.totalDonations, it.totalExpenses)
             }?.toFloat() ?: 0f
             
-            val minNegative = yearlyStats.minOfOrNull { it.balance }?.coerceAtMost(0.0)?.toFloat() ?: 0f
-            val maxNegative = kotlin.math.abs(minNegative)
+            val minNegative = yearlyStats.minOfOrNull { it.balance }?.coerceAtMost(AppConstants.Defaults.ZERO_DOUBLE)?.toFloat() ?: AppConstants.Defaults.ZERO_FLOAT
+            val maxNegative = abs(minNegative)
             
             val maxValue = max(maxPositive, maxNegative)
 
@@ -147,7 +149,7 @@ fun BarChart(
             
             // Draw X-axis (zero line)
             drawLine(
-                color = textColor.copy(alpha = 0.3f),
+                color = textColor.copy(alpha = AppConstants.UI.LOW_ALPHA),
                 start = Offset(padding, zeroY),
                 end = Offset(padding + chartWidth, zeroY),
                 strokeWidth = 2f
@@ -182,7 +184,7 @@ fun BarChart(
                         size = Size(barWidth, balanceHeight)
                     )
                 } else {
-                    val balanceHeight = (kotlin.math.abs(stat.balance) / maxValue * (padding + chartHeight - zeroY)).toFloat() * animationProgress
+                    val balanceHeight = (abs(stat.balance) / maxValue * (padding + chartHeight - zeroY)).toFloat() * animationProgress
                     drawRect(
                         color = balanceColor.copy(alpha = 0.7f),
                         topLeft = Offset(x + barWidth * 2, zeroY),

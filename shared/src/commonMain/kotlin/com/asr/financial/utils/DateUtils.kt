@@ -30,3 +30,21 @@ fun getAvailableYears(clock: Clock): List<Int> {
     val currentYear = getCurrentYear(clock)
     return (2024..currentYear).toList()
 }
+
+/**
+ * Format current date and time for file naming.
+ * Format: YYYYMMDD_HHmmss (e.g., 20260118_143025)
+ * 
+ * @param clock Clock instance to get current time
+ * @return Formatted timestamp string
+ */
+fun formatTimestampForFileName(clock: Clock): String {
+    val now = clock.now().toLocalDateTime(TimeZone.currentSystemDefault())
+    val year = now.year
+    val month = now.month.number.toString().padStart(2, '0')
+    val day = now.dayOfMonth.toString().padStart(2, '0')
+    val hour = now.hour.toString().padStart(2, '0')
+    val minute = now.minute.toString().padStart(2, '0')
+    val second = now.second.toString().padStart(2, '0')
+    return "${year}${month}${day}_${hour}${minute}${second}"
+}

@@ -8,6 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.asr.financial.presentation.screens.yearly.YearlyComparison
@@ -52,7 +53,7 @@ private fun VariationRow(
     label: String,
     change: Double,
     percentage: Double,
-    color: androidx.compose.ui.graphics.Color
+    color: Color
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),

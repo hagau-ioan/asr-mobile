@@ -1,5 +1,7 @@
 package com.asr.financial.domain.models
 
+import kotlin.time.Clock
+
 /**
  * Domain model for authenticated user
  */
@@ -14,7 +16,7 @@ data class AuthUser(
             * @return true if token is expired or expiry time is not set, false otherwise
             */
            fun isTokenExpired(): Boolean {
-               val currentTime = kotlin.time.Clock.System.now().toEpochMilliseconds()
+               val currentTime = Clock.System.now().toEpochMilliseconds()
                return tokenExpiryTime == null || tokenExpiryTime < currentTime
            }
 }

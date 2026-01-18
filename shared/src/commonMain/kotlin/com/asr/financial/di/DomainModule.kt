@@ -43,4 +43,7 @@ val domainModule = module {
     factory { CheckAuthStatusUseCase(get()) }
     factory { GetCurrentUserUseCase(get()) }
     factory { RefreshTokenUseCase(get()) }
+    factory { GetUserRoleUseCase(get()) }
+    factory { IsAdminUseCase(get()) }
+    factory { CheckPermissionUseCase(get()) }
 }

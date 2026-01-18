@@ -1,4 +1,4 @@
-package com.asr.financial.domain.model
+package com.asr.financial.domain.models
 
 import kotlinx.serialization.Serializable
 

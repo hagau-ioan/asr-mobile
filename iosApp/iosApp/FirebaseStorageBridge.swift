@@ -23,6 +23,14 @@ import ComposeApp
             name: NSNotification.Name("FirebaseStorageDownloadFile"),
             object: nil
         )
+        
+        // Observe upload file requests from Kotlin
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleUploadFileRequest(_:)),
+            name: NSNotification.Name("FirebaseStorageUploadFile"),
+            object: nil
+        )
     }
     
     @objc private func handleDownloadFileRequest(_ notification: Notification) {
@@ -63,6 +71,53 @@ import ComposeApp
                 content: content,
                 error: nil
             )
+        }
+    }
+    
+    @objc private func handleUploadFileRequest(_ notification: Notification) {
+        guard let userInfo = notification.object as? [String: Any],
+              let localPath = userInfo["localPath"] as? String,
+              let remotePath = userInfo["remotePath"] as? String else {
+            // Report error back to Kotlin
+            ComposeApp.FirebaseStorageBridgeKt.reportUploadResult(
+                success: false,
+                error: "Invalid upload request data"
+            )
+            return
+        }
+        
+        guard let localFileURL = URL(string: localPath) ?? URL(fileURLWithPath: localPath) as URL? else {
+            ComposeApp.FirebaseStorageBridgeKt.reportUploadResult(
+                success: false,
+                error: "Invalid local file path"
+            )
+            return
+        }
+        
+        let storageRef = storage.reference().child(remotePath)
+        
+        // Create upload task
+        let uploadTask = storageRef.putFile(from: localFileURL, metadata: nil) { metadata, error in
+            if let error = error {
+                ComposeApp.FirebaseStorageBridgeKt.reportUploadResult(
+                    success: false,
+                    error: error.localizedDescription
+                )
+                return
+            }
+            
+            // Upload successful
+            ComposeApp.FirebaseStorageBridgeKt.reportUploadResult(
+                success: true,
+                error: nil
+            )
+        }
+        
+        // Monitor upload progress
+        uploadTask.observe(.progress) { snapshot in
+            guard let progress = snapshot.progress else { return }
+            let percentComplete = Float(progress.completedUnitCount) / Float(progress.totalUnitCount)
+            ComposeApp.FirebaseStorageBridgeKt.reportUploadProgress(progress: percentComplete)
         }
     }
 }

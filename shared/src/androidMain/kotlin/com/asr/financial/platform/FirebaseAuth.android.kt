@@ -11,6 +11,10 @@ actual class FirebaseAuth {
     
     private val firebaseAuth: AndroidFirebaseAuth = AndroidFirebaseAuth.getInstance()
     
+    private companion object {
+        const val UNKNOWN_ERROR_MESSAGE = "Unknown error occurred"
+    }
+    
     actual suspend fun signInWithEmailAndPassword(
         email: String,
         password: String
@@ -38,7 +42,7 @@ actual class FirebaseAuth {
         } catch (e: Exception) {
             AuthResult(
                 success = false,
-                errorMessage = e.message ?: "Unknown error occurred"
+                errorMessage = e.message ?: UNKNOWN_ERROR_MESSAGE
             )
         }
     }
@@ -77,10 +81,20 @@ actual class FirebaseAuth {
             return@withContext false
         }
         
-        // Try to get a fresh token to verify the session is still valid
+        // Force a token refresh to verify the session is still valid with the server
+        // This will fail if the user has been deleted from Firebase Auth
         return@withContext try {
-            user.getIdToken(false).await()
-            true
+            val tokenResult = user.getIdToken(true).await() // Force refresh
+            tokenResult != null
+        } catch (e: FirebaseAuthException) {
+            // If token refresh fails, the user may have been deleted
+            // Sign out to clear local state
+            try {
+                firebaseAuth.signOut()
+            } catch (signOutException: Exception) {
+                // Ignore sign out errors
+            }
+            false
         } catch (e: Exception) {
             false
         }

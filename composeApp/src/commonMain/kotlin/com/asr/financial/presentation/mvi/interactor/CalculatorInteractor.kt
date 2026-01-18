@@ -1,6 +1,6 @@
 package com.asr.financial.presentation.mvi.interactor
 
-import com.asr.financial.domain.model.TransactionType
+import com.asr.financial.domain.models.TransactionType
 import com.asr.financial.domain.usecase.GetAllCongregationsUseCase
 import com.asr.financial.domain.usecase.GetPublisherExpectedContributionUseCase
 import com.asr.financial.domain.usecase.GetTotalPublishersUseCase
@@ -68,9 +68,9 @@ class CalculatorInteractor(
             )
 
             val yearlyContribution = ContributionCalculation(
-                totalExpenses = monthlyExpenses * 12,
+                totalExpenses = monthlyExpenses * com.asr.financial.presentation.ui.constants.AppConstants.Business.MONTHS_IN_YEAR,
                 numberOfPublishers = totalPublishers,
-                perPublisherAmount = publisherExpectedContribution * 12
+                perPublisherAmount = publisherExpectedContribution * com.asr.financial.presentation.ui.constants.AppConstants.Business.MONTHS_IN_YEAR
             )
 
             // Calculate per congregation using fixed monthly ceiling from JSON

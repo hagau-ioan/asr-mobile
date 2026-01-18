@@ -24,11 +24,13 @@
     <string name="upload_no_image">Nincs rögzített kép</string>
     <string name="upload_success_captured">Kép sikeresen rögzítve</string>
     <string name="upload_success_deleted">Kép törölve</string>
+    <string name="upload_success_sent">Kép sikeresen elküldve</string>
     <string name="upload_error_unknown">Ismeretlen hiba</string>
     <string name="upload_error_capture">Hiba a rögzítés során</string>
     <string name="upload_error_processing">Hiba a kép feldolgozása során</string>
     <string name="upload_error_delete">Hiba a törlés során</string>
     <string name="upload_error_send">Hiba a küldés során</string>
+    <string name="upload_uploading">Feltöltés...</string>
     <string name="upload_path_prefix">Útvonal: </string>
     
     <!-- Common Errors -->

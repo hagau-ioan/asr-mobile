@@ -2,7 +2,7 @@ package com.asr.financial.data.repository
 
 import com.asr.financial.data.cache.RepositoryCache
 import com.asr.financial.data.datasource.TransactionDataSource
-import com.asr.financial.domain.model.Transaction
+import com.asr.financial.domain.models.Transaction
 import com.asr.financial.domain.repository.TransactionRepository
 
 /**

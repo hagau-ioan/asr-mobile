@@ -1,6 +1,6 @@
 package com.asr.financial.presentation.screens.expenses
 
-import com.asr.financial.domain.model.Transaction
+import com.asr.financial.domain.models.Transaction
 
 /**
  * Presentation model for expense statistics grouped by category

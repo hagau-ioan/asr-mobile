@@ -60,6 +60,7 @@ kotlin {
             implementation(libs.sqldelight.android.driver)
             implementation(libs.androidx.security.crypto)
             implementation(libs.androidx.core.ktx)
+            implementation(libs.androidx.exifinterface)
             implementation(libs.ktor.client.okhttp)
             
             // Firebase Auth (Android)

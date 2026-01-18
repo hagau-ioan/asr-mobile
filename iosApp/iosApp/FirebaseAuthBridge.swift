@@ -127,9 +127,22 @@ import ComposeApp
             return
         }
         
-        // Try to get a fresh token to verify the session is still valid
-        user.getIDToken(forcingRefresh: false) { token, error in
-            ComposeApp.FirebaseAuthBridgeKt.reportVerifySessionResult(isValid: token != nil && error == nil)
+        // Force a token refresh to verify the session is still valid with the server
+        // This will fail if the user has been deleted from Firebase Auth
+        user.getIDToken(forcingRefresh: true) { token, error in
+            if token != nil && error == nil {
+                ComposeApp.FirebaseAuthBridgeKt.reportVerifySessionResult(isValid: true)
+            } else {
+                // If token refresh fails, the user may have been deleted
+                // Sign out to clear local state
+                do {
+                    try self.auth.signOut()
+                    self.updateCurrentUserData(user: nil)
+                } catch {
+                    // Ignore sign out errors
+                }
+                ComposeApp.FirebaseAuthBridgeKt.reportVerifySessionResult(isValid: false)
+            }
         }
     }
     

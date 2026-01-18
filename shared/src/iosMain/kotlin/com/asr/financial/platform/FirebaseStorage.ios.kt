@@ -38,6 +38,30 @@ actual class FirebaseStorage(
             }
         }
     }
+
+    actual suspend fun uploadFile(
+        localPath: String,
+        remotePath: String,
+        onProgress: (Float) -> Unit
+    ): Boolean = withContext(Dispatchers.Main) {
+        logger.debug("FirebaseStorage", "Uploading file to Firebase Storage: $localPath -> $remotePath")
+        suspendCancellableCoroutine { continuation ->
+            com.asr.financial.platform.FirebaseStorageBridge.uploadFile(
+                localPath = localPath,
+                remotePath = remotePath,
+                onProgress = onProgress
+            ) { success, error ->
+                if (error != null) {
+                    logger.error("FirebaseStorage", "Error uploading $remotePath: $error", null)
+                } else if (success) {
+                    logger.debug("FirebaseStorage", "Successfully uploaded file: $remotePath")
+                } else {
+                    logger.error("FirebaseStorage", "Upload returned false for: $remotePath", null)
+                }
+                continuation.resume(success)
+            }
+        }
+    }
 }
 
 /**
@@ -74,5 +98,47 @@ object FirebaseStorageBridge {
     fun reportDownloadResult(content: String?, error: String?) {
         downloadFileCallback?.invoke(content, error)
         downloadFileCallback = null
+    }
+
+    // Upload file callback
+    private var uploadFileCallback: ((Boolean, String?) -> Unit)? = null
+    private var uploadProgressCallback: ((Float) -> Unit)? = null
+
+    /**
+     * Called from Kotlin to upload a file to Firebase Storage.
+     * The Swift bridge should observe this and call Firebase Storage.
+     */
+    fun uploadFile(
+        localPath: String,
+        remotePath: String,
+        onProgress: (Float) -> Unit,
+        completion: (Boolean, String?) -> Unit
+    ) {
+        uploadProgressCallback = onProgress
+        uploadFileCallback = completion
+        // Post notification to Swift layer
+        platform.Foundation.NSNotificationCenter.defaultCenter.postNotificationName(
+            "FirebaseStorageUploadFile",
+            `object` = mapOf(
+                "localPath" to localPath,
+                "remotePath" to remotePath
+            )
+        )
+    }
+
+    /**
+     * Called from Swift bridge when upload progress updates.
+     */
+    fun reportUploadProgress(progress: Float) {
+        uploadProgressCallback?.invoke(progress)
+    }
+
+    /**
+     * Called from Swift bridge when file upload completes.
+     */
+    fun reportUploadResult(success: Boolean, error: String?) {
+        uploadFileCallback?.invoke(success, error)
+        uploadFileCallback = null
+        uploadProgressCallback = null
     }
 }

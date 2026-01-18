@@ -1,13 +1,14 @@
 package com.asr.financial.presentation.mvi.interactor
 
-import com.asr.financial.domain.model.Transaction
-import com.asr.financial.domain.model.TransactionType
+import com.asr.financial.domain.models.Transaction
+import com.asr.financial.domain.models.TransactionType
 import com.asr.financial.domain.usecase.*
 import com.asr.financial.platform.Clock
 import com.asr.financial.presentation.mvi.effect.HomeEffect
 import com.asr.financial.presentation.mvi.event.HomeEvent
 import com.asr.financial.presentation.mvi.state.HomeState
 import com.asr.financial.presentation.screens.home.MissingCongregation
+import com.asr.financial.presentation.ui.constants.AppConstants
 import com.asr.financial.presentation.ui.constants.UIConstants
 import com.asr.financial.utils.calculatePreviousMonth
 import com.asr.financial.utils.getCurrentMonth
@@ -17,6 +18,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlin.concurrent.Volatile
 
 /**
  * Home Interactor - Handles business logic for Home screen.
@@ -25,13 +27,12 @@ import kotlinx.coroutines.flow.receiveAsFlow
  */
 class HomeInteractor(
     private val getTransactionsUseCase: GetTransactionsUseCase,
-    private val getTransactionsByMonthUseCase: GetTransactionsByMonthUseCase,
     private val getCongregationNamesUseCase: GetCongregationNamesUseCase,
     private val getAllCongregationsUseCase: GetAllCongregationsUseCase,
     private val getAvailableYearsUseCase: GetAvailableYearsUseCase,
     private val getAppConfigUseCase: GetAppConfigUseCase,
     private val refreshDataUseCase: RefreshDataUseCase,
-    private val clock: Clock
+    clock: Clock
 ) {
     private val _uiState = MutableStateFlow<HomeState>(HomeState.Loading)
     val uiState = _uiState.asStateFlow()
@@ -67,8 +68,8 @@ class HomeInteractor(
             cachedTransactions = getTransactionsUseCase()
             emitSuccessState(cachedTransactions, year, month)
         } catch (e: Exception) {
-            _uiState.emit(HomeState.Error(e.message ?: "Unknown error"))
-            _uiEffectChannel.send(HomeEffect.ShowToast("Failed to load transactions"))
+            _uiState.emit(HomeState.Error(e.message ?: AppConstants.ErrorMessages.UNKNOWN_ERROR))
+            _uiEffectChannel.send(HomeEffect.ShowToast(AppConstants.ErrorMessages.FAILED_TO_LOAD_TRANSACTIONS))
         }
     }
 
@@ -80,7 +81,7 @@ class HomeInteractor(
         try {
             emitSuccessState(cachedTransactions, year, month)
         } catch (e: Exception) {
-            _uiState.emit(HomeState.Error(e.message ?: "Unknown error"))
+            _uiState.emit(HomeState.Error(e.message ?: AppConstants.ErrorMessages.UNKNOWN_ERROR))
         }
     }
 
@@ -156,7 +157,7 @@ class HomeInteractor(
             .mapValues { (_, transactions) -> transactions.sumOf { it.amount } }
 
         return allCongregationsData.mapNotNull { congData ->
-            val donated = congregationDonations[congData.name] ?: 0.0
+            val donated = congregationDonations[congData.name] ?: AppConstants.Defaults.ZERO_DOUBLE
             val expected = congData.monthlyCeiling
             
             if (donated < expected) {

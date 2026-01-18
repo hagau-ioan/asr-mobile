@@ -29,6 +29,7 @@ import com.asr.financial.presentation.ui.responsive.WindowSizeClass
 import com.asr.financial.presentation.ui.scaffold.ScreenLayout
 import com.asr.financial.utils.getCurrentYear
 import asr_financial.composeapp.generated.resources.*
+import com.asr.financial.presentation.ui.constants.AppConstants
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
@@ -154,7 +155,7 @@ private fun EmptyYearlyCard() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(EMPTY_STATE_PADDING_DP.dp),
-            contentAlignment = androidx.compose.ui.Alignment.Center
+            contentAlignment = Alignment.Center
         ) {
             Text(
                 text = stringResource(Res.string.yearly_empty),
@@ -180,7 +181,7 @@ private fun YearlyChartCard(
     
     val allStats = remember(allYears, yearlyStats) {
         allYears.map { year ->
-            yearlyStats.find { it.year == year } ?: YearlyStat(year, 0.0, 0.0, 0.0)
+            yearlyStats.find { it.year == year } ?: YearlyStat(year, AppConstants.Defaults.ZERO_DOUBLE, AppConstants.Defaults.ZERO_DOUBLE, AppConstants.Defaults.ZERO_DOUBLE)
         }
     }
     

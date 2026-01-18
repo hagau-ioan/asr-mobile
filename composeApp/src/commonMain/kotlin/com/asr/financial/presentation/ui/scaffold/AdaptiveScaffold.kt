@@ -5,9 +5,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import com.asr.financial.domain.usecase.CheckPermissionUseCase
 import com.asr.financial.presentation.ui.navigation.*
 import com.asr.financial.presentation.ui.responsive.WindowSizeClass
 import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
 
 /**
  * Adaptive Scaffold that changes layout based on window size
@@ -24,6 +26,7 @@ fun AdaptiveScaffold(
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val checkPermissionUseCase: CheckPermissionUseCase = koinInject()
     
     val onMenuClick: () -> Unit = {
         scope.launch { drawerState.open() }
@@ -46,7 +49,8 @@ fun AdaptiveScaffold(
                                 scope.launch { drawerState.close() }
                                 onLogout()
                             },
-                            currentUserEmail = currentUserEmail
+                            currentUserEmail = currentUserEmail,
+                            checkPermissionUseCase = checkPermissionUseCase
                         )
                     }
                 }
@@ -62,7 +66,9 @@ fun AdaptiveScaffold(
             Row {
                 AppNavigationRail(
                     selectedRoute = selectedRoute,
-                    onNavigate = onNavigate
+                    onNavigate = onNavigate,
+                    currentUserEmail = currentUserEmail,
+                    checkPermissionUseCase = checkPermissionUseCase
                 )
                 
                 Scaffold {  paddingValues ->
@@ -78,7 +84,8 @@ fun AdaptiveScaffold(
                     selectedRoute = selectedRoute,
                     onNavigate = onNavigate,
                     onLogout = onLogout,
-                    currentUserEmail = currentUserEmail
+                    currentUserEmail = currentUserEmail,
+                    checkPermissionUseCase = checkPermissionUseCase
                 )
                 
                 Scaffold { paddingValues ->

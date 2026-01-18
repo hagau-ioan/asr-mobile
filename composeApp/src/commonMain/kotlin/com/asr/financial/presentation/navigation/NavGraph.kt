@@ -40,7 +40,8 @@ fun NavGraph(
     var currentUserEmail by remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
     
-    LaunchedEffect(Unit) {
+    // Load user email on initial composition and refresh when route changes (especially after login)
+    LaunchedEffect(currentRoute) {
         scope.launch {
             val user = getCurrentUserUseCase()
             currentUserEmail = user?.email
@@ -76,8 +77,14 @@ fun NavGraph(
                     onNavigate = { route ->
                         if (route == Routes.HOME) {
                             onAuthSuccess()
-                            navController.navigate(route) {
-                                popUpTo(Routes.LOGIN) { inclusive = true }
+                            // Refresh user email immediately after successful login (before navigation)
+                            scope.launch {
+                                val user = getCurrentUserUseCase()
+                                currentUserEmail = user?.email
+                                // Navigate after email is loaded
+                                navController.navigate(route) {
+                                    popUpTo(Routes.LOGIN) { inclusive = true }
+                                }
                             }
                         } else {
                             navController.navigate(route)

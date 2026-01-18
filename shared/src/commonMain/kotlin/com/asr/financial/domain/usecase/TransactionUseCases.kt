@@ -1,6 +1,6 @@
 package com.asr.financial.domain.usecase
 
-import com.asr.financial.domain.model.Transaction
+import com.asr.financial.domain.models.Transaction
 import com.asr.financial.domain.repository.TransactionRepository
 
 /**

@@ -24,11 +24,13 @@
     <string name="upload_no_image">Nu există nicio imagine capturată</string>
     <string name="upload_success_captured">Imagine capturată cu succes</string>
     <string name="upload_success_deleted">Imagine ștearsă</string>
+    <string name="upload_success_sent">Imagine trimisă cu succes</string>
     <string name="upload_error_unknown">Eroare necunoscută</string>
     <string name="upload_error_capture">Eroare la capturare</string>
     <string name="upload_error_processing">Eroare la procesarea imaginii</string>
     <string name="upload_error_delete">Eroare la ștergere</string>
     <string name="upload_error_send">Eroare la trimitere</string>
+    <string name="upload_uploading">Se încarcă...</string>
     <string name="upload_path_prefix">Cale: </string>
     
     <!-- Common Errors -->

@@ -34,6 +34,7 @@ import com.asr.financial.presentation.ui.components.BreadcrumbItem
 import com.asr.financial.presentation.ui.components.period.PeriodSelectorCard
 import com.asr.financial.presentation.ui.components.states.ErrorContent
 import com.asr.financial.presentation.ui.components.states.LoadingContent
+import com.asr.financial.presentation.ui.constants.AppConstants
 import com.asr.financial.presentation.ui.constants.UIConstants.EMPTY_STATE_PADDING_DP
 import com.asr.financial.presentation.ui.responsive.WindowSizeClass
 import com.asr.financial.presentation.ui.scaffold.ScreenLayout
@@ -41,6 +42,7 @@ import com.asr.financial.utils.calculatePreviousMonth
 import com.asr.financial.utils.getCurrentMonth
 import com.asr.financial.utils.getCurrentYear
 import com.asr.financial.utils.getMonthsList
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
@@ -139,7 +141,7 @@ private fun UtilitiesSuccessContent(
     showYearDropdown: Boolean,
     showMonthDropdown: Boolean,
     years: List<Int>,
-    months: List<Pair<Int, org.jetbrains.compose.resources.StringResource>>,
+    months: List<Pair<Int, StringResource>>,
     onYearDropdownChange: (Boolean) -> Unit,
     onMonthDropdownChange: (Boolean) -> Unit,
     onYearSelected: (Int) -> Unit,
@@ -181,7 +183,7 @@ private fun UtilitiesSuccessContent(
             )
         }
 
-        if (state.comparisons.all { it.currentAmount == 0.0 && it.previousAmount == 0.0 }) {
+        if (state.comparisons.all { it.currentAmount == AppConstants.Defaults.ZERO_DOUBLE && it.previousAmount == AppConstants.Defaults.ZERO_DOUBLE }) {
             item {
                 EmptyUtilitiesCard()
             }
@@ -198,7 +200,7 @@ private fun UtilitiesSuccessContent(
                 YearlyComparisonCard(
                     yearlyData = state.comparisonYearlyData,
                     comparisonYear = state.comparisonYear,
-                    minYear = (state.availableYears.firstOrNull() ?: 2024) + 1,
+                    minYear = (state.availableYears.firstOrNull() ?: AppConstants.Business.DEFAULT_START_YEAR) + 1,
                     maxYear = state.selectedYear,
                     onYearChange = { year ->
                         viewModel.handleEvent(UtilitiesEvent.ChangeComparisonYear(year))

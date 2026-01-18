@@ -1,6 +1,6 @@
 package com.asr.financial.data.datasource
 
-import com.asr.financial.domain.model.Transaction
+import com.asr.financial.domain.models.Transaction
 
 /**
  * Data source interface for Transaction data.

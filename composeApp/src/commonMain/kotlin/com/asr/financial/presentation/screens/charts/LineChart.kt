@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -23,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import asr_financial.composeapp.generated.resources.*
 import com.asr.financial.presentation.theme.ChartSecondaryGreen
+import com.asr.financial.presentation.ui.constants.AppConstants
 import com.asr.financial.utils.formatForAxis
 import org.jetbrains.compose.resources.stringResource
 import kotlin.math.max
@@ -37,11 +39,11 @@ fun LineChart(
     currentYearLabel: String,
     previousYearLabel: String,
     modifier: Modifier = Modifier,
-    height: Int = 350
+    height: Int = AppConstants.UI.CHART_DEFAULT_HEIGHT
 ) {
     val primaryColor = MaterialTheme.colorScheme.primary
     val secondaryColor = if (isSystemInDarkTheme()) 
-        androidx.compose.ui.graphics.Color.White 
+        Color.White 
     else 
         ChartSecondaryGreen
     val textColor = MaterialTheme.colorScheme.onSurface
@@ -55,7 +57,7 @@ fun LineChart(
     
     val animationProgress by animateFloatAsState(
         targetValue = if (animationTriggered) 1f else 0f,
-        animationSpec = tween(durationMillis = 1500),
+        animationSpec = tween(durationMillis = AppConstants.Time.CHART_ANIMATION_DURATION_MS),
         label = "lineChartAnimation"
     )
 
@@ -89,11 +91,11 @@ fun LineChart(
         val chartHeight = size.height - padding - bottomPadding
 
         val maxValue = max(
-            currentYearData.maxOrNull() ?: 0.0,
-            previousYearData.maxOrNull() ?: 0.0
+            currentYearData.maxOrNull() ?: AppConstants.Defaults.ZERO_DOUBLE,
+            previousYearData.maxOrNull() ?: AppConstants.Defaults.ZERO_DOUBLE
         )
 
-        if (maxValue == 0.0) return@Canvas
+        if (maxValue == AppConstants.Defaults.ZERO_DOUBLE) return@Canvas
 
         val xStep = chartWidth / (currentYearData.size - 1).coerceAtLeast(1)
         val ySteps = 4

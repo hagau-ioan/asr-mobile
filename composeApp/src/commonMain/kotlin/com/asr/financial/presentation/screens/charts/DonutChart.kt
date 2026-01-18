@@ -23,6 +23,7 @@ import com.asr.financial.presentation.screens.expenses.ExpensesConstants.PIE_CHA
 import com.asr.financial.presentation.screens.expenses.ExpensesConstants.PIE_CHART_HEIGHT_DP
 import com.asr.financial.presentation.screens.expenses.ExpensesConstants.PIE_CHART_SIZE_DP
 import com.asr.financial.presentation.screens.expenses.ExpensesConstants.PIE_CHART_START_ANGLE
+import com.asr.financial.presentation.ui.constants.AppConstants
 import com.asr.financial.presentation.ui.constants.UIConstants.CARD_PADDING_DP
 import com.asr.financial.presentation.ui.constants.UIConstants.SMALL_SPACING_DP
 import com.asr.financial.presentation.ui.constants.UIConstants.TINY_SPACING_DP
@@ -45,7 +46,7 @@ fun DonutChart(
     modifier: Modifier = Modifier
 ) {
     val total = items.sumOf { it.value }
-    if (total == 0.0) return
+    if (total == AppConstants.Defaults.ZERO_DOUBLE) return
 
     val dataKey = remember(items) { items.hashCode().toString() }
     
@@ -53,7 +54,7 @@ fun DonutChart(
     
     val animationProgress by animateFloatAsState(
         targetValue = if (animationTriggered) 1f else 0f,
-        animationSpec = tween(durationMillis = 1000),
+        animationSpec = tween(durationMillis = AppConstants.Time.DONUT_CHART_ANIMATION_DURATION_MS),
         label = "donutChartAnimation"
     )
 

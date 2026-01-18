@@ -26,6 +26,14 @@ expect class ImageCapture {
     fun processCapture(success: Boolean): String?
 
     /**
+     * Rename current receipt file with timestamp.
+     * Format: receipt_YYYYMMDD_HHmmss.jpg
+     * @param timestamp Timestamp string in format YYYYMMDD_HHmmss
+     * @return Path to renamed file or null if rename failed
+     */
+    fun renameReceiptWithTimestamp(timestamp: String): String?
+
+    /**
      * Delete current receipt from cache
      * @return true if deleted successfully
      */

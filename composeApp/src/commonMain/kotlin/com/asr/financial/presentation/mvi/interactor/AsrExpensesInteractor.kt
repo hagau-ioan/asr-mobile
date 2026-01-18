@@ -39,11 +39,11 @@ class AsrExpensesInteractor(
         try {
             allExpenses = getAsrExpensesUseCase().sortedByDescending { it.date }
             val availableYears = allExpenses.map { it.date.substring(0, 4).toInt() }.distinct().sortedDescending()
-            val defaultYear = availableYears.firstOrNull() ?: 2024
+            val defaultYear = availableYears.firstOrNull() ?: com.asr.financial.presentation.ui.constants.AppConstants.Business.DEFAULT_START_YEAR
             emitSuccessState(allExpenses, defaultYear, 0, availableYears)
         } catch (e: Exception) {
-            _uiState.emit(AsrExpensesState.Error(e.message ?: "Unknown error"))
-            _uiEffectChannel.send(AsrExpensesEffect.ShowToast("Failed to load ASR expenses"))
+            _uiState.emit(AsrExpensesState.Error(e.message ?: com.asr.financial.presentation.ui.constants.AppConstants.ErrorMessages.UNKNOWN_ERROR))
+            _uiEffectChannel.send(AsrExpensesEffect.ShowToast(com.asr.financial.presentation.ui.constants.AppConstants.ErrorMessages.FAILED_TO_LOAD_DATA))
         }
     }
 

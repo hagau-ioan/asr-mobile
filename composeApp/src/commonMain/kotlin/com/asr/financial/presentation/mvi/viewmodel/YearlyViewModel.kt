@@ -7,6 +7,8 @@ import com.asr.financial.presentation.mvi.event.YearlyEvent
 import com.asr.financial.presentation.mvi.interactor.YearlyInteractor
 import com.asr.financial.presentation.mvi.state.YearlyState
 import kotlinx.coroutines.flow.Flow
+import com.asr.financial.presentation.ui.constants.AppConstants
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -20,7 +22,7 @@ class YearlyViewModel(
 
     val uiState: StateFlow<YearlyState> = interactor.uiState.stateIn(
         scope = viewModelScope,
-        started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(5000),
+        started = SharingStarted.WhileSubscribed(AppConstants.Time.STATE_FLOW_TIMEOUT_MS),
         initialValue = YearlyState.Loading
     )
 

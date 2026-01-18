@@ -32,6 +32,7 @@ import com.asr.financial.presentation.ui.responsive.WindowSizeClass
 import com.asr.financial.presentation.ui.scaffold.ScreenLayout
 import com.asr.financial.utils.formatCurrency
 import com.asr.financial.utils.getMonthsList
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -103,7 +104,7 @@ private fun AsrExpensesSuccessContent(
     selectedYear: Int,
     selectedMonth: Int,
     years: List<Int>,
-    months: List<Pair<Int, org.jetbrains.compose.resources.StringResource>>,
+    months: List<Pair<Int, StringResource>>,
     showYearDropdown: Boolean,
     showMonthDropdown: Boolean,
     onYearDropdownChange: (Boolean) -> Unit,

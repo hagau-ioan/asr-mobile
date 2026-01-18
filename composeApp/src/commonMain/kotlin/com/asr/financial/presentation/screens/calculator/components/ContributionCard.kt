@@ -4,8 +4,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.asr.financial.presentation.ui.constants.AppConstants
 import com.asr.financial.presentation.screens.calculator.ContributionCalculation
 import com.asr.financial.presentation.ui.constants.UIConstants.CARD_PADDING_DP
 import com.asr.financial.presentation.ui.constants.UIConstants.SMALL_SPACING_DP
@@ -18,8 +20,8 @@ fun ContributionCard(
     title: String,
     contribution: ContributionCalculation,
     periodLabel: String,
-    containerColor: androidx.compose.ui.graphics.Color,
-    contentColor: androidx.compose.ui.graphics.Color
+    containerColor: Color,
+    contentColor: Color
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -30,14 +32,14 @@ fun ContributionCard(
                 text = title,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = androidx.compose.ui.graphics.Color.White
+                color = Color.White
             )
             
             Text(
                 text = contribution.perPublisherAmount.formatCurrency(),
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Bold,
-                color = androidx.compose.ui.graphics.Color.White,
+                color = Color.White,
                 maxLines = 1
             )
             
@@ -46,13 +48,13 @@ fun ContributionCard(
             Column {
                 Text(
                     text = stringResource(Res.string.calculator_total_expenses),
-                    color = androidx.compose.ui.graphics.Color.White,
+                    color = Color.White,
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
                     text = contribution.totalExpenses.formatCurrency(),
                     fontWeight = FontWeight.Bold,
-                    color = androidx.compose.ui.graphics.Color.White,
+                    color = Color.White,
                     maxLines = 1
                 )
             }
@@ -62,26 +64,26 @@ fun ContributionCard(
             Column {
                 Text(
                     text = stringResource(Res.string.calculator_number_publishers),
-                    color = androidx.compose.ui.graphics.Color.White,
+                    color = Color.White,
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
                     text = contribution.numberOfPublishers.toString(),
                     fontWeight = FontWeight.Bold,
-                    color = androidx.compose.ui.graphics.Color.White,
+                    color = Color.White,
                     maxLines = 1
                 )
             }
             
             HorizontalDivider(
                 modifier = Modifier.padding(vertical = SMALL_SPACING_DP.dp),
-                color = androidx.compose.ui.graphics.Color.White.copy(alpha = 0.3f)
+                color = Color.White.copy(alpha = AppConstants.UI.LOW_ALPHA)
             )
             
             Text(
                 text = periodLabel,
                 style = MaterialTheme.typography.bodySmall,
-                color = androidx.compose.ui.graphics.Color.White
+                color = Color.White
             )
         }
     }

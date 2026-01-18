@@ -2,7 +2,7 @@ package com.asr.financial.platform
 
 /**
  * Platform abstraction for Firebase Cloud Storage.
- * Provides methods to download files from Firebase Storage.
+ * Provides methods to download and upload files from/to Firebase Storage.
  * 
  * Actual implementations:
  * - Android: Uses Firebase Storage Android SDK
@@ -19,4 +19,18 @@ expect class FirebaseStorage(logger: Logger) {
      * @return File content as string, or null if download fails
      */
     suspend fun downloadFileAsString(path: String): String?
+
+    /**
+     * Upload a file to Firebase Cloud Storage.
+     * 
+     * @param localPath Local file path to upload
+     * @param remotePath Remote path in Firebase Storage (e.g., "documents/incoming/2026/01/receipt_20260118_143025.jpg")
+     * @param onProgress Callback for upload progress (0.0 to 1.0)
+     * @return true if upload successful, false otherwise
+     */
+    suspend fun uploadFile(
+        localPath: String,
+        remotePath: String,
+        onProgress: (Float) -> Unit
+    ): Boolean
 }

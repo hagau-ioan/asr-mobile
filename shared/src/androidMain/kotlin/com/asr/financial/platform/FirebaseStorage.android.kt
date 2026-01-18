@@ -126,4 +126,81 @@ actual class FirebaseStorage actual constructor(
             null
         }
     }
+
+    actual suspend fun uploadFile(
+        localPath: String,
+        remotePath: String,
+        onProgress: (Float) -> Unit
+    ): Boolean = withContext(Dispatchers.IO) {
+        try {
+            logger.debug(TAG, "Uploading file to Firebase Storage: $localPath -> $remotePath")
+
+            // Verify user is authenticated
+            val firebaseAuth = com.google.firebase.auth.FirebaseAuth.getInstance()
+            val currentUser = firebaseAuth.currentUser
+            if (currentUser == null) {
+                logger.error(TAG, "User not authenticated. Cannot upload to Firebase Storage: $remotePath")
+                return@withContext false
+            }
+
+            // Get auth token to verify it's available
+            try {
+                val token = currentUser.getIdToken(false).await()
+                logger.debug(TAG, "Auth token available for Firebase Storage upload: $remotePath")
+            } catch (e: Exception) {
+                logger.error(TAG, "Failed to get auth token for Firebase Storage upload: $remotePath", e)
+                return@withContext false
+            }
+
+            val localFile = java.io.File(localPath)
+            if (!localFile.exists()) {
+                logger.error(TAG, "Local file does not exist: $localPath")
+                return@withContext false
+            }
+
+            val storageRef = firebaseStorage.reference.child(remotePath)
+            val fileUri = android.net.Uri.fromFile(localFile)
+            val uploadTask = storageRef.putFile(fileUri)
+
+            // Monitor upload progress
+            uploadTask.addOnProgressListener { taskSnapshot ->
+                val progress = (taskSnapshot.bytesTransferred.toFloat() / taskSnapshot.totalByteCount.toFloat())
+                onProgress(progress)
+            }
+
+            // Wait for upload to complete
+            uploadTask.await()
+            
+            logger.debug(TAG, "Successfully uploaded file: $remotePath (${localFile.length()} bytes)")
+            true
+        } catch (e: StorageException) {
+            val errorCode = e.errorCode
+            val httpResultCode = e.httpResultCode
+            val errorMessage = e.message ?: "Unknown Firebase Storage error"
+
+            logger.error(TAG, "Firebase Storage error uploading $remotePath:")
+            logger.error(TAG, "  Error Code: $errorCode")
+            logger.error(TAG, "  HTTP Result Code: $httpResultCode")
+            logger.error(TAG, "  Error Message: $errorMessage")
+
+            when (errorCode) {
+                StorageException.ERROR_QUOTA_EXCEEDED -> {
+                    logger.error(TAG, "Firebase Storage quota exceeded")
+                }
+                StorageException.ERROR_NOT_AUTHENTICATED -> {
+                    logger.error(TAG, "User not authenticated. Firebase Auth token required.")
+                }
+                StorageException.ERROR_UNKNOWN -> {
+                    logger.error(TAG, "Unknown Firebase Storage error. HTTP Result: $httpResultCode")
+                }
+                else -> {
+                    logger.error(TAG, "Firebase Storage error code: $errorCode, HTTP: $httpResultCode")
+                }
+            }
+            false
+        } catch (e: Exception) {
+            logger.error(TAG, "Unexpected error uploading file to Firebase Storage: $remotePath", e)
+            false
+        }
+    }
 }

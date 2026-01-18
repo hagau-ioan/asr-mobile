@@ -13,9 +13,11 @@ import com.asr.financial.presentation.ui.components.cards.SummaryCard
 import com.asr.financial.presentation.ui.constants.UIConstants.SECTION_SPACING_DP
 import com.asr.financial.presentation.ui.constants.UIConstants.SMALL_SPACING_DP
 import com.asr.financial.presentation.ui.constants.UIConstants.TINY_SPACING_DP
+import com.asr.financial.presentation.ui.constants.AppConstants
 import com.asr.financial.utils.formatCurrency
 import com.asr.financial.utils.formatPercentage
 import asr_financial.composeapp.generated.resources.*
+import kotlin.math.abs
 import org.jetbrains.compose.resources.stringResource
 
 /**
@@ -52,7 +54,7 @@ fun ComparisonCard(
                 label = previousMonthName,
                 value = state.previousTotal.formatCurrency(),
                 backgroundColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.1f),
-                borderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f),
+                borderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = AppConstants.UI.LOW_ALPHA),
                 labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 valueColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -79,7 +81,7 @@ fun ComparisonCard(
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = kotlin.math.abs(state.totalDifference).formatCurrency(),
+                    text = abs(state.totalDifference).formatCurrency(),
                     style = MaterialTheme.typography.bodyMedium,
                     color = trendColor,
                     fontWeight = FontWeight.Bold
@@ -101,7 +103,7 @@ fun ComparisonCard(
                 label = selectedMonthName,
                 value = state.currentTotal.formatCurrency(),
                 backgroundColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
-                borderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
+                borderColor = MaterialTheme.colorScheme.primary.copy(alpha = AppConstants.UI.LOW_ALPHA),
                 labelColor = MaterialTheme.colorScheme.primary,
                 valueColor = MaterialTheme.colorScheme.primary,
                 horizontalAlignment = Alignment.CenterHorizontally,

@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
 import com.asr.financial.presentation.mvi.effect.UploadEffect
 import com.asr.financial.presentation.mvi.event.UploadEvent
+import com.asr.financial.presentation.mvi.interactor.UploadMessages
 import com.asr.financial.presentation.mvi.state.UploadState
 import com.asr.financial.presentation.mvi.viewmodel.UploadViewModel
 import com.asr.financial.presentation.navigation.Routes
@@ -51,7 +52,37 @@ fun UploadScreen(
         LaunchedEffect(launchCameraRequested) {
             if (launchCameraRequested) {
                 launchCamera()
+                // Reset flag so LaunchedEffect can trigger again for next capture
+                launchCameraRequested = false
             }
+        }
+
+        // Pre-compute string resources in composable context
+        val defaultErrorMessage = stringResource(Res.string.upload_error_unknown)
+        val errorUnknown = stringResource(Res.string.upload_error_unknown)
+        val errorCapture = stringResource(Res.string.upload_error_capture)
+        val errorProcessing = stringResource(Res.string.upload_error_processing)
+        val errorDelete = stringResource(Res.string.upload_error_delete)
+        val errorSend = stringResource(Res.string.upload_error_send)
+        val successCaptured = stringResource(Res.string.upload_success_captured)
+        val successDeleted = stringResource(Res.string.upload_success_deleted)
+        val successSent = stringResource(Res.string.upload_success_sent)
+        
+        val errorMessages = remember(errorUnknown, errorCapture, errorProcessing, errorDelete, errorSend) {
+            mapOf(
+                UploadMessages.ERROR_UNKNOWN to errorUnknown,
+                UploadMessages.ERROR_CAPTURE to errorCapture,
+                UploadMessages.ERROR_PROCESSING to errorProcessing,
+                UploadMessages.ERROR_DELETE to errorDelete,
+                UploadMessages.ERROR_SEND to errorSend
+            )
+        }
+        val successMessages = remember(successCaptured, successDeleted, successSent) {
+            mapOf(
+                UploadMessages.SUCCESS_CAPTURED to successCaptured,
+                UploadMessages.SUCCESS_DELETED to successDeleted,
+                UploadMessages.SUCCESS_SENT to successSent
+            )
         }
 
         LaunchedEffect(Unit) {
@@ -61,14 +92,16 @@ fun UploadScreen(
                         launchCameraRequested = true
                     }
                     is UploadEffect.ShowError -> {
+                        val message = errorMessages[effect.message] ?: defaultErrorMessage
                         snackbarHostState.showSnackbar(
-                            message = effect.message,
+                            message = message,
                             duration = SnackbarDuration.Short
                         )
                     }
                     is UploadEffect.ShowSuccess -> {
+                        val message = successMessages[effect.message] ?: effect.message
                         snackbarHostState.showSnackbar(
-                            message = effect.message,
+                            message = message,
                             duration = SnackbarDuration.Short
                         )
                     }
@@ -171,6 +204,26 @@ private fun UploadSuccessContent(
 
                         Spacer(Modifier.height(SECTION_SPACING_DP.dp))
 
+                        // Show upload progress if uploading
+                        if (state.isUploading) {
+                            Column(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                LinearProgressIndicator(
+                                    progress = { state.uploadProgress },
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                                Spacer(Modifier.height(8.dp))
+                                Text(
+                                    text = stringResource(Res.string.upload_uploading),
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                            Spacer(Modifier.height(SECTION_SPACING_DP.dp))
+                        }
+
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -178,6 +231,7 @@ private fun UploadSuccessContent(
                             Button(
                                 onClick = onDeleteClick,
                                 modifier = Modifier.weight(1f),
+                                enabled = !state.isUploading,
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = MaterialTheme.colorScheme.error
                                 )
@@ -189,9 +243,18 @@ private fun UploadSuccessContent(
 
                             Button(
                                 onClick = onSendClick,
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier.weight(1f),
+                                enabled = !state.isUploading
                             ) {
-                                Icon(Icons.AutoMirrored.Filled.Send, contentDescription = null)
+                                if (state.isUploading) {
+                                    CircularProgressIndicator(
+                                        modifier = Modifier.size(20.dp),
+                                        strokeWidth = 2.dp,
+                                        color = MaterialTheme.colorScheme.onPrimary
+                                    )
+                                } else {
+                                    Icon(Icons.AutoMirrored.Filled.Send, contentDescription = null)
+                                }
                                 Spacer(Modifier.width(8.dp))
                                 Text(stringResource(Res.string.upload_send))
                             }
@@ -270,3 +333,4 @@ private fun UploadErrorContent(
         }
     }
 }
+

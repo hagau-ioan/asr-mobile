@@ -10,6 +10,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.asr.financial.presentation.screens.charts.LineChart
@@ -37,7 +38,7 @@ fun YearlyComparisonCard(
 ) {
     val isDarkMode = isSystemInDarkTheme()
     val secondaryLegendColor = if (isDarkMode) 
-        androidx.compose.ui.graphics.Color.White 
+        Color.White 
     else 
         ChartSecondaryGreen
 

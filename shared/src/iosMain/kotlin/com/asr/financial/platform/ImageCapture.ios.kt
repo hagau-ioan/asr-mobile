@@ -54,6 +54,42 @@ actual class ImageCapture {
         }
     }
 
+    actual fun renameReceiptWithTimestamp(timestamp: String): String? {
+        val fileManager = NSFileManager.defaultManager
+        if (!fileManager.fileExistsAtPath(currentReceiptPath)) return null
+        
+        return try {
+            val newFileName = "receipt_$timestamp.jpg"
+            val newFilePath = "${receiptsDir}$newFileName"
+            
+            val error: platform.Foundation.NSErrorVar? = null
+            val success = fileManager.moveItemAtPath(
+                currentReceiptPath,
+                newFilePath,
+                error
+            )
+            
+            if (success) {
+                newFilePath
+            } else {
+                // If move fails, try copy and delete
+                val copySuccess = fileManager.copyItemAtPath(
+                    currentReceiptPath,
+                    newFilePath,
+                    error
+                )
+                if (copySuccess) {
+                    fileManager.removeItemAtPath(currentReceiptPath, error = null)
+                    newFilePath
+                } else {
+                    null
+                }
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
+
     actual fun deleteCurrentReceipt(): Boolean {
         val fileManager = NSFileManager.defaultManager
         return if (fileManager.fileExistsAtPath(currentReceiptPath)) {

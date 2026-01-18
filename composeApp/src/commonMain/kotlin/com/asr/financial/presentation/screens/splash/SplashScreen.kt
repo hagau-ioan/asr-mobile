@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.asr.financial.presentation.ui.components.TwoLevelHouseIcon
+import com.asr.financial.presentation.ui.constants.AppConstants
 import kotlinx.coroutines.delay
 
 @Composable
@@ -31,12 +32,15 @@ fun SplashScreen(onSplashFinished: () -> Unit) {
     
     val textAlpha by animateFloatAsState(
         targetValue = if (startAnimation) 1f else 0f,
-        animationSpec = tween(durationMillis = 1000, delayMillis = 300)
+        animationSpec = tween(
+            durationMillis = AppConstants.Time.SPLASH_ANIMATION_DURATION_MS,
+            delayMillis = AppConstants.Time.SPLASH_ANIMATION_DELAY_MS
+        )
     )
     
     LaunchedEffect(Unit) {
         startAnimation = true
-        delay(2500)
+        delay(AppConstants.Time.SPLASH_SCREEN_MIN_DURATION_MS)
         onSplashFinished()
     }
     
@@ -68,7 +72,7 @@ fun SplashScreen(onSplashFinished: () -> Unit) {
             Spacer(Modifier.height(32.dp))
             
             Text(
-                text = "ASR",
+                text = AppConstants.Branding.APP_NAME,
                 style = MaterialTheme.typography.displayLarge,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onPrimary,
@@ -78,17 +82,17 @@ fun SplashScreen(onSplashFinished: () -> Unit) {
             Spacer(Modifier.height(8.dp))
             
             Text(
-                text = "Gestiune Financiară",
+                text = AppConstants.Branding.APP_SUBTITLE,
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.9f),
+                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = AppConstants.UI.DEFAULT_ALPHA),
                 modifier = Modifier.alpha(textAlpha)
             )
             
             Spacer(Modifier.height(16.dp))
             
             Text(
-                text = "Târgu Mureș",
+                text = AppConstants.Branding.APP_LOCATION,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Normal,
                 color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f),
