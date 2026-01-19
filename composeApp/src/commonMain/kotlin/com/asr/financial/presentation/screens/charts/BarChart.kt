@@ -42,7 +42,7 @@ fun BarChart(
 ) {
     val donationsColor = MaterialTheme.colorScheme.tertiary
     val expensesColor = MaterialTheme.colorScheme.error
-    val balanceColor = MaterialTheme.colorScheme.primary
+    val balanceColor = Color(0xFFFFC107) // Yellow color (Amber 500)
     val textColor = MaterialTheme.colorScheme.onSurface
     val textMeasurer = rememberTextMeasurer()
 

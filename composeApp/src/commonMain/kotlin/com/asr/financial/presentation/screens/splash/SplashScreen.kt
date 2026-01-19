@@ -103,7 +103,7 @@ fun SplashScreen(onSplashFinished: () -> Unit) {
                 text = AppConstants.Branding.APP_LOCATION,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Normal,
-                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f),
+                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = AppConstants.UI.ALPHA_HIGH),
                 textAlign = TextAlign.Center,
                 modifier = Modifier.alpha(textAlpha)
             )

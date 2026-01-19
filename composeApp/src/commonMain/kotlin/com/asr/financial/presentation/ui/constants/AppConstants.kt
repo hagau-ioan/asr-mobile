@@ -33,8 +33,14 @@ object AppConstants {
         const val DRAWER_ICON_SIZE_DP = 56
         const val NAVIGATION_ICON_SIZE_DP = 20
         const val NAVIGATION_SPACING_DP = 12
-        const val DEFAULT_ALPHA = 0.8f
-        const val LOW_ALPHA = 0.3f
+        const val ALPHA_DISABLED = 0.5f
+        const val ALPHA_SUBTLE = 0.3f
+        const val ALPHA_MEDIUM = 0.6f
+        const val ALPHA_HIGH = 0.8f
+        const val ALPHA_HIGH_MEDIUM = 0.7f
+        // Legacy aliases for backward compatibility
+        const val DEFAULT_ALPHA = ALPHA_HIGH
+        const val LOW_ALPHA = ALPHA_SUBTLE
     }
     
     // Navigation constants

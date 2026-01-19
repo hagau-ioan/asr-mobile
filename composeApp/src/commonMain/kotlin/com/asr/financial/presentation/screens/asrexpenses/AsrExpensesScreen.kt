@@ -1,16 +1,42 @@
 package com.asr.financial.presentation.screens.asrexpenses
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import asr_financial.composeapp.generated.resources.*
+import asr_financial.composeapp.generated.resources.Res
+import asr_financial.composeapp.generated.resources.asr_expenses_col_amount
+import asr_financial.composeapp.generated.resources.asr_expenses_col_category
+import asr_financial.composeapp.generated.resources.asr_expenses_col_date
+import asr_financial.composeapp.generated.resources.asr_expenses_col_description
+import asr_financial.composeapp.generated.resources.asr_expenses_note_12_months
+import asr_financial.composeapp.generated.resources.asr_expenses_summary
+import asr_financial.composeapp.generated.resources.asr_expenses_total_amount
+import asr_financial.composeapp.generated.resources.asr_expenses_total_count
+import asr_financial.composeapp.generated.resources.filter_all_months
+import asr_financial.composeapp.generated.resources.home_month
+import asr_financial.composeapp.generated.resources.home_select_period
+import asr_financial.composeapp.generated.resources.home_year
+import asr_financial.composeapp.generated.resources.nav_asr_expenses
+import asr_financial.composeapp.generated.resources.nav_home
 import com.asr.financial.domain.models.AsrExpense
 import com.asr.financial.presentation.mvi.event.AsrExpensesEvent
 import com.asr.financial.presentation.mvi.state.AsrExpensesState
@@ -22,9 +48,10 @@ import com.asr.financial.presentation.screens.asrexpenses.AsrExpensesConstants.C
 import com.asr.financial.presentation.screens.asrexpenses.AsrExpensesConstants.COL_DESCRIPTION_WIDTH_DP
 import com.asr.financial.presentation.screens.asrexpenses.components.AsrExpenseRow
 import com.asr.financial.presentation.ui.components.BreadcrumbItem
+import com.asr.financial.presentation.ui.components.cards.SummaryInfoCard
+import com.asr.financial.presentation.ui.components.period.PeriodSelectorCard
 import com.asr.financial.presentation.ui.components.states.ErrorContent
 import com.asr.financial.presentation.ui.components.states.LoadingContent
-import com.asr.financial.presentation.ui.components.period.PeriodSelectorCard
 import com.asr.financial.presentation.ui.components.table.DataTable
 import com.asr.financial.presentation.ui.components.table.TableColumn
 import com.asr.financial.presentation.ui.components.table.TableHeaderCell
@@ -66,7 +93,6 @@ fun AsrExpensesScreen(
             is AsrExpensesState.Success -> {
                 item {
                     AsrExpensesSuccessContent(
-                        windowSizeClass = windowSizeClass,
                         expenses = state.expenses,
                         totalAmount = state.totalAmount,
                         selectedYear = state.selectedYear,
@@ -83,9 +109,7 @@ fun AsrExpensesScreen(
                         onMonthSelected = { month ->
                             viewModel.handleEvent(AsrExpensesEvent.FilterByPeriod(null, month))
                         },
-                        onNavigate = onNavigate,
-                        onNavigateToDecont = onNavigateToDecont,
-                        onMenuClick = onMenuClick
+                        onNavigateToDecont = onNavigateToDecont
                     )
                 }
             }
@@ -100,7 +124,6 @@ fun AsrExpensesScreen(
 
 @Composable
 private fun AsrExpensesSuccessContent(
-    windowSizeClass: WindowSizeClass,
     expenses: List<AsrExpense>,
     totalAmount: Double,
     selectedYear: Int,
@@ -113,9 +136,7 @@ private fun AsrExpensesSuccessContent(
     onMonthDropdownChange: (Boolean) -> Unit,
     onYearSelected: (Int) -> Unit,
     onMonthSelected: (Int) -> Unit,
-    onNavigate: (String) -> Unit,
-    onNavigateToDecont: (Int, Int) -> Unit,
-    onMenuClick: () -> Unit
+    onNavigateToDecont: (Int, Int) -> Unit
 ) {
     val selectedMonthName = if (selectedMonth == 0) {
         stringResource(Res.string.filter_all_months)
@@ -171,46 +192,14 @@ private fun AsrExpensesSuccessContent(
         )
 
         // Summary Card
-        Card(modifier = Modifier.fillMaxWidth()) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = stringResource(Res.string.asr_expenses_summary),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(Modifier.height(8.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = stringResource(Res.string.asr_expenses_total_count),
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                    Text(
-                        text = expenses.size.toString(),
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                Spacer(Modifier.height(4.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = stringResource(Res.string.asr_expenses_total_amount),
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                    Text(
-                        text = totalAmount.formatCurrency(),
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
-            }
-        }
+        SummaryInfoCard(
+            title = stringResource(Res.string.asr_expenses_summary),
+            totalItemsLabel = stringResource(Res.string.asr_expenses_total_count),
+            totalItemsValue = expenses.size.toString(),
+            totalAmountLabel = stringResource(Res.string.asr_expenses_total_amount),
+            totalAmountValue = totalAmount.formatCurrency(),
+            totalAmountColor = MaterialTheme.colorScheme.error
+        )
 
         // Expenses Table
         val columns = listOf(

@@ -267,5 +267,27 @@
     <string name="decont_products">Termékek:</string>
     <string name="decont_no_data">Nincs adat erre az időszakra</string>
     <string name="decont_back_to_expenses">Vissza az ASR Kiadásokhoz</string>
+
+    <!-- Accessibility Content Descriptions -->
     <string name="cd_back">Vissza</string>
+    <string name="cd_close">Bezárás</string>
+    <string name="cd_zoom_in">Nagyítás</string>
+    <string name="cd_zoom_out">Kicsinyítés</string>
+    <string name="cd_full_screen_image">Teljes képernyős kép</string>
+    <string name="cd_info">Információ</string>
+    <string name="cd_status_ok">Állapot: OK</string>
+    <string name="cd_status_warning">Állapot: Figyelmeztetés</string>
+    <string name="cd_status_error">Állapot: Hiba</string>
+    <string name="cd_trend_up">Növekvő tendencia</string>
+    <string name="cd_trend_down">Csökkenő tendencia</string>
+    <string name="cd_trend_stable">Stabil tendencia</string>
+    
+    <!-- UI Symbols -->
+    <string name="symbol_bullet">•</string>
+    <string name="symbol_trend_up">↑</string>
+    <string name="symbol_trend_down">↓</string>
+    <string name="symbol_trend_stable">=</string>
+    
+    <!-- Error Messages -->
+    <string name="error_export_failed">Hiba az exportálás során. Kérjük, próbálja újra.</string>
 </resources>

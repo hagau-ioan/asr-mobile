@@ -13,9 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -40,16 +37,13 @@ import com.asr.financial.presentation.screens.expenses.components.MonthlySummary
 import com.asr.financial.presentation.screens.expenses.components.YearlySummaryCard
 import com.asr.financial.presentation.ui.components.BreadcrumbItem
 import com.asr.financial.presentation.ui.components.period.PeriodSelectorCard
+import com.asr.financial.presentation.ui.components.period.usePeriodSelectorState
 import com.asr.financial.presentation.ui.components.states.ErrorContent
 import com.asr.financial.presentation.ui.components.states.LoadingContent
 import com.asr.financial.presentation.ui.constants.UIConstants.CARD_PADDING_DP
 import com.asr.financial.presentation.ui.constants.UIConstants.EMPTY_STATE_PADDING_DP
 import com.asr.financial.presentation.ui.responsive.WindowSizeClass
 import com.asr.financial.presentation.ui.scaffold.ScreenLayout
-import com.asr.financial.utils.calculatePreviousMonth
-import com.asr.financial.utils.getCurrentMonth
-import com.asr.financial.utils.getCurrentYear
-import com.asr.financial.utils.getMonthsList
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
@@ -65,26 +59,19 @@ fun ExpensesScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    val (defaultMonth, defaultYear) = remember {
-        val (prevMonth, prevYear) = calculatePreviousMonth(getCurrentMonth(clock), getCurrentYear(clock))
-        prevMonth to prevYear
-    }
+    // Use period selector state hook
+    val periodState = usePeriodSelectorState(
+        clock = clock,
+        onPeriodChange = { year, month ->
+            viewModel.handleEvent(ExpensesEvent.FilterByPeriod(year, month))
+        },
+        initialLoadEvent = null, // ExpensesScreen handles initial load differently
+        skipInitialChange = true // Only trigger on user changes
+    )
 
-    var selectedYear by remember { mutableStateOf(defaultYear) }
-    var selectedMonth by remember { mutableStateOf(defaultMonth) }
-    var showYearDropdown by remember { mutableStateOf(false) }
-    var showMonthDropdown by remember { mutableStateOf(false) }
-
-    val months = remember { getMonthsList() }
-
+    // Initial load with default period
     LaunchedEffect(Unit) {
-        viewModel.handleEvent(ExpensesEvent.FilterByPeriod(defaultYear, defaultMonth))
-    }
-
-    LaunchedEffect(selectedYear, selectedMonth) {
-        if (selectedYear != defaultYear || selectedMonth != defaultMonth) {
-            viewModel.handleEvent(ExpensesEvent.FilterByPeriod(selectedYear, selectedMonth))
-        }
+        viewModel.handleEvent(ExpensesEvent.FilterByPeriod(periodState.selectedYear, periodState.selectedMonth))
     }
 
     when (val state = uiState) {
@@ -92,16 +79,16 @@ fun ExpensesScreen(
             ExpensesSuccessContent(
                 state = state,
                 windowSizeClass = windowSizeClass,
-                selectedYear = selectedYear,
-                selectedMonth = selectedMonth,
-                showYearDropdown = showYearDropdown,
-                showMonthDropdown = showMonthDropdown,
+                selectedYear = periodState.selectedYear,
+                selectedMonth = periodState.selectedMonth,
+                showYearDropdown = periodState.showYearDropdown,
+                showMonthDropdown = periodState.showMonthDropdown,
                 years = state.availableYears,
-                months = months,
-                onYearDropdownChange = { showYearDropdown = it },
-                onMonthDropdownChange = { showMonthDropdown = it },
-                onYearSelected = { selectedYear = it },
-                onMonthSelected = { selectedMonth = it },
+                months = periodState.months,
+                onYearDropdownChange = periodState.onYearDropdownChange,
+                onMonthDropdownChange = periodState.onMonthDropdownChange,
+                onYearSelected = periodState.onYearSelected,
+                onMonthSelected = periodState.onMonthSelected,
                 onNavigate = onNavigate,
                 onMenuClick = onMenuClick
             )

@@ -32,16 +32,13 @@ import com.asr.financial.presentation.screens.utilities.components.ComparisonCar
 import com.asr.financial.presentation.screens.utilities.components.YearlyComparisonCard
 import com.asr.financial.presentation.ui.components.BreadcrumbItem
 import com.asr.financial.presentation.ui.components.period.PeriodSelectorCard
+import com.asr.financial.presentation.ui.components.period.usePeriodSelectorState
 import com.asr.financial.presentation.ui.components.states.ErrorContent
 import com.asr.financial.presentation.ui.components.states.LoadingContent
 import com.asr.financial.presentation.ui.constants.AppConstants
 import com.asr.financial.presentation.ui.constants.UIConstants.EMPTY_STATE_PADDING_DP
 import com.asr.financial.presentation.ui.responsive.WindowSizeClass
 import com.asr.financial.presentation.ui.scaffold.ScreenLayout
-import com.asr.financial.utils.calculatePreviousMonth
-import com.asr.financial.utils.getCurrentMonth
-import com.asr.financial.utils.getCurrentYear
-import com.asr.financial.utils.getMonthsList
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
@@ -57,24 +54,19 @@ fun UtilitiesScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    val (defaultMonth, defaultYear) = remember {
-        val (prevMonth, prevYear) = calculatePreviousMonth(getCurrentMonth(clock), getCurrentYear(clock))
-        prevMonth to prevYear
-    }
+    // Use period selector state hook
+    val periodState = usePeriodSelectorState(
+        clock = clock,
+        onPeriodChange = { year, month ->
+            viewModel.handleEvent(UtilitiesEvent.FilterByPeriod(year, month))
+        },
+        initialLoadEvent = null,
+        skipInitialChange = true
+    )
 
-    var selectedYear by remember { mutableStateOf(defaultYear) }
-    var selectedMonth by remember { mutableStateOf(defaultMonth) }
-    var showYearDropdown by remember { mutableStateOf(false) }
-    var showMonthDropdown by remember { mutableStateOf(false) }
-
-    val months = remember { getMonthsList() }
-
+    // Initial load with default period
     LaunchedEffect(Unit) {
-        viewModel.handleEvent(UtilitiesEvent.FilterByPeriod(defaultYear, defaultMonth))
-    }
-
-    LaunchedEffect(selectedYear, selectedMonth) {
-        viewModel.handleEvent(UtilitiesEvent.FilterByPeriod(selectedYear, selectedMonth))
+        viewModel.handleEvent(UtilitiesEvent.FilterByPeriod(periodState.selectedYear, periodState.selectedMonth))
     }
 
     when (val state = uiState) {
@@ -82,16 +74,16 @@ fun UtilitiesScreen(
             UtilitiesSuccessContent(
                 state = state,
                 windowSizeClass = windowSizeClass,
-                selectedYear = selectedYear,
-                selectedMonth = selectedMonth,
-                showYearDropdown = showYearDropdown,
-                showMonthDropdown = showMonthDropdown,
+                selectedYear = periodState.selectedYear,
+                selectedMonth = periodState.selectedMonth,
+                showYearDropdown = periodState.showYearDropdown,
+                showMonthDropdown = periodState.showMonthDropdown,
                 years = state.availableYears,
-                months = months,
-                onYearDropdownChange = { showYearDropdown = it },
-                onMonthDropdownChange = { showMonthDropdown = it },
-                onYearSelected = { selectedYear = it },
-                onMonthSelected = { selectedMonth = it },
+                months = periodState.months,
+                onYearDropdownChange = periodState.onYearDropdownChange,
+                onMonthDropdownChange = periodState.onMonthDropdownChange,
+                onYearSelected = periodState.onYearSelected,
+                onMonthSelected = periodState.onMonthSelected,
                 onNavigate = onNavigate,
                 onMenuClick = onMenuClick,
                 viewModel = viewModel
@@ -200,6 +192,7 @@ private fun UtilitiesSuccessContent(
                 YearlyComparisonCard(
                     yearlyData = state.comparisonYearlyData,
                     comparisonYear = state.comparisonYear,
+                    // Fallback to default start year if no years available (should not happen in normal operation)
                     minYear = (state.availableYears.firstOrNull() ?: AppConstants.Business.DEFAULT_START_YEAR) + 1,
                     maxYear = state.selectedYear,
                     onYearChange = { year ->

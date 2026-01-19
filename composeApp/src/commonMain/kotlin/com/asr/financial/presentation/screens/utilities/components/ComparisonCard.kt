@@ -68,7 +68,10 @@ fun ComparisonCard(
             ) {
                 val isDecrease = state.totalDifference < 0
                 val trendColor = if (isDecrease) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.error
-                val trendIcon = if (isDecrease) "↓" else "↑"
+                val trendIcon = if (isDecrease) 
+                    stringResource(Res.string.symbol_trend_down) 
+                else 
+                    stringResource(Res.string.symbol_trend_up)
                 val trendText = if (isDecrease) 
                     stringResource(Res.string.utilities_decreased) 
                 else 

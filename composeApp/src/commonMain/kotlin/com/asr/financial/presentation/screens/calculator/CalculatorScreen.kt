@@ -8,6 +8,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.asr.financial.platform.Clock
 import com.asr.financial.presentation.mvi.event.CalculatorEvent
+import com.asr.financial.presentation.mvi.interactor.CalculatorMessages
 import com.asr.financial.presentation.mvi.state.CalculatorState
 import com.asr.financial.presentation.mvi.viewmodel.CalculatorViewModel
 import com.asr.financial.presentation.navigation.Routes
@@ -184,8 +185,8 @@ private fun getErrorMessage(errorKey: String): String {
     return when (errorKey) {
         "config_error_load_failed" -> stringResource(Res.string.config_error_load_failed)
         "data_error_load_failed" -> stringResource(Res.string.data_error_load_failed)
-        "calculator_error_no_publishers" -> stringResource(Res.string.calculator_error_no_publishers)
-        "calculator_error_unknown" -> stringResource(Res.string.calculator_error_unknown)
+        CalculatorMessages.ERROR_NO_PUBLISHERS -> stringResource(Res.string.calculator_error_no_publishers)
+        CalculatorMessages.ERROR_UNKNOWN -> stringResource(Res.string.calculator_error_unknown)
         else -> stringResource(Res.string.calculator_error_unknown)
     }
 }

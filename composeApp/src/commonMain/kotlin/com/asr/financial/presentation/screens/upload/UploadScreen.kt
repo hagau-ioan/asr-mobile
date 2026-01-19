@@ -14,7 +14,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Remove
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -195,21 +194,7 @@ private fun UploadSuccessContent(
         onMenuClick = onMenuClick
     ) {
         item {
-            val isDarkTheme = isSystemInDarkTheme()
-            // Parent card: use secondaryContainer with low alpha for light mode (grey tint)
-            // This is different from the tips section which uses primaryContainer
-            val parentCardColor = if (isDarkTheme) {
-                CardDefaults.cardColors()
-            } else {
-                CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.7f)
-                )
-            }
-
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = parentCardColor
-            ) {
+            Card(modifier = Modifier.fillMaxWidth()) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -321,17 +306,11 @@ private fun UploadSuccessContent(
 
                         Spacer(Modifier.height(SECTION_SPACING_DP.dp))
 
-                        // Photo guidelines section - darker background for light mode
-                        val notesCardColor = if (isDarkTheme) {
-                            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
-                        } else {
-                            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
-                        }
-
+                        // Photo guidelines section
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             colors = CardDefaults.cardColors(
-                                containerColor = notesCardColor
+                                containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
                             )
                         ) {
                             Column(
@@ -353,7 +332,7 @@ private fun UploadSuccessContent(
                                     verticalAlignment = Alignment.Top
                                 ) {
                                     Text(
-                                        text = "•",
+                                        text = stringResource(Res.string.symbol_bullet),
                                         style = MaterialTheme.typography.bodyMedium,
                                         color = MaterialTheme.colorScheme.onPrimaryContainer
                                     )
@@ -371,7 +350,7 @@ private fun UploadSuccessContent(
                                     verticalAlignment = Alignment.Top
                                 ) {
                                     Text(
-                                        text = "•",
+                                        text = stringResource(Res.string.symbol_bullet),
                                         style = MaterialTheme.typography.bodyMedium,
                                         color = MaterialTheme.colorScheme.onPrimaryContainer
                                     )
@@ -389,7 +368,7 @@ private fun UploadSuccessContent(
                                     verticalAlignment = Alignment.Top
                                 ) {
                                     Text(
-                                        text = "•",
+                                        text = stringResource(Res.string.symbol_bullet),
                                         style = MaterialTheme.typography.bodyMedium,
                                         color = MaterialTheme.colorScheme.onPrimaryContainer
                                     )
@@ -508,7 +487,7 @@ private fun FullScreenImageViewer(
             // Zoomable full-screen image (behind buttons)
             Image(
                 painter = rememberAsyncImagePainter(imagePath),
-                contentDescription = "Full screen receipt image",
+                contentDescription = stringResource(Res.string.cd_full_screen_image),
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(16.dp)
@@ -571,7 +550,7 @@ private fun FullScreenImageViewer(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = "Close",
+                        contentDescription = stringResource(Res.string.cd_close),
                         tint = MaterialTheme.colorScheme.onSurface
                     )
                 }
@@ -594,7 +573,7 @@ private fun FullScreenImageViewer(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,
-                        contentDescription = "Zoom in",
+                        contentDescription = stringResource(Res.string.cd_zoom_in),
                         modifier = Modifier.size(24.dp)
                     )
                 }
@@ -615,7 +594,7 @@ private fun FullScreenImageViewer(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Remove,
-                        contentDescription = "Zoom out",
+                        contentDescription = stringResource(Res.string.cd_zoom_out),
                         modifier = Modifier.size(24.dp)
                     )
                 }
@@ -623,3 +602,4 @@ private fun FullScreenImageViewer(
         }
     }
 }
+

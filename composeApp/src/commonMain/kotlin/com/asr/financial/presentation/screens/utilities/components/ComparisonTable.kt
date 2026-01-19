@@ -132,7 +132,12 @@ private fun TrendCell(
 ) {
     val isDecrease = difference < 0
     val trendColor = if (isDecrease) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.error
-    val trendIcon = if (isDecrease) "↓" else if (difference > 0) "↑" else "="
+    val trendIcon = if (isDecrease) 
+        stringResource(Res.string.symbol_trend_down) 
+    else if (difference > 0) 
+        stringResource(Res.string.symbol_trend_up) 
+    else 
+        stringResource(Res.string.symbol_trend_stable)
     
     Box(
         modifier = Modifier.width(width),

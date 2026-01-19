@@ -172,20 +172,21 @@ private fun YearlyChartCard(
     clock: Clock = koinInject()
 ) {
     val currentYear = remember { getCurrentYear(clock) }
-    val allYears = remember(yearlyStats, currentYear) {
+    
+    // Combine all calculations into a single remember block for better performance
+    val (allYears, allStats, initialStartIndex) = remember(yearlyStats, currentYear) {
         val dataYears = yearlyStats.map { it.year }
         val minYear = dataYears.minOrNull() ?: currentYear
         val maxYear = dataYears.maxOrNull() ?: currentYear
-        (minYear..maxYear).toList()
-    }
-    
-    val allStats = remember(allYears, yearlyStats) {
-        allYears.map { year ->
+        val years = (minYear..maxYear).toList()
+        val stats = years.map { year ->
             yearlyStats.find { it.year == year } ?: YearlyStat(year, AppConstants.Defaults.ZERO_DOUBLE, AppConstants.Defaults.ZERO_DOUBLE, AppConstants.Defaults.ZERO_DOUBLE)
         }
+        val startIdx = (years.size - 3).coerceAtLeast(0)
+        Triple(years, stats, startIdx)
     }
     
-    var startIndex by remember { mutableStateOf((allYears.size - 3).coerceAtLeast(0)) }
+    var startIndex by remember { mutableStateOf(initialStartIndex) }
     
     val displayStats = remember(allStats, startIndex) {
         allStats.drop(startIndex).take(3)

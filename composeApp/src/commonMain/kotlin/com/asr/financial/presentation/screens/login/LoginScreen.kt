@@ -21,8 +21,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.asr.financial.presentation.ui.components.TwoLevelHouseIcon
+import com.asr.financial.presentation.ui.constants.AppConstants
 import com.asr.financial.presentation.mvi.effect.LoginEffect
 import com.asr.financial.presentation.mvi.event.LoginEvent
+import com.asr.financial.presentation.mvi.interactor.LoginMessages
 import com.asr.financial.presentation.mvi.state.LoginState
 import com.asr.financial.presentation.mvi.viewmodel.LoginViewModel
 import com.asr.financial.presentation.navigation.Routes
@@ -40,6 +42,7 @@ fun LoginScreen(
     viewModel: LoginViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val readyState = uiState as? LoginState.Ready
     var passwordVisible by remember { mutableStateOf(false) }
     
     // Handle effects
@@ -95,7 +98,7 @@ fun LoginScreen(
                 text = stringResource(Res.string.app_subtitle),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Medium,
-                color = DarkColorScheme.onBackground.copy(alpha = 0.7f) // Always use light text for dark background
+                color = DarkColorScheme.onBackground.copy(alpha = AppConstants.UI.ALPHA_HIGH_MEDIUM) // Always use light text for dark background
             )
         }
         
@@ -122,23 +125,23 @@ fun LoginScreen(
                 
                 // Email field
                 OutlinedTextField(
-                    value = (uiState as? LoginState.Ready)?.email ?: "",
+                    value = readyState?.email ?: "",
                     onValueChange = { viewModel.handleEvent(LoginEvent.EmailChanged(it)) },
                     label = { Text(stringResource(Res.string.login_email)) },
                     modifier = Modifier.fillMaxWidth(),
-                    enabled = !((uiState as? LoginState.Ready)?.isLoading ?: false),
+                    enabled = !(readyState?.isLoading ?: false),
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                    isError = (uiState as? LoginState.Ready)?.errorMessage != null
+                    isError = readyState?.errorMessage != null
                 )
                 
                 // Password field
                 OutlinedTextField(
-                    value = (uiState as? LoginState.Ready)?.password ?: "",
+                    value = readyState?.password ?: "",
                     onValueChange = { viewModel.handleEvent(LoginEvent.PasswordChanged(it)) },
                     label = { Text(stringResource(Res.string.login_password)) },
                     modifier = Modifier.fillMaxWidth(),
-                    enabled = !((uiState as? LoginState.Ready)?.isLoading ?: false),
+                    enabled = !(readyState?.isLoading ?: false),
                     singleLine = true,
                     visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -161,11 +164,11 @@ fun LoginScreen(
                             )
                         }
                     },
-                    isError = (uiState as? LoginState.Ready)?.errorMessage != null
+                    isError = readyState?.errorMessage != null
                 )
                 
                 // Error message
-                (uiState as? LoginState.Ready)?.errorMessage?.let { errorKey ->
+                readyState?.errorMessage?.let { errorKey ->
                     Text(
                         text = getErrorMessage(errorKey),
                         color = MaterialTheme.colorScheme.error,
@@ -180,9 +183,9 @@ fun LoginScreen(
                     modifier = Modifier
                         .width(LoginConstants.BUTTON_WIDTH_DP.dp)
                         .height(LoginConstants.BUTTON_HEIGHT_DP.dp),
-                    enabled = !((uiState as? LoginState.Ready)?.isLoading ?: false)
+                    enabled = !(readyState?.isLoading ?: false)
                 ) {
-                    if ((uiState as? LoginState.Ready)?.isLoading == true) {
+                    if (readyState?.isLoading == true) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(20.dp),
                             color = MaterialTheme.colorScheme.onPrimary
@@ -202,17 +205,17 @@ fun LoginScreen(
 @Composable
 private fun getErrorMessage(errorKey: String): String {
     return when (errorKey) {
-        "login_error_empty_email" -> stringResource(Res.string.login_error_empty_email)
-        "login_error_empty_password" -> stringResource(Res.string.login_error_empty_password)
-        "login_error_invalid_email" -> stringResource(Res.string.login_error_invalid_email)
-        "login_error_wrong_password" -> stringResource(Res.string.login_error_wrong_password)
-        "login_error_invalid_credential" -> stringResource(Res.string.login_error_invalid_credential)
-        "login_error_user_not_found" -> stringResource(Res.string.login_error_user_not_found)
-        "login_error_user_disabled" -> stringResource(Res.string.login_error_user_disabled)
-        "login_error_too_many_requests" -> stringResource(Res.string.login_error_too_many_requests)
-        "login_error_operation_not_allowed" -> stringResource(Res.string.login_error_operation_not_allowed)
-        "login_error_network" -> stringResource(Res.string.login_error_network)
-        "login_error_unknown" -> stringResource(Res.string.login_error_unknown)
+        LoginMessages.ERROR_EMPTY_EMAIL -> stringResource(Res.string.login_error_empty_email)
+        LoginMessages.ERROR_EMPTY_PASSWORD -> stringResource(Res.string.login_error_empty_password)
+        LoginMessages.ERROR_INVALID_EMAIL -> stringResource(Res.string.login_error_invalid_email)
+        LoginMessages.ERROR_WRONG_PASSWORD -> stringResource(Res.string.login_error_wrong_password)
+        LoginMessages.ERROR_INVALID_CREDENTIAL -> stringResource(Res.string.login_error_invalid_credential)
+        LoginMessages.ERROR_USER_NOT_FOUND -> stringResource(Res.string.login_error_user_not_found)
+        LoginMessages.ERROR_USER_DISABLED -> stringResource(Res.string.login_error_user_disabled)
+        LoginMessages.ERROR_TOO_MANY_REQUESTS -> stringResource(Res.string.login_error_too_many_requests)
+        LoginMessages.ERROR_OPERATION_NOT_ALLOWED -> stringResource(Res.string.login_error_operation_not_allowed)
+        LoginMessages.ERROR_NETWORK -> stringResource(Res.string.login_error_network)
+        LoginMessages.ERROR_UNKNOWN -> stringResource(Res.string.login_error_unknown)
         else -> stringResource(Res.string.login_error_unknown)
     }
 }

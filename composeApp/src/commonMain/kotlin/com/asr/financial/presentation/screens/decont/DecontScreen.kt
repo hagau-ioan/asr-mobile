@@ -1,11 +1,25 @@
 package com.asr.financial.presentation.screens.decont
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -14,7 +28,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import asr_financial.composeapp.generated.resources.*
+import asr_financial.composeapp.generated.resources.Res
+import asr_financial.composeapp.generated.resources.cd_back
+import asr_financial.composeapp.generated.resources.decont_back_to_expenses
+import asr_financial.composeapp.generated.resources.decont_col_amount
+import asr_financial.composeapp.generated.resources.decont_col_company
+import asr_financial.composeapp.generated.resources.decont_col_date
+import asr_financial.composeapp.generated.resources.decont_col_receipt
+import asr_financial.composeapp.generated.resources.decont_description
+import asr_financial.composeapp.generated.resources.decont_summary
+import asr_financial.composeapp.generated.resources.decont_title_with_period
+import asr_financial.composeapp.generated.resources.decont_total_amount
+import asr_financial.composeapp.generated.resources.decont_total_items
+import asr_financial.composeapp.generated.resources.nav_asr_expenses
+import asr_financial.composeapp.generated.resources.nav_home
+import asr_financial.composeapp.generated.resources.symbol_bullet
 import com.asr.financial.domain.models.Decont
 import com.asr.financial.domain.models.DecontExpense
 import com.asr.financial.presentation.mvi.event.DecontEvent
@@ -27,13 +55,14 @@ import com.asr.financial.presentation.screens.decont.DecontConstants.COL_DATE_WI
 import com.asr.financial.presentation.screens.decont.DecontConstants.COL_RECEIPT_WIDTH_DP
 import com.asr.financial.presentation.theme.SuccessGreen
 import com.asr.financial.presentation.ui.components.BreadcrumbItem
+import com.asr.financial.presentation.ui.components.cards.SummaryInfoCard
 import com.asr.financial.presentation.ui.components.states.ErrorContent
 import com.asr.financial.presentation.ui.components.states.LoadingContent
 import com.asr.financial.presentation.ui.components.table.DataTable
 import com.asr.financial.presentation.ui.components.table.TableCell
 import com.asr.financial.presentation.ui.components.table.TableColumn
 import com.asr.financial.presentation.ui.components.table.TableHeaderCell
-import com.asr.financial.presentation.ui.components.table.TableRow
+import com.asr.financial.presentation.ui.constants.AppConstants
 import com.asr.financial.presentation.ui.responsive.WindowSizeClass
 import com.asr.financial.presentation.ui.scaffold.ScreenLayout
 import com.asr.financial.utils.formatCurrency
@@ -152,46 +181,14 @@ private fun DecontSuccessContent(
         }
 
         // Summary Card
-        Card(modifier = Modifier.fillMaxWidth()) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text(
-                    text = stringResource(Res.string.decont_summary),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(Modifier.height(8.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = stringResource(Res.string.decont_total_items),
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                    Text(
-                        text = decont.expenses.size.toString(),
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                Spacer(Modifier.height(4.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = stringResource(Res.string.decont_total_amount),
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                    Text(
-                        text = totalAmount.formatCurrency(),
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
-            }
-        }
+        SummaryInfoCard(
+            title = stringResource(Res.string.decont_summary),
+            totalItemsLabel = stringResource(Res.string.decont_total_items),
+            totalItemsValue = decont.expenses.size.toString(),
+            totalAmountLabel = stringResource(Res.string.decont_total_amount),
+            totalAmountValue = totalAmount.formatCurrency(),
+            totalAmountColor = MaterialTheme.colorScheme.error
+        )
 
         // Expenses Table
         val columns = listOf(
@@ -223,7 +220,7 @@ private fun DecontSuccessContent(
 @Composable
 private fun DecontExpenseRow(expense: DecontExpense) {
     val isDarkMode = isSystemInDarkTheme()
-    val borderColor = if (isDarkMode) Color.White.copy(alpha = 0.5f) else Color.LightGray.copy(alpha = 0.5f)
+    val borderColor = if (isDarkMode) Color.White.copy(alpha = AppConstants.UI.ALPHA_DISABLED) else Color.LightGray.copy(alpha = AppConstants.UI.ALPHA_DISABLED)
 
     // Draw border at bottom of entire row (including products)
     Column(
@@ -278,7 +275,7 @@ private fun DecontExpenseRow(expense: DecontExpense) {
                         horizontalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         Text(
-                            text = "•",
+                            text = stringResource(Res.string.symbol_bullet),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )

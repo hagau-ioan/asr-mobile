@@ -3,6 +3,7 @@ package com.asr.financial.presentation.mvi.interactor
 import com.asr.financial.domain.usecase.LoginUseCase
 import com.asr.financial.presentation.mvi.effect.LoginEffect
 import com.asr.financial.presentation.mvi.event.LoginEvent
+import com.asr.financial.presentation.mvi.interactor.LoginMessages
 import com.asr.financial.presentation.mvi.state.LoginState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -53,18 +54,18 @@ class LoginInteractor(
         
         // Validate input
         if (currentState.email.isBlank()) {
-            _uiState.emit(currentState.copy(errorMessage = "login_error_empty_email"))
+            _uiState.emit(currentState.copy(errorMessage = LoginMessages.ERROR_EMPTY_EMAIL))
             return
         }
         
         if (currentState.password.isBlank()) {
-            _uiState.emit(currentState.copy(errorMessage = "login_error_empty_password"))
+            _uiState.emit(currentState.copy(errorMessage = LoginMessages.ERROR_EMPTY_PASSWORD))
             return
         }
         
         // Validate email format (basic check)
         if (!isValidEmail(currentState.email)) {
-            _uiState.emit(currentState.copy(errorMessage = "login_error_invalid_email"))
+            _uiState.emit(currentState.copy(errorMessage = LoginMessages.ERROR_INVALID_EMAIL))
             return
         }
         
@@ -82,7 +83,8 @@ class LoginInteractor(
                 },
                 onFailure = { exception ->
                     // Login failed - show error
-                    val errorMessage = exception.message ?: "login_error_unknown"
+                    val errorMessage = exception.message?.takeIf { it.startsWith("login_error_") } 
+                        ?: LoginMessages.ERROR_UNKNOWN
                     _uiState.emit(currentState.copy(isLoading = false, errorMessage = errorMessage))
                     // Toast effect removed - errors are shown in UI via errorMessage
                 }
@@ -91,7 +93,8 @@ class LoginInteractor(
             _uiState.emit(
                 currentState.copy(
                     isLoading = false,
-                    errorMessage = e.message ?: "login_error_unknown"
+                    errorMessage = e.message?.takeIf { it.startsWith("login_error_") } 
+                        ?: LoginMessages.ERROR_UNKNOWN
                 )
             )
             // Toast effect removed - errors are shown in UI via errorMessage

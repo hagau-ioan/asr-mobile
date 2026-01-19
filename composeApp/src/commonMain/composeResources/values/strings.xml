@@ -268,5 +268,27 @@
     <string name="decont_products">Produse:</string>
     <string name="decont_no_data">Nu există date pentru această perioadă</string>
     <string name="decont_back_to_expenses">Înapoi la Cheltuieli ASR</string>
+
+    <!-- Accessibility Content Descriptions -->
     <string name="cd_back">Înapoi</string>
+    <string name="cd_close">Închide</string>
+    <string name="cd_zoom_in">Mărește</string>
+    <string name="cd_zoom_out">Micșorează</string>
+    <string name="cd_full_screen_image">Imagine pe tot ecranul</string>
+    <string name="cd_info">Informații</string>
+    <string name="cd_status_ok">Status: OK</string>
+    <string name="cd_status_warning">Status: Avertisment</string>
+    <string name="cd_status_error">Status: Eroare</string>
+    <string name="cd_trend_up">Tendință crescătoare</string>
+    <string name="cd_trend_down">Tendință descrescătoare</string>
+    <string name="cd_trend_stable">Tendință stabilă</string>
+    
+    <!-- UI Symbols -->
+    <string name="symbol_bullet">•</string>
+    <string name="symbol_trend_up">↑</string>
+    <string name="symbol_trend_down">↓</string>
+    <string name="symbol_trend_stable">=</string>
+    
+    <!-- Error Messages -->
+    <string name="error_export_failed">Eroare la export. Te rugăm să încerci din nou.</string>
 </resources>

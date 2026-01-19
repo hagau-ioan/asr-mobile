@@ -7,6 +7,7 @@ import com.asr.financial.domain.usecase.GetTotalPublishersUseCase
 import com.asr.financial.domain.usecase.GetTransactionsByMonthUseCase
 import com.asr.financial.presentation.mvi.effect.CalculatorEffect
 import com.asr.financial.presentation.mvi.event.CalculatorEvent
+import com.asr.financial.presentation.mvi.interactor.CalculatorMessages
 import com.asr.financial.presentation.mvi.state.CalculatorState
 import com.asr.financial.presentation.screens.calculator.CongregationContribution
 import com.asr.financial.presentation.screens.calculator.ContributionCalculation
@@ -56,7 +57,7 @@ class CalculatorInteractor(
                 .sumOf { it.amount }
 
             if (totalPublishers == 0) {
-                _uiState.emit(CalculatorState.Error("calculator_error_no_publishers"))
+                _uiState.emit(CalculatorState.Error(CalculatorMessages.ERROR_NO_PUBLISHERS))
                 return
             }
 
@@ -94,8 +95,11 @@ class CalculatorInteractor(
             )
         } catch (e: Exception) {
             // Use exception message as error key (if it's a known error key) or default to unknown error
-            val errorKey = e.message?.takeIf { it.startsWith("config_error_") || it.startsWith("data_error_") || it.startsWith("calculator_error_") }
-                ?: "calculator_error_unknown"
+            val errorKey = e.message?.takeIf { 
+                it.startsWith("config_error_") || 
+                it.startsWith("data_error_") || 
+                it.startsWith("calculator_error_") 
+            } ?: CalculatorMessages.ERROR_UNKNOWN
             _uiState.emit(CalculatorState.Error(errorKey))
             _effect.send(CalculatorEffect.ShowError(errorKey))
         }

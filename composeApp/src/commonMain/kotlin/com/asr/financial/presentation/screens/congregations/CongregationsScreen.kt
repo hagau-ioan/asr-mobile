@@ -1,20 +1,43 @@
 package com.asr.financial.presentation.screens.congregations
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.asr.financial.presentation.mvi.event.CongregationsEvent
+import asr_financial.composeapp.generated.resources.Res
+import asr_financial.composeapp.generated.resources.cd_export
+import asr_financial.composeapp.generated.resources.congregations_all_complete
+import asr_financial.composeapp.generated.resources.congregations_difference
+import asr_financial.composeapp.generated.resources.congregations_donated_amount
+import asr_financial.composeapp.generated.resources.congregations_missing_count
+import asr_financial.composeapp.generated.resources.congregations_missing_count_plural
+import asr_financial.composeapp.generated.resources.congregations_name
+import asr_financial.composeapp.generated.resources.congregations_title
+import asr_financial.composeapp.generated.resources.congregations_total_donated
+import asr_financial.composeapp.generated.resources.congregations_total_expected
+import asr_financial.composeapp.generated.resources.nav_congregations
+import asr_financial.composeapp.generated.resources.nav_home
+import com.asr.financial.platform.Clock
+import com.asr.financial.platform.FileSharer
 import com.asr.financial.presentation.mvi.state.CongregationsState
 import com.asr.financial.presentation.mvi.viewmodel.CongregationsViewModel
 import com.asr.financial.presentation.navigation.Routes
@@ -31,18 +54,13 @@ import com.asr.financial.presentation.ui.components.table.DataTable
 import com.asr.financial.presentation.ui.components.table.TableHeaderCell
 import com.asr.financial.presentation.ui.responsive.WindowSizeClass
 import com.asr.financial.presentation.ui.scaffold.ScreenLayout
-import com.asr.financial.utils.formatCurrency
-import com.asr.financial.utils.getMonthsList
 import com.asr.financial.utils.calculatePreviousMonth
+import com.asr.financial.utils.formatCurrency
 import com.asr.financial.utils.getCurrentMonth
 import com.asr.financial.utils.getCurrentYear
-import com.asr.financial.platform.Clock
-import com.asr.financial.platform.FileSharer
-import asr_financial.composeapp.generated.resources.*
-import org.jetbrains.compose.resources.stringResource
-import com.asr.financial.utils.CongregationReportData
-import com.asr.financial.utils.generateCongregationsHtml
+import com.asr.financial.utils.getMonthsList
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -61,7 +79,7 @@ fun CongregationsScreen(
     val months = getMonthsList()
     
     // Header always shows previous month
-    val (headerMonthNum, headerYear) = remember<Pair<Int, Int>> {
+    val (headerMonthNum, headerYear) = remember {
         calculatePreviousMonth(getCurrentMonth(clock), getCurrentYear(clock))
     }
     val headerMonth = months.find { it.first == headerMonthNum }?.second?.let { stringResource(it) } ?: ""
@@ -128,9 +146,6 @@ fun CongregationsScreen(
                         totalExpected = state.totalExpected,
                         totalDifference = state.totalDifference,
                         missingCount = state.missingCount,
-                        onPeriodChange = { year, month ->
-                            viewModel.handleEvent(CongregationsEvent.FilterByPeriod(year, month))
-                        },
                         onExportClick = onExport
                     )
                 }
@@ -177,7 +192,6 @@ private fun CongregationsContent(
     totalExpected: Double,
     totalDifference: Double,
     missingCount: Int,
-    onPeriodChange: (Int, Int) -> Unit = { _, _ -> },
     onExportClick: () -> Unit = {}
 ) {
     Column(modifier = Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
@@ -204,16 +218,15 @@ private fun CongregationsContent(
         }
         
         // Status message
+        val statusMessage = if (missingCount > 0) {
+            if (missingCount == 1) stringResource(Res.string.congregations_missing_count, missingCount)
+            else stringResource(Res.string.congregations_missing_count_plural, missingCount)
+        } else {
+            stringResource(Res.string.congregations_all_complete)
+        }
+
         Text(
-            text = if (missingCount > 0) {
-                stringResource(
-                    if (missingCount == 1) Res.string.congregations_missing_count 
-                    else Res.string.congregations_missing_count_plural,
-                    missingCount
-                    )
-                } else {
-                    stringResource(Res.string.congregations_all_complete)
-                },
+            text = statusMessage,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
                 color = if (missingCount > 0) MaterialTheme.colorScheme.error 
