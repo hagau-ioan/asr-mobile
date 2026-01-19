@@ -19,7 +19,7 @@ import kotlin.coroutines.resume
  * Note: Firebase Storage requires authentication. The SDK automatically uses
  * the current Firebase Auth user's token for authenticated requests.
  */
-actual class FirebaseStorage(
+actual class FirebaseStorage actual constructor(
     private val logger: Logger
 ) {
     
@@ -73,31 +73,48 @@ actual class FirebaseStorage(
  */
 object FirebaseStorageBridge {
     
-    // Download file callback
-    private var downloadFileCallback: ((String?, String?) -> Unit)? = null
+    // Track callbacks by path to handle concurrent requests
+    // Since we're on Main thread, we can use simple mutable map
+    private val pendingCallbacks = mutableMapOf<String, MutableList<(String?, String?) -> Unit>>()
+    private var currentDownloadPath: String? = null
     
     /**
      * Called from Kotlin to download a file from Firebase Storage.
      * The Swift bridge should observe this and call Firebase Storage.
+     * Queues callbacks for concurrent requests to the same path.
      */
     fun downloadFile(
         path: String,
         completion: (String?, String?) -> Unit
     ) {
-        downloadFileCallback = completion
-        // Post notification to Swift layer
-        platform.Foundation.NSNotificationCenter.defaultCenter.postNotificationName(
-            "FirebaseStorageDownloadFile",
-            `object` = mapOf("path" to path)
-        )
+        // Add callback to queue for this path
+        val callbacks = pendingCallbacks.getOrPut(path) { mutableListOf() }
+        callbacks.add(completion)
+        
+        // Only trigger download if this is the first request for this path
+        if (callbacks.size == 1) {
+            currentDownloadPath = path
+            // Post notification to Swift layer
+            platform.Foundation.NSNotificationCenter.defaultCenter.postNotificationName(
+                "FirebaseStorageDownloadFile",
+                `object` = mapOf("path" to path)
+            )
+        }
     }
     
     /**
      * Called from Swift bridge when file download completes.
+     * Invokes all pending callbacks for the specified path.
      */
-    fun reportDownloadResult(content: String?, error: String?) {
-        downloadFileCallback?.invoke(content, error)
-        downloadFileCallback = null
+    fun reportDownloadResult(path: String, content: String?, error: String?) {
+        val callbacks = pendingCallbacks.remove(path)
+        callbacks?.forEach { callback ->
+            callback(content, error)
+        }
+        // Clear current path if it matches
+        if (currentDownloadPath == path) {
+            currentDownloadPath = null
+        }
     }
 
     // Upload file callback

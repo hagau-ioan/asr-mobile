@@ -6,6 +6,7 @@ import com.asr.financial.presentation.mvi.effect.AsrExpensesEffect
 import com.asr.financial.presentation.mvi.event.AsrExpensesEvent
 import com.asr.financial.presentation.mvi.state.AsrExpensesState
 import com.asr.financial.utils.parseDateComponentsSafe
+import kotlin.concurrent.Volatile
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

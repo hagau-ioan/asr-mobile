@@ -53,14 +53,14 @@ actual class FirebaseAuth {
     
     actual suspend fun getCurrentUser(): User? = withContext(Dispatchers.Main) {
         val result = com.asr.financial.platform.FirebaseAuthBridge.getCurrentUser()
-        if (result == null || result.size < 3) {
+        if (result == null || result.count.toInt() < 3) {
             return@withContext null
         }
-        
-        val uid = result[0] as? String
-        val email = result[1] as? String
-        val displayName = result[2] as? String
-        
+
+        val uid = result.objectAtIndex(0u) as? String
+        val email = result.objectAtIndex(1u) as? String
+        val displayName = result.objectAtIndex(2u) as? String
+
         if (uid != null) {
             User(
                 uid = uid,
@@ -153,24 +153,24 @@ object FirebaseAuthBridge {
      * Called from Kotlin to get current user.
      * Returns array [uid, email, displayName] or null.
      */
-    fun getCurrentUser(): platform.Foundation.NSArray<platform.Foundation.NSString>? {
+    fun getCurrentUser(): platform.Foundation.NSArray? {
         // This will be populated by Swift bridge
         // For now, return null - Swift bridge should set this via setCurrentUser
         return currentUserData
     }
-    
-    private var currentUserData: platform.Foundation.NSArray<platform.Foundation.NSString>? = null
-    
+
+    private var currentUserData: platform.Foundation.NSArray? = null
+
     /**
      * Called from Swift bridge to set current user data.
      */
     fun setCurrentUser(uid: String?, email: String?, displayName: String?) {
         if (uid != null) {
-            currentUserData = platform.Foundation.NSArray.arrayWithObjects(
-                uid as platform.Foundation.NSString,
-                (email ?: "") as platform.Foundation.NSString,
-                (displayName ?: "") as platform.Foundation.NSString
-            )
+            val array = platform.Foundation.NSMutableArray()
+            array.addObject(uid)
+            array.addObject(email ?: "")
+            array.addObject(displayName ?: "")
+            currentUserData = array
         } else {
             currentUserData = null
         }

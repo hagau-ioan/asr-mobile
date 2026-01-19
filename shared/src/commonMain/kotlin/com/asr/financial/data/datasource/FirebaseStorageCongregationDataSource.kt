@@ -30,11 +30,11 @@ class FirebaseStorageCongregationDataSource(
             // Try to decode as wrapped JSON first (Firebase Storage format)
             val wrapped = json.decodeFromString<JsonResponseWrapper<List<CongregationInfo>>>(jsonString)
             wrapped.data
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             // Fallback to direct array (for backward compatibility with local files)
             try {
                 json.decodeFromString<List<CongregationInfo>>(jsonString)
-            } catch (e2: Exception) {
+            } catch (_: Exception) {
                 emptyList()
             }
         }

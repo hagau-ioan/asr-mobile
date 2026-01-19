@@ -63,6 +63,11 @@ fun HomeScreen(
 
     val months = remember { getMonthsList() }
 
+    // Load data when screen is first displayed
+    LaunchedEffect(Unit) {
+        viewModel.handleEvent(HomeEvent.LoadData)
+    }
+
     // Notify interactor when period changes
     LaunchedEffect(selectedYear, selectedMonth) {
         viewModel.handleEvent(HomeEvent.FilterByMonth(selectedMonth, selectedYear))

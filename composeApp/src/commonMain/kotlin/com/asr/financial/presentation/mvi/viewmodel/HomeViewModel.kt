@@ -23,8 +23,6 @@ class HomeViewModel(
         }
     }
 
-    init {
-        // Load data on init
-        handleEvent(HomeEvent.LoadData)
-    }
+    // Note: Data loading is triggered by LaunchedEffect in HomeScreen
+    // to avoid duplicate requests when ViewModel is created
 }

@@ -3,15 +3,25 @@ import ComposeApp
 import UIKit
 import FirebaseCore
 
+// App Delegate adapter for Firebase compatibility
+class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        // Firebase is already configured in iOSApp.init()
+        return true
+    }
+}
+
 @main
 struct iOSApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     init() {
         // Initialize Firebase
         FirebaseApp.configure()
         
         // Initialize Firebase Auth Bridge for Kotlin/Native interop
         // This sets up the notification observers for communication between Swift and Kotlin
-        _ = FirebaseAuthBridge.shared
+        _ = SwiftFirebaseAuthBridge.shared
         
         // Initialize Firebase Storage Bridge for Kotlin/Native interop
         // This sets up the notification observers for communication between Swift and Kotlin

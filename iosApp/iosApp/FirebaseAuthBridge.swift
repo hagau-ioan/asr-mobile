@@ -2,19 +2,22 @@ import Foundation
 import FirebaseAuth
 import ComposeApp
 
-/// Bridge class to expose Firebase Auth functionality to Kotlin/Native
+// Kotlin bridge reference
+private let kotlinBridge = ComposeApp.FirebaseAuthBridge.shared
+
+/// Swift bridge class to expose Firebase Auth functionality to Kotlin/Native
 /// Uses notification-based communication pattern similar to CameraBridge
-@objc public class FirebaseAuthBridge: NSObject {
-    
-    public static let shared = FirebaseAuthBridge()
-    
+@objc public class SwiftFirebaseAuthBridge: NSObject {
+
+    public static let shared = SwiftFirebaseAuthBridge()
+
     private let auth = Auth.auth()
-    
+
     override init() {
         super.init()
         setupNotificationObservers()
     }
-    
+
     private func setupNotificationObservers() {
         // Observe sign in requests from Kotlin
         NotificationCenter.default.addObserver(
@@ -23,7 +26,7 @@ import ComposeApp
             name: NSNotification.Name("FirebaseAuthSignIn"),
             object: nil
         )
-        
+
         // Observe sign out requests from Kotlin
         NotificationCenter.default.addObserver(
             self,
@@ -31,7 +34,7 @@ import ComposeApp
             name: NSNotification.Name("FirebaseAuthSignOut"),
             object: nil
         )
-        
+
         // Observe get token requests from Kotlin
         NotificationCenter.default.addObserver(
             self,
@@ -39,7 +42,7 @@ import ComposeApp
             name: NSNotification.Name("FirebaseAuthGetToken"),
             object: nil
         )
-        
+
         // Observe verify session requests from Kotlin
         NotificationCenter.default.addObserver(
             self,
@@ -47,24 +50,24 @@ import ComposeApp
             name: NSNotification.Name("FirebaseAuthVerifySession"),
             object: nil
         )
-        
+
         // Update current user data when auth state changes
         auth.addStateDidChangeListener { [weak self] _, user in
-            self?.updateCurrentUserData(user: user)
+            self?.updateCurrentUserData(uid: user?.uid, email: user?.email, displayName: user?.displayName)
         }
     }
-    
+
     @objc private func handleSignInRequest(_ notification: Notification) {
         guard let userInfo = notification.object as? [String: Any],
               let email = userInfo["email"] as? String,
               let password = userInfo["password"] as? String else {
             return
         }
-        
+
         auth.signIn(withEmail: email, password: password) { [weak self] result, error in
             if let error = error {
                 let errorMessage = self?.getAuthErrorMessage(error) ?? "Authentication failed"
-                ComposeApp.FirebaseAuthBridgeKt.reportSignInResult(
+                kotlinBridge.reportSignInResult(
                     success: false,
                     uid: nil,
                     email: nil,
@@ -73,9 +76,9 @@ import ComposeApp
                 )
                 return
             }
-            
+
             guard let user = result?.user else {
-                ComposeApp.FirebaseAuthBridgeKt.reportSignInResult(
+                kotlinBridge.reportSignInResult(
                     success: false,
                     uid: nil,
                     email: nil,
@@ -84,8 +87,8 @@ import ComposeApp
                 )
                 return
             }
-            
-            ComposeApp.FirebaseAuthBridgeKt.reportSignInResult(
+
+            kotlinBridge.reportSignInResult(
                 success: true,
                 uid: user.uid,
                 email: user.email,
@@ -94,70 +97,62 @@ import ComposeApp
             )
         }
     }
-    
+
     @objc private func handleSignOutRequest(_ notification: Notification) {
         do {
             try auth.signOut()
-            updateCurrentUserData(user: nil)
+            updateCurrentUserData(uid: nil, email: nil, displayName: nil)
         } catch {
-            print("FirebaseAuthBridge: Sign out error: \(error.localizedDescription)")
+            print("SwiftFirebaseAuthBridge: Sign out error: \(error.localizedDescription)")
         }
     }
-    
+
     @objc private func handleGetTokenRequest(_ notification: Notification) {
         guard let user = auth.currentUser else {
-            ComposeApp.FirebaseAuthBridgeKt.reportTokenResult(token: nil, error: "No user signed in")
+            kotlinBridge.reportTokenResult(token: nil, error: "No user signed in")
             return
         }
-        
+
         let forceRefresh = (notification.object as? [String: Any])?["forceRefresh"] as? Bool ?? false
-        
-        user.getIDToken(forcingRefresh: forceRefresh) { token, error in
+
+        user.getIDTokenResult(forcingRefresh: forceRefresh) { result, error in
             if let error = error {
-                ComposeApp.FirebaseAuthBridgeKt.reportTokenResult(token: nil, error: error.localizedDescription)
+                kotlinBridge.reportTokenResult(token: nil, error: error.localizedDescription)
                 return
             }
-            ComposeApp.FirebaseAuthBridgeKt.reportTokenResult(token: token, error: nil)
+            kotlinBridge.reportTokenResult(token: result?.token, error: nil)
         }
     }
-    
+
     @objc private func handleVerifySessionRequest(_ notification: Notification) {
         guard let user = auth.currentUser else {
-            ComposeApp.FirebaseAuthBridgeKt.reportVerifySessionResult(isValid: false)
+            kotlinBridge.reportVerifySessionResult(isValid: false)
             return
         }
-        
+
         // Force a token refresh to verify the session is still valid with the server
         // This will fail if the user has been deleted from Firebase Auth
-        user.getIDToken(forcingRefresh: true) { token, error in
-            if token != nil && error == nil {
-                ComposeApp.FirebaseAuthBridgeKt.reportVerifySessionResult(isValid: true)
+        user.getIDTokenResult(forcingRefresh: true) { result, error in
+            if result?.token != nil && error == nil {
+                kotlinBridge.reportVerifySessionResult(isValid: true)
             } else {
                 // If token refresh fails, the user may have been deleted
                 // Sign out to clear local state
                 do {
                     try self.auth.signOut()
-                    self.updateCurrentUserData(user: nil)
+                    self.updateCurrentUserData(uid: nil, email: nil, displayName: nil)
                 } catch {
                     // Ignore sign out errors
                 }
-                ComposeApp.FirebaseAuthBridgeKt.reportVerifySessionResult(isValid: false)
+                kotlinBridge.reportVerifySessionResult(isValid: false)
             }
         }
     }
-    
-    private func updateCurrentUserData(user: User?) {
-        if let user = user {
-            ComposeApp.FirebaseAuthBridgeKt.setCurrentUser(
-                uid: user.uid,
-                email: user.email,
-                displayName: user.displayName
-            )
-        } else {
-            ComposeApp.FirebaseAuthBridgeKt.setCurrentUser(uid: nil, email: nil, displayName: nil)
-        }
+
+    private func updateCurrentUserData(uid: String?, email: String?, displayName: String?) {
+        kotlinBridge.setCurrentUser(uid: uid, email: email, displayName: displayName)
     }
-    
+
     /// Convert Firebase Auth error to user-friendly message
     private func getAuthErrorMessage(_ error: Error) -> String {
         if let authError = error as? AuthErrorCode {
