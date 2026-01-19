@@ -30,12 +30,16 @@ val domainModule = module {
             transactionRepository = get(),
             appConfigRepository = get(),
             congregationRepository = get(),
-            asrExpenseRepository = get()
+            asrExpenseRepository = get(),
+            decontRepository = get()
         )
     }
     
     // ASR Expenses use cases
     factory { GetAsrExpensesUseCase(get()) }
+
+    // Decont use cases
+    factory { GetDecontUseCase(get()) }
     
     // Auth use cases
     factory { LoginUseCase(get()) }

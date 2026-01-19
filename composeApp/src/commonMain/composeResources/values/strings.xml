@@ -30,8 +30,14 @@
     <string name="upload_error_processing">Eroare la procesarea imaginii</string>
     <string name="upload_error_delete">Eroare la ștergere</string>
     <string name="upload_error_send">Eroare la trimitere</string>
+    <string name="upload_error_upload_cancelled">Încărcarea a fost anulată. Imaginea trebuie să fie încărcată din nou.</string>
     <string name="upload_uploading">Se încarcă...</string>
+    <string name="upload_reset">Resetează</string>
     <string name="upload_path_prefix">Cale: </string>
+    <string name="upload_guidelines_title">Sfaturi pentru fotografii de calitate</string>
+    <string name="upload_guideline_light">Asigură-te că ai o iluminare bună</string>
+    <string name="upload_guideline_surface">Folosește o suprafață albă sau de o singură culoare pe care să plasezi documentul</string>
+    <string name="upload_guideline_preview">Înainte de trimitere, apasă pe previzualizarea imaginii și asigură-te că detaliile sunt clare</string>
     
     <!-- Common Errors -->
     <string name="error_unknown">Eroare necunoscută</string>
@@ -54,7 +60,7 @@
     <string name="header_publishers">%1$d vestitori</string>
     <string name="header_congregations">%1$d congregații</string>
     <string name="header_period">Perioada</string>
-    <string name="header_month">Luna</string>
+    <string name="header_month">Luna curentă</string>
     <string name="select_year">Selectează anul</string>
     <string name="select_month">Selectează luna</string>
     
@@ -247,4 +253,20 @@
     <!-- Logout -->
     <string name="nav_logout">Deconectare</string>
     <string name="user_email_label">Email utilizator</string>
+
+    <!-- Decont Screen -->
+    <string name="decont_title">Detalii Decont</string>
+    <string name="decont_title_with_period">Decont %1$s %2$d</string>
+    <string name="decont_description">Detaliile cheltuielilor incluse în decont</string>
+    <string name="decont_summary">Rezumat Decont</string>
+    <string name="decont_total_items">Total poziții:</string>
+    <string name="decont_total_amount">Sumă totală:</string>
+    <string name="decont_col_date">Data</string>
+    <string name="decont_col_company">Companie</string>
+    <string name="decont_col_receipt">Nr. Chitanță / Bon</string>
+    <string name="decont_col_amount">Sumă</string>
+    <string name="decont_products">Produse:</string>
+    <string name="decont_no_data">Nu există date pentru această perioadă</string>
+    <string name="decont_back_to_expenses">Înapoi la Cheltuieli ASR</string>
+    <string name="cd_back">Înapoi</string>
 </resources>

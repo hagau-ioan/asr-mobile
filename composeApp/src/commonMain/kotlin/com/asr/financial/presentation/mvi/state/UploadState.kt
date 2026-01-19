@@ -13,7 +13,8 @@ sealed interface UploadState {
         val currentReceiptPath: String? = null,
         val isCapturing: Boolean = false,
         val isUploading: Boolean = false,
-        val uploadProgress: Float = 0f
+        val uploadProgress: Float = 0f,
+        val canResetDuringUpload: Boolean = false // Enabled after upload timeout
     ) : UploadState
     data class Error(val message: String) : UploadState
 }

@@ -7,10 +7,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.toRoute
 import com.asr.financial.domain.usecase.GetCurrentUserUseCase
 import com.asr.financial.presentation.navigation.Routes
 import com.asr.financial.presentation.screens.asrexpenses.AsrExpensesScreen
 import com.asr.financial.presentation.screens.calculator.CalculatorScreen
+import com.asr.financial.presentation.screens.decont.DecontScreen
 import com.asr.financial.presentation.screens.congregations.CongregationsScreen
 import com.asr.financial.presentation.screens.expenses.ExpensesScreen
 import com.asr.financial.presentation.screens.home.HomeScreen
@@ -145,10 +147,25 @@ fun NavGraph(
                 AsrExpensesScreen(
                     windowSizeClass = windowSizeClass,
                     onNavigate = { route -> navController.navigate(route) },
+                    onNavigateToDecont = { year, month ->
+                        navController.navigate(DecontRoute(year, month))
+                    },
                     onMenuClick = onMenuClick
                 )
             }
-            
+
+            composable<DecontRoute> { backStackEntry ->
+                val decontRoute: DecontRoute = backStackEntry.toRoute()
+                DecontScreen(
+                    windowSizeClass = windowSizeClass,
+                    year = decontRoute.year,
+                    month = decontRoute.month,
+                    onNavigate = { route -> navController.navigate(route) },
+                    onBackClick = { navController.popBackStack() },
+                    onMenuClick = onMenuClick
+                )
+            }
+
             composable(Routes.UPLOAD) {
                 UploadScreen(
                     windowSizeClass = windowSizeClass,

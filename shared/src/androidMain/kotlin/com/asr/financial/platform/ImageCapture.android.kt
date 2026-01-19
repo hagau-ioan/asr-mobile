@@ -33,10 +33,23 @@ actual class ImageCapture(private val context: Context) {
 
         return try {
             // Read EXIF orientation before decoding bitmap
-            val orientation = getExifOrientation(currentReceiptFile)
+            var orientation = getExifOrientation(currentReceiptFile)
             
             val bitmap = BitmapFactory.decodeFile(currentReceiptFile.absolutePath)
             if (bitmap != null) {
+                // If EXIF orientation is NORMAL but image is landscape (width > height),
+                // it likely means the camera saved it rotated. Check if we need to rotate.
+                // Most Android cameras save portrait photos as landscape with EXIF rotation,
+                // but some don't set EXIF properly, so we check dimensions as fallback.
+                // Since the app is locked to portrait mode, if we get a landscape image
+                // with no EXIF rotation, it's likely a portrait photo saved incorrectly.
+                if (orientation == ExifInterface.ORIENTATION_NORMAL && bitmap.width > bitmap.height) {
+                    // Image is landscape but should be portrait - rotate 90 degrees clockwise
+                    // This handles the case where camera saves portrait photos as landscape
+                    // without proper EXIF orientation data
+                    orientation = ExifInterface.ORIENTATION_ROTATE_90
+                }
+                
                 // Apply rotation based on EXIF orientation
                 val rotatedBitmap = applyOrientation(bitmap, orientation)
                 compressAndSave(rotatedBitmap, currentReceiptFile)

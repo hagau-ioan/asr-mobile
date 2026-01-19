@@ -5,6 +5,7 @@ import com.asr.financial.platform.ResourceLoader
 import com.asr.financial.presentation.mvi.interactor.AsrExpensesInteractor
 import com.asr.financial.presentation.mvi.interactor.CalculatorInteractor
 import com.asr.financial.presentation.mvi.interactor.CongregationsInteractor
+import com.asr.financial.presentation.mvi.interactor.DecontInteractor
 import com.asr.financial.presentation.mvi.interactor.ExpensesInteractor
 import com.asr.financial.presentation.mvi.interactor.HomeInteractor
 import com.asr.financial.presentation.mvi.interactor.LoginInteractor
@@ -14,6 +15,7 @@ import com.asr.financial.presentation.mvi.interactor.YearlyInteractor
 import com.asr.financial.presentation.mvi.viewmodel.AsrExpensesViewModel
 import com.asr.financial.presentation.mvi.viewmodel.CalculatorViewModel
 import com.asr.financial.presentation.mvi.viewmodel.CongregationsViewModel
+import com.asr.financial.presentation.mvi.viewmodel.DecontViewModel
 import com.asr.financial.presentation.mvi.viewmodel.ExpensesViewModel
 import com.asr.financial.presentation.mvi.viewmodel.HomeViewModel
 import com.asr.financial.presentation.mvi.viewmodel.LoginViewModel
@@ -43,6 +45,7 @@ val presentationModule = module {
     factory { YearlyInteractor(get()) }
     factory { CalculatorInteractor(get(), get(), get(), get()) }
     factory { AsrExpensesInteractor(get()) }
+    factory { DecontInteractor(get()) }
     factory { UploadInteractor(get(), get(), get()) }
     factory { LoginInteractor(get()) }
 
@@ -56,6 +59,7 @@ val presentationModule = module {
     viewModel { YearlyViewModel(get()) }
     viewModel { CalculatorViewModel(get()) }
     viewModel { AsrExpensesViewModel(get()) }
+    viewModel { DecontViewModel(get()) }
     viewModel { UploadViewModel(get()) }
     viewModel { LoginViewModel(get()) }
 }

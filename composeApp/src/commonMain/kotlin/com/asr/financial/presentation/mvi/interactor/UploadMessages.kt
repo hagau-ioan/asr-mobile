@@ -13,4 +13,5 @@ internal object UploadMessages {
     const val ERROR_PROCESSING = "upload_error_processing"
     const val ERROR_DELETE = "upload_error_delete"
     const val ERROR_SEND = "upload_error_send"
+    const val ERROR_UPLOAD_CANCELLED = "upload_error_upload_cancelled"
 }

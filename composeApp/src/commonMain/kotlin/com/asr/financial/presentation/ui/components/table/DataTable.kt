@@ -86,6 +86,7 @@ fun RowScope.TableHeaderCell(
  */
 @Composable
 fun TableRow(
+    modifier: Modifier = Modifier,
     backgroundColor: Color = Color.Transparent,
     content: @Composable RowScope.() -> Unit
 ) {
@@ -93,7 +94,7 @@ fun TableRow(
     val borderColor = if (isDarkMode) Color.White.copy(alpha = 0.5f) else Color.LightGray.copy(alpha = 0.5f)
 
     Row(
-        modifier = Modifier
+        modifier = modifier
             .background(backgroundColor)
             .drawBehind {
                 val strokeWidth = 0.5.dp.toPx()

@@ -15,6 +15,7 @@ object AppConstants {
         const val BAR_CHART_ANIMATION_DURATION_MS = 1200
         const val DONUT_CHART_ANIMATION_DURATION_MS = 1000
         const val STATE_FLOW_TIMEOUT_MS = 5000L
+        const val UPLOAD_TIMEOUT_MS = 10_000L // 10 seconds - timeout before allowing reset during upload
     }
     
     // Business logic constants
@@ -49,6 +50,7 @@ object AppConstants {
         const val FAILED_TO_LOAD_TRANSACTIONS = "Failed to load transactions"
         const val FAILED_TO_LOAD_EXPENSES = "Failed to load expenses"
         const val FAILED_TO_LOAD_UTILITIES = "Failed to load utilities"
+        const val DATA_NOT_FOUND = "Data not found"
     }
     
     // Default values

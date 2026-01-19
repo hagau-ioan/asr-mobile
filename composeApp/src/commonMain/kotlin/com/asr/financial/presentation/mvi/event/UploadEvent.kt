@@ -10,4 +10,5 @@ sealed interface UploadEvent {
     data class CaptureCompleted(val success: Boolean) : UploadEvent
     data object DeleteImage : UploadEvent
     data object SendImage : UploadEvent
+    data object Reset : UploadEvent
 }

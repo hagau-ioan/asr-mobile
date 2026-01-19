@@ -11,17 +11,22 @@ import com.asr.financial.data.datasource.FirebaseStorageTransactionDataSource
 import com.asr.financial.data.datasource.JsonAppConfigDataSource
 import com.asr.financial.data.datasource.JsonAsrExpenseDataSource
 import com.asr.financial.data.datasource.JsonCongregationDataSource
+import com.asr.financial.data.datasource.JsonDecontDataSource
 import com.asr.financial.data.datasource.JsonTransactionDataSource
+import com.asr.financial.data.datasource.DecontDataSource
+import com.asr.financial.data.datasource.FirebaseStorageDecontDataSource
 import com.asr.financial.data.datasource.TransactionDataSource
 import com.asr.financial.data.repository.AppConfigRepositoryImpl
 import com.asr.financial.data.repository.AsrExpenseRepositoryImpl
 import com.asr.financial.data.repository.AuthRepositoryImpl
 import com.asr.financial.data.repository.CongregationInfoRepositoryImpl
+import com.asr.financial.data.repository.DecontRepositoryImpl
 import com.asr.financial.data.repository.TransactionRepositoryImpl
 import com.asr.financial.domain.repository.AppConfigRepository
 import com.asr.financial.domain.repository.AsrExpenseRepository
 import com.asr.financial.domain.repository.AuthRepository
 import com.asr.financial.domain.repository.CongregationInfoRepository
+import com.asr.financial.domain.repository.DecontRepository
 import com.asr.financial.domain.repository.TransactionRepository
 import com.asr.financial.platform.ResourceLoader
 import org.koin.dsl.module
@@ -43,12 +48,14 @@ val dataModule = module {
         single<CongregationDataSource> { FirebaseStorageCongregationDataSource(get()) }
         single<AppConfigDataSource> { FirebaseStorageAppConfigDataSource(get(), get()) }
         single<AsrExpenseDataSource> { FirebaseStorageAsrExpenseDataSource(get()) }
+        single<DecontDataSource> { FirebaseStorageDecontDataSource(get()) }
     } else {
         // Testing: Local JSON files
         single<TransactionDataSource> { JsonTransactionDataSource(get()) }
         single<CongregationDataSource> { JsonCongregationDataSource(get()) }
         single<AppConfigDataSource> { JsonAppConfigDataSource(get(), get()) }
         single<AsrExpenseDataSource> { JsonAsrExpenseDataSource(get()) }
+        single<DecontDataSource> { JsonDecontDataSource(get()) }
     }
     
     // Repository implementations (unchanged - they use interfaces)
@@ -56,5 +63,6 @@ val dataModule = module {
     single<CongregationInfoRepository> { CongregationInfoRepositoryImpl(get()) }
     single<AppConfigRepository> { AppConfigRepositoryImpl(get()) }
     single<AsrExpenseRepository> { AsrExpenseRepositoryImpl(get()) }
+    single<DecontRepository> { DecontRepositoryImpl(get()) }
     single<AuthRepository> { AuthRepositoryImpl(get()) }
 }

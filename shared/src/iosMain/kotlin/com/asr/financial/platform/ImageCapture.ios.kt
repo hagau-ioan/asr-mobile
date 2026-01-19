@@ -114,8 +114,12 @@ actual class ImageCapture {
     }
 
     private fun compressImage(image: UIImage): UIImage {
+        // First, normalize orientation by drawing the image to a new context
+        // This ensures the image is in .up orientation regardless of how it was captured
+        val normalizedImage = normalizeImageOrientation(image)
+        
         val maxDimension = 1920.0
-        val size = image.size
+        val size = normalizedImage.size
 
         val scale = minOf(
             maxDimension / size.useContents { width },
@@ -123,7 +127,7 @@ actual class ImageCapture {
             1.0
         )
 
-        if (scale >= 1.0) return image
+        if (scale >= 1.0) return normalizedImage
 
         val newSize = CGSizeMake(
             size.useContents { width } * scale,
@@ -131,10 +135,32 @@ actual class ImageCapture {
         )
 
         UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
-        image.drawInRect(CGRectMake(0.0, 0.0, newSize.useContents { width }, newSize.useContents { height }))
+        normalizedImage.drawInRect(CGRectMake(0.0, 0.0, newSize.useContents { width }, newSize.useContents { height }))
         val scaledImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
-        return scaledImage ?: image
+        return scaledImage ?: normalizedImage
+    }
+    
+    /**
+     * Normalize image orientation by drawing it to a new context.
+     * This ensures the image is in .up orientation regardless of how it was captured.
+     * When you draw a UIImage to a graphics context, the orientation is automatically applied.
+     * We always normalize to ensure consistent behavior across all devices.
+     */
+    private fun normalizeImageOrientation(image: UIImage): UIImage {
+        // Always normalize by drawing to a new context
+        // This ensures the orientation is baked into the pixel data
+        val size = image.size
+        UIGraphicsBeginImageContextWithOptions(size, false, image.scale)
+        
+        // Draw the image - this will automatically apply the orientation transformation
+        image.drawInRect(CGRectMake(0.0, 0.0, size.useContents { width }, size.useContents { height }))
+        
+        // Get the normalized image (now with .up orientation baked into pixel data)
+        val normalizedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return normalizedImage ?: image
     }
 }

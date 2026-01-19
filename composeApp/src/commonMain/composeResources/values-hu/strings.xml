@@ -30,8 +30,14 @@
     <string name="upload_error_processing">Hiba a kép feldolgozása során</string>
     <string name="upload_error_delete">Hiba a törlés során</string>
     <string name="upload_error_send">Hiba a küldés során</string>
+    <string name="upload_error_upload_cancelled">A feltöltés megszakadt. A képet újra fel kell tölteni.</string>
     <string name="upload_uploading">Feltöltés...</string>
+    <string name="upload_reset">Visszaállítás</string>
     <string name="upload_path_prefix">Útvonal: </string>
+    <string name="upload_guidelines_title">Tippek minőségi fényképekhez</string>
+    <string name="upload_guideline_light">Győződjön meg arról, hogy jó világítás van</string>
+    <string name="upload_guideline_surface">Használjon fehér vagy egyszínű felületet, amelyre a dokumentumot helyezi</string>
+    <string name="upload_guideline_preview">Küldés előtt kattintson a készített kép előnézetére, és győződjön meg arról, hogy a részletek világosak</string>
     
     <!-- Common Errors -->
     <string name="error_unknown">Ismeretlen hiba</string>
@@ -54,7 +60,7 @@
     <string name="header_publishers">%1$d hirdetők</string>
     <string name="header_congregations">%1$d gyülekezetek</string>
     <string name="header_period">Időszak</string>
-    <string name="header_month">Honap</string>
+    <string name="header_month">Aktuális hónap</string>
     <string name="select_year">Valassza ki az evet</string>
     <string name="select_month">Valassza ki a honapot</string>
     
@@ -246,4 +252,20 @@
     <!-- Logout -->
     <string name="nav_logout">Kijelentkezés</string>
     <string name="user_email_label">Felhasználó email</string>
+
+    <!-- Decont Screen -->
+    <string name="decont_title">Decont Részletei</string>
+    <string name="decont_title_with_period">Decont %1$s %2$d</string>
+    <string name="decont_description">A decont kiadásainak részletei</string>
+    <string name="decont_summary">Decont Összefoglaló</string>
+    <string name="decont_total_items">Összes tétel:</string>
+    <string name="decont_total_amount">Összesen:</string>
+    <string name="decont_col_date">Dátum</string>
+    <string name="decont_col_company">Cég</string>
+    <string name="decont_col_receipt">Nyugta / Bon száma</string>
+    <string name="decont_col_amount">Összeg</string>
+    <string name="decont_products">Termékek:</string>
+    <string name="decont_no_data">Nincs adat erre az időszakra</string>
+    <string name="decont_back_to_expenses">Vissza az ASR Kiadásokhoz</string>
+    <string name="cd_back">Vissza</string>
 </resources>

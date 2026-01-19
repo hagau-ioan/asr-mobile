@@ -6,6 +6,7 @@ import com.asr.financial.platform.ImageCapture
 import com.asr.financial.presentation.mvi.effect.UploadEffect
 import com.asr.financial.presentation.mvi.event.UploadEvent
 import com.asr.financial.presentation.mvi.state.UploadState
+import com.asr.financial.presentation.ui.constants.AppConstants
 import com.asr.financial.utils.formatTimestampForFileName
 import com.asr.financial.utils.getCurrentMonth
 import com.asr.financial.utils.getCurrentYear
@@ -13,6 +14,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -36,6 +38,13 @@ class UploadInteractor(
     
     // Coroutine scope for launching progress updates from non-suspend callbacks
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+    
+    // Session-based counter to prevent duplicate filenames when images are taken quickly
+    // Resets when entering the screen (in loadData)
+    private var sessionCounter = 0
+    
+    // Reference to the current upload job for cancellation
+    private var currentUploadJob: kotlinx.coroutines.Job? = null
 
     suspend fun processEvent(event: UploadEvent) {
         when (event) {
@@ -44,11 +53,14 @@ class UploadInteractor(
             is UploadEvent.CaptureCompleted -> handleCaptureResult(event.success)
             is UploadEvent.DeleteImage -> deleteImage()
             is UploadEvent.SendImage -> sendImage()
+            is UploadEvent.Reset -> reset()
         }
     }
 
     private suspend fun loadData() {
         try {
+            // Reset session counter when entering the screen
+            sessionCounter = 0
             val currentReceiptPath = imageCapture.getCurrentReceiptPath()
             _uiState.emit(UploadState.Success(currentReceiptPath = currentReceiptPath))
         } catch (_: Exception) {
@@ -75,9 +87,14 @@ class UploadInteractor(
             val processedPath = imageCapture.processCapture(success)
 
             if (processedPath != null) {
-                // Rename file with timestamp
+                // Increment session counter for this capture
+                sessionCounter++
+                
+                // Rename file with timestamp and session counter to prevent duplicates
+                // All images get a counter starting from 001 for consistency
                 val timestamp = formatTimestampForFileName(clock)
-                val renamedPath = imageCapture.renameReceiptWithTimestamp(timestamp)
+                val timestampWithCounter = "${timestamp}_${sessionCounter.toString().padStart(3, '0')}"
+                val renamedPath = imageCapture.renameReceiptWithTimestamp(timestampWithCounter)
                 
                 if (renamedPath != null) {
                     // Success: Update state with renamed image path and reset capturing flag
@@ -141,56 +158,152 @@ class UploadInteractor(
             // Update state to show uploading
             _uiState.emit(currentState.copy(
                 isUploading = true,
-                uploadProgress = 0f
+                uploadProgress = 0f,
+                canResetDuringUpload = false
             ))
 
-            // Upload file with progress tracking
-            val uploadSuccess = firebaseStorage.uploadFile(
-                localPath = localPath,
-                remotePath = remotePath,
-                onProgress = { progress ->
-                    // Launch coroutine to emit state update since onProgress is not a suspend function
-                    scope.launch {
-                        _uiState.emit(currentState.copy(
-                            isUploading = true,
-                            uploadProgress = progress
-                        ))
-                    }
+            // Start timeout coroutine to enable reset button after timeout
+            val timeoutJob = scope.launch {
+                delay(AppConstants.Time.UPLOAD_TIMEOUT_MS)
+                // Enable reset button after timeout if upload is still in progress
+                val state = _uiState.value as? UploadState.Success
+                if (state?.isUploading == true) {
+                    _uiState.emit(state.copy(canResetDuringUpload = true))
                 }
-            )
-
-            if (uploadSuccess) {
-                // Upload successful: Delete local file and show success
-                imageCapture.deleteCurrentReceipt()
-                _uiState.emit(UploadState.Success(
-                    currentReceiptPath = null,
-                    isUploading = false,
-                    uploadProgress = 0f
-                ))
-                _uiEffectChannel.send(UploadEffect.ShowSuccess(UploadMessages.SUCCESS_SENT))
-            } else {
-                // Upload failed: Delete local file anyway and show error
-                imageCapture.deleteCurrentReceipt()
-                _uiState.emit(UploadState.Success(
-                    currentReceiptPath = null,
-                    isUploading = false,
-                    uploadProgress = 0f
-                ))
-                _uiEffectChannel.send(UploadEffect.ShowError(UploadMessages.ERROR_SEND))
             }
+
+            // Create upload job that can be cancelled
+            val uploadJob = scope.launch {
+                try {
+                    // Upload file with progress tracking
+                    val uploadSuccess = firebaseStorage.uploadFile(
+                        localPath = localPath,
+                        remotePath = remotePath,
+                        onProgress = { progress ->
+                            // Launch coroutine to emit state update since onProgress is not a suspend function
+                            scope.launch {
+                                val state = _uiState.value as? UploadState.Success
+                                _uiState.emit(state?.copy(
+                                    isUploading = true,
+                                    uploadProgress = progress
+                                ) ?: currentState.copy(
+                                    isUploading = true,
+                                    uploadProgress = progress
+                                ))
+                            }
+                        }
+                    )
+                    
+                    // Cancel timeout job since upload completed
+                    timeoutJob.cancel()
+                    
+                    // Handle upload result
+                    if (uploadSuccess) {
+                        // Upload successful: Delete local file and show success
+                        imageCapture.deleteCurrentReceipt()
+                        _uiState.emit(UploadState.Success(
+                            currentReceiptPath = null,
+                            isCapturing = false,
+                            isUploading = false,
+                            uploadProgress = 0f,
+                            canResetDuringUpload = false
+                        ))
+                        _uiEffectChannel.send(UploadEffect.ShowSuccess(UploadMessages.SUCCESS_SENT))
+                    } else {
+                        // Upload failed: Delete local file anyway and show error
+                        imageCapture.deleteCurrentReceipt()
+                        _uiState.emit(UploadState.Success(
+                            currentReceiptPath = null,
+                            isCapturing = false,
+                            isUploading = false,
+                            uploadProgress = 0f,
+                            canResetDuringUpload = false
+                        ))
+                        _uiEffectChannel.send(UploadEffect.ShowError(UploadMessages.ERROR_SEND))
+                    }
+                } catch (e: kotlinx.coroutines.CancellationException) {
+                    // Upload was cancelled - this is expected when reset is pressed
+                    timeoutJob.cancel()
+                    throw e // Re-throw to propagate cancellation
+                } catch (_: Exception) {
+                    // Exception during upload: Delete local file and show error
+                    timeoutJob.cancel()
+                    try {
+                        imageCapture.deleteCurrentReceipt()
+                    } catch (_: Exception) {
+                        // Ignore delete errors
+                    }
+                    val state = _uiState.value as? UploadState.Success
+                    _uiState.emit(state?.copy(
+                        isCapturing = false,
+                        isUploading = false,
+                        uploadProgress = 0f,
+                        canResetDuringUpload = false
+                    ) ?: UploadState.Success())
+                    _uiEffectChannel.send(UploadEffect.ShowError(UploadMessages.ERROR_SEND))
+                } finally {
+                    // Clear upload job reference
+                    currentUploadJob = null
+                }
+            }
+            
+            // Store upload job reference for cancellation
+            currentUploadJob = uploadJob
+            uploadJob.join() // Wait for upload to complete or be cancelled
+            
+        } catch (e: kotlinx.coroutines.CancellationException) {
+            // Upload was cancelled - this is expected when reset is pressed
+            // State will be reset by the reset() function
+            currentUploadJob = null
+            throw e // Re-throw to propagate cancellation
         } catch (_: Exception) {
-            // Exception during upload: Delete local file and show error
+            // Other exceptions during upload setup
+            currentUploadJob = null
+            val currentState = _uiState.value as? UploadState.Success
+            _uiState.emit(currentState?.copy(
+                isCapturing = false,
+                isUploading = false,
+                uploadProgress = 0f,
+                canResetDuringUpload = false
+            ) ?: UploadState.Success())
+            _uiEffectChannel.send(UploadEffect.ShowError(UploadMessages.ERROR_SEND))
+        }
+    }
+
+    private suspend fun reset() {
+        try {
+            val currentState = _uiState.value as? UploadState.Success
+            val wasUploading = currentState?.isUploading == true
+            
+            // Cancel ongoing upload if it exists
+            currentUploadJob?.cancel()
+            currentUploadJob = null
+            
+            // Cancel any ongoing upload by resetting state
+            // Delete current receipt if exists
             try {
                 imageCapture.deleteCurrentReceipt()
             } catch (_: Exception) {
                 // Ignore delete errors
             }
-            val currentState = _uiState.value as? UploadState.Success
-            _uiState.emit(currentState?.copy(
+            
+            // Reset to initial state and reset session counter
+            sessionCounter = 0
+            _uiState.emit(UploadState.Success(
+                currentReceiptPath = null,
+                isCapturing = false,
                 isUploading = false,
-                uploadProgress = 0f
-            ) ?: UploadState.Success())
-            _uiEffectChannel.send(UploadEffect.ShowError(UploadMessages.ERROR_SEND))
+                uploadProgress = 0f,
+                canResetDuringUpload = false
+            ))
+            
+            // If reset was pressed during upload, show error message
+            if (wasUploading) {
+                _uiEffectChannel.send(UploadEffect.ShowError(UploadMessages.ERROR_UPLOAD_CANCELLED))
+            }
+        } catch (_: Exception) {
+            // If reset fails, try to at least set a clean state
+            _uiState.emit(UploadState.Success())
         }
     }
 }

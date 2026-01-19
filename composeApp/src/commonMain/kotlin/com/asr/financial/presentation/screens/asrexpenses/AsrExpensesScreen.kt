@@ -40,6 +40,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun AsrExpensesScreen(
     windowSizeClass: WindowSizeClass,
     onNavigate: (String) -> Unit,
+    onNavigateToDecont: (Int, Int) -> Unit = { _, _ -> },
     onMenuClick: () -> Unit = {},
     viewModel: AsrExpensesViewModel = koinViewModel()
 ) {
@@ -83,6 +84,7 @@ fun AsrExpensesScreen(
                             viewModel.handleEvent(AsrExpensesEvent.FilterByPeriod(null, month))
                         },
                         onNavigate = onNavigate,
+                        onNavigateToDecont = onNavigateToDecont,
                         onMenuClick = onMenuClick
                     )
                 }
@@ -112,6 +114,7 @@ private fun AsrExpensesSuccessContent(
     onYearSelected: (Int) -> Unit,
     onMonthSelected: (Int) -> Unit,
     onNavigate: (String) -> Unit,
+    onNavigateToDecont: (Int, Int) -> Unit,
     onMenuClick: () -> Unit
 ) {
     val selectedMonthName = if (selectedMonth == 0) {
@@ -230,7 +233,12 @@ private fun AsrExpensesSuccessContent(
             }
         ) {
             expenses.forEach { expense ->
-                AsrExpenseRow(expense)
+                AsrExpenseRow(
+                    expense = expense,
+                    onDecontClick = { year, month ->
+                        onNavigateToDecont(year, month)
+                    }
+                )
             }
         }
     }
