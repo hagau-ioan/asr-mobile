@@ -2,6 +2,7 @@ package com.asr.financial.presentation.screens.splash
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -11,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -66,7 +68,13 @@ fun SplashScreen(onSplashFinished: () -> Unit) {
                 modifier = Modifier
                     .size(120.dp)
                     .scale(iconScale),
-                color = MaterialTheme.colorScheme.onPrimary
+                color = MaterialTheme.colorScheme.onPrimary,
+                // Splash screen: Light mode = black windows/door, Dark mode = white windows/door
+                windowColor = if (isSystemInDarkTheme()) {
+                    Color.White
+                } else {
+                    Color.Black
+                }
             )
             
             Spacer(Modifier.height(32.dp))

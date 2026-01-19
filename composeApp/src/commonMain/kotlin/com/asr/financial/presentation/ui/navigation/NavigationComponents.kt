@@ -2,6 +2,8 @@ package com.asr.financial.presentation.ui.navigation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.automirrored.filled.TrendingUp
@@ -146,10 +148,11 @@ fun DrawerNavigationContent(
             }
         }
         
-        // Menu Items
+        // Menu Items - Scrollable on small screens
         Column(
             modifier = Modifier
                 .weight(1f)
+                .verticalScroll(rememberScrollState())
                 .padding(vertical = 16.dp, horizontal = 12.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
@@ -186,7 +189,7 @@ fun DrawerNavigationContent(
                 }
             }
             
-            // Logout button
+            // Logout button - always visible at the end of scrollable content
             Spacer(Modifier.height(8.dp))
             HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
             
@@ -218,6 +221,9 @@ fun DrawerNavigationContent(
                     )
                 }
             }
+            
+            // Extra padding at bottom to ensure logout button is fully visible when scrolled
+            Spacer(Modifier.height(16.dp))
         }
         
         // Footer with stats, user email, and version

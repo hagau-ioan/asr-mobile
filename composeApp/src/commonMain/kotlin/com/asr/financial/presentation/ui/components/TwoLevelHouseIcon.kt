@@ -14,11 +14,24 @@ import androidx.compose.ui.graphics.drawscope.Fill
 @Composable
 fun TwoLevelHouseIcon(
     modifier: Modifier = Modifier,
-    color: Color? = null
+    color: Color? = null,
+    windowColor: Color? = null
 ) {
     val isDark = isSystemInDarkTheme()
-    val houseColor = color ?: if (isDark) Color.Black else Color.White
-    val windowColor = if (isDark) Color.White else Color.Black
+    // House color: use provided color or default based on theme
+    val houseColor = color ?: if (isDark) {
+        Color.Black
+    } else {
+        // Use theme color for light mode instead of hardcoded
+        MaterialTheme.colorScheme.primaryContainer // slate-800 from theme
+    }
+    
+    // Window/door color: use provided color or default based on theme
+    val finalWindowColor = windowColor ?: if (isDark) {
+        Color.White
+    } else {
+        Color.Black // Default: black windows/door in light mode
+    }
     
     Canvas(modifier = modifier) {
         val width = size.width
@@ -49,36 +62,36 @@ fun TwoLevelHouseIcon(
         
         // Windows second level
         drawRect(
-            color = windowColor,
+            color = finalWindowColor,
             topLeft = Offset(width * 0.3f, height * 0.3f),
             size = Size(width * 0.08f, height * 0.15f)
         )
         drawRect(
-            color = windowColor,
+            color = finalWindowColor,
             topLeft = Offset(width * 0.46f, height * 0.3f),
             size = Size(width * 0.08f, height * 0.15f)
         )
         drawRect(
-            color = windowColor,
+            color = finalWindowColor,
             topLeft = Offset(width * 0.62f, height * 0.3f),
             size = Size(width * 0.08f, height * 0.15f)
         )
         
         // Door
         drawRect(
-            color = windowColor,
+            color = finalWindowColor,
             topLeft = Offset(width * 0.44f, height * 0.65f),
             size = Size(width * 0.12f, height * 0.25f)
         )
         
         // Windows first level
         drawRect(
-            color = windowColor,
+            color = finalWindowColor,
             topLeft = Offset(width * 0.26f, height * 0.65f),
             size = Size(width * 0.1f, height * 0.12f)
         )
         drawRect(
-            color = windowColor,
+            color = finalWindowColor,
             topLeft = Offset(width * 0.64f, height * 0.65f),
             size = Size(width * 0.1f, height * 0.12f)
         )

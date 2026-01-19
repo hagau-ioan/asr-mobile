@@ -1,5 +1,7 @@
 package com.asr.financial.presentation.screens.login
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -8,6 +10,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import com.asr.financial.presentation.theme.DarkColorScheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -53,9 +57,13 @@ fun LoginScreen(
         }
     }
     
+    // Use dark mode background color from theme for login screen (always dark)
+    val loginBackgroundColor = DarkColorScheme.background
+    
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(loginBackgroundColor)
             .padding(LoginConstants.HORIZONTAL_PADDING_DP.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
@@ -67,7 +75,9 @@ fun LoginScreen(
         ) {
             TwoLevelHouseIcon(
                 modifier = Modifier.size(100.dp),
-                color = MaterialTheme.colorScheme.primary
+                // Login screen: Both light and dark mode = white house with black windows/door
+                color = Color.White,
+                windowColor = Color.Black
             )
             
             Spacer(Modifier.height(16.dp))
@@ -76,7 +86,7 @@ fun LoginScreen(
                 text = stringResource(Res.string.app_title),
                 style = MaterialTheme.typography.displayMedium,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
+                color = DarkColorScheme.onBackground // Always use light text for dark background
             )
             
             Spacer(Modifier.height(4.dp))
@@ -85,7 +95,7 @@ fun LoginScreen(
                 text = stringResource(Res.string.app_subtitle),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                color = DarkColorScheme.onBackground.copy(alpha = 0.7f) // Always use light text for dark background
             )
         }
         
