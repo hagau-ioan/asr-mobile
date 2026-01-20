@@ -2,8 +2,8 @@ package com.asr.financial.presentation.screens.splash
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
+import com.asr.financial.presentation.theme.isAppDarkMode
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -70,7 +70,7 @@ fun SplashScreen(onSplashFinished: () -> Unit) {
                     .scale(iconScale),
                 color = MaterialTheme.colorScheme.onPrimary,
                 // Splash screen: Light mode = black windows/door, Dark mode = white windows/door
-                windowColor = if (isSystemInDarkTheme()) {
+                windowColor = if (isAppDarkMode()) {
                     Color.White
                 } else {
                     Color.Black

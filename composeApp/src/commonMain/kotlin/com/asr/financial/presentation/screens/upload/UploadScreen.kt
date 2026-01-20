@@ -544,8 +544,7 @@ private fun CloudImagesSection(
     }
 }
 
-// Table column widths
-private const val COL_NAME_WIDTH_DP = 200
+// Table column widths (fixed columns only)
 private const val COL_DATE_WIDTH_DP = 50
 private const val COL_ACTION_WIDTH_DP = 44
 
@@ -560,61 +559,80 @@ private fun CloudImagesTable(
     val colNameText = stringResource(Res.string.upload_col_name)
     val colDateText = stringResource(Res.string.upload_col_date)
 
-    val columns = listOf(
-        TableColumn(colNameText, COL_NAME_WIDTH_DP.dp),
-        TableColumn(colDateText, COL_DATE_WIDTH_DP.dp),
-        TableColumn("", COL_ACTION_WIDTH_DP.dp, TextAlign.Center)
-    )
+    BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+        // Calculate available width: total width - row padding (12dp on each side = 24dp) - spacing (8dp between columns * 2 = 16dp) - fixed columns
+        val rowPadding = 24.dp // 12.dp on each side from Row padding
+        val totalSpacing = 16.dp // 8.dp spacing between 3 columns (2 gaps)
+        val fixedColumnsWidth = COL_DATE_WIDTH_DP.dp + COL_ACTION_WIDTH_DP.dp
+        val nameColumnWidth = (maxWidth - rowPadding - totalSpacing - fixedColumnsWidth).coerceAtLeast(100.dp)
 
-    DataTable(
-        columns = columns,
-        headerContent = {
-            columns.forEach { column ->
-                TableHeaderCell(
-                    text = column.header,
-                    width = column.width,
-                    textAlign = column.textAlign
-                )
-            }
-        }
-    ) {
-        cloudImages.forEach { file ->
-            TableRow(
-                modifier = Modifier.clickable(enabled = !isDeleting) {
-                    onViewImage(file.path)
+        DataTable(
+            columns = listOf(
+                TableColumn(colNameText, nameColumnWidth),
+                TableColumn(colDateText, COL_DATE_WIDTH_DP.dp),
+                TableColumn("", COL_ACTION_WIDTH_DP.dp, TextAlign.Center)
+            ),
+            headerContent = {
+                // Name column header - calculated width
+                Box(modifier = Modifier.width(nameColumnWidth)) {
+                    Text(
+                        text = colNameText,
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
-            ) {
-                // Name cell
-                Text(
-                    text = file.name,
-                    style = MaterialTheme.typography.bodyMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.width(COL_NAME_WIDTH_DP.dp)
-                )
-
-                // Date cell
-                TableCell(
-                    text = formatTimestamp(file.updatedTimeMillis),
+                
+                // Date column header - fixed width
+                TableHeaderCell(
+                    text = colDateText,
                     width = COL_DATE_WIDTH_DP.dp
                 )
-
-                // Delete action cell
+                
+                // Delete column header - fixed width
                 Box(
-                    modifier = Modifier.width(COL_ACTION_WIDTH_DP.dp),
-                    contentAlignment = Alignment.Center
+                    modifier = Modifier.width(COL_ACTION_WIDTH_DP.dp)
+                )
+            }
+        ) {
+            cloudImages.forEach { file ->
+                TableRow(
+                    modifier = Modifier.clickable(enabled = !isDeleting) {
+                        onViewImage(file.path)
+                    }
                 ) {
-                    IconButton(
-                        onClick = { onRequestDelete(file) },
-                        enabled = !isDeleting,
-                        modifier = Modifier.size(36.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Delete,
-                            contentDescription = stringResource(Res.string.upload_delete_cloud_image),
-                            tint = MaterialTheme.colorScheme.error,
-                            modifier = Modifier.size(20.dp)
+                    // Name cell - calculated width
+                    Box(modifier = Modifier.width(nameColumnWidth)) {
+                        Text(
+                            text = file.name,
+                            style = MaterialTheme.typography.bodyMedium,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
+                    }
+
+                    // Date cell - fixed width
+                    TableCell(
+                        text = formatTimestamp(file.updatedTimeMillis),
+                        width = COL_DATE_WIDTH_DP.dp
+                    )
+
+                    // Delete action cell - fixed width
+                    Box(
+                        modifier = Modifier.width(COL_ACTION_WIDTH_DP.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        IconButton(
+                            onClick = { onRequestDelete(file) },
+                            enabled = !isDeleting,
+                            modifier = Modifier.size(36.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = stringResource(Res.string.upload_delete_cloud_image),
+                                tint = MaterialTheme.colorScheme.error,
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
                     }
                 }
             }

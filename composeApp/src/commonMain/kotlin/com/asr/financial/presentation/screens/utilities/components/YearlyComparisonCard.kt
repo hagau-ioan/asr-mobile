@@ -1,7 +1,7 @@
 package com.asr.financial.presentation.screens.utilities.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
+import com.asr.financial.presentation.theme.isAppDarkMode
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -36,7 +36,7 @@ fun YearlyComparisonCard(
     maxYear: Int,
     onYearChange: (Int) -> Unit
 ) {
-    val isDarkMode = isSystemInDarkTheme()
+    val isDarkMode = isAppDarkMode()
     val secondaryLegendColor = if (isDarkMode) 
         Color.White 
     else 

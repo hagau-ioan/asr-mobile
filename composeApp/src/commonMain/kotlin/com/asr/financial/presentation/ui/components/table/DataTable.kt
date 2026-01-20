@@ -5,8 +5,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
+import com.asr.financial.presentation.theme.isAppDarkMode
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -90,7 +90,7 @@ fun TableRow(
     backgroundColor: Color = Color.Transparent,
     content: @Composable RowScope.() -> Unit
 ) {
-    val isDarkMode = isSystemInDarkTheme()
+    val isDarkMode = isAppDarkMode()
     val borderColor = if (isDarkMode) Color.White.copy(alpha = 0.5f) else Color.LightGray.copy(alpha = 0.5f)
 
     Row(

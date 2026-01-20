@@ -3,7 +3,7 @@ package com.asr.financial.presentation.screens.charts
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.isSystemInDarkTheme
+import com.asr.financial.presentation.theme.isAppDarkMode
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
@@ -42,7 +42,7 @@ fun LineChart(
     height: Int = AppConstants.UI.CHART_DEFAULT_HEIGHT
 ) {
     val primaryColor = MaterialTheme.colorScheme.primary
-    val secondaryColor = if (isSystemInDarkTheme()) 
+    val secondaryColor = if (isAppDarkMode()) 
         Color.White 
     else 
         ChartSecondaryGreen

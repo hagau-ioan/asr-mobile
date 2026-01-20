@@ -1,7 +1,6 @@
 package com.asr.financial.presentation.ui.components
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -10,6 +9,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Fill
+import com.asr.financial.presentation.theme.isAppDarkMode
 
 @Composable
 fun TwoLevelHouseIcon(
@@ -17,7 +17,7 @@ fun TwoLevelHouseIcon(
     color: Color? = null,
     windowColor: Color? = null
 ) {
-    val isDark = isSystemInDarkTheme()
+    val isDark = isAppDarkMode()
     // House color: use provided color or default based on theme
     val houseColor = color ?: if (isDark) {
         Color.Black

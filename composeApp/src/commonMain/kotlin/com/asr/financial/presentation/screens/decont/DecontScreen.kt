@@ -1,6 +1,6 @@
 package com.asr.financial.presentation.screens.decont
 
-import androidx.compose.foundation.isSystemInDarkTheme
+import com.asr.financial.presentation.theme.isAppDarkMode
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -219,7 +219,7 @@ private fun DecontSuccessContent(
 
 @Composable
 private fun DecontExpenseRow(expense: DecontExpense) {
-    val isDarkMode = isSystemInDarkTheme()
+    val isDarkMode = isAppDarkMode()
     val borderColor = if (isDarkMode) Color.White.copy(alpha = AppConstants.UI.ALPHA_DISABLED) else Color.LightGray.copy(alpha = AppConstants.UI.ALPHA_DISABLED)
 
     // Draw border at bottom of entire row (including products)
