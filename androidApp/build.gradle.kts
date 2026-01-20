@@ -1,4 +1,7 @@
 import java.util.Properties
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 plugins {
     alias(libs.plugins.android.application)
@@ -78,6 +81,24 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+    }
+    
+    // Custom APK naming: yearmonthday-versionCode-release.apk
+    applicationVariants.all {
+        val variant = this
+        val buildType = variant.buildType.name
+        
+        if (buildType == "release") {
+            variant.outputs.all {
+                val dateFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+                val date = dateFormat.format(Date())
+                val versionCode = variant.versionCode
+                val outputFileName = "${date}-${versionCode}-release.apk"
+                // Set output file name (works with AGP 7.0+)
+                @Suppress("DEPRECATION")
+                (this as com.android.build.gradle.internal.api.BaseVariantOutputImpl).outputFileName = outputFileName
+            }
         }
     }
 }
