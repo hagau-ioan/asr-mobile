@@ -38,6 +38,25 @@
     <string name="upload_guideline_light">Asigură-te că ai o iluminare bună</string>
     <string name="upload_guideline_surface">Folosește o suprafață albă sau de o singură culoare pe care să plasezi documentul</string>
     <string name="upload_guideline_preview">Înainte de trimitere, apasă pe previzualizarea imaginii și asigură-te că detaliile sunt clare</string>
+    <string name="upload_cloud_images_title">Imagini încărcate luna curentă</string>
+    <string name="upload_cloud_images_description">Imaginile uploadate în luna curentă. Apasă pe un rând pentru a vizualiza imaginea.</string>
+    <string name="upload_no_cloud_images">Nu există imagini încărcate în această lună</string>
+    <string name="upload_refresh_cloud_images">Reîmprospătează lista</string>
+    <string name="upload_delete_cloud_image">Șterge imaginea din cloud</string>
+    <string name="upload_downloading_preview">Se descarcă imaginea...</string>
+    <string name="upload_col_name">Nume fișier</string>
+    <string name="upload_col_size">Mărime</string>
+    <string name="upload_col_date">Data</string>
+    <string name="upload_success_cloud_deleted">Imaginea a fost ștearsă din cloud</string>
+    <string name="upload_error_load_cloud">Eroare la încărcarea listei de imagini</string>
+    <string name="upload_error_delete_cloud">Eroare la ștergerea imaginii din cloud</string>
+    <string name="upload_error_download_preview">Eroare la descărcarea imaginii pentru previzualizare</string>
+
+    <!-- Delete Confirmation -->
+    <string name="delete_confirm_title">Confirmare ștergere</string>
+    <string name="delete_confirm_message">Sigur vrei să ștergi %1$s?</string>
+    <string name="delete_confirm_delete">Șterge</string>
+    <string name="delete_confirm_cancel">Anulează</string>
     
     <!-- Common Errors -->
     <string name="error_unknown">Eroare necunoscută</string>
@@ -60,7 +79,7 @@
     <string name="header_publishers">%1$d vestitori</string>
     <string name="header_congregations">%1$d congregații</string>
     <string name="header_period">Perioada</string>
-    <string name="header_month">Luna curentă</string>
+    <string name="header_month">Luna de lucru</string>
     <string name="select_year">Selectează anul</string>
     <string name="select_month">Selectează luna</string>
     

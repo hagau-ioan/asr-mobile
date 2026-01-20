@@ -49,6 +49,30 @@ actual class FileHandler {
     actual fun getFilePath(fileName: String): String {
         return "$documentsDirectory/$fileName"
     }
+    
+    actual suspend fun cleanupTempFiles(prefix: String): Int = withContext(Dispatchers.IO) {
+        try {
+            val tempDir = NSFileManager.defaultManager.temporaryDirectory
+            val tempDirPath = tempDir.path ?: return@withContext 0
+            
+            val fileManager = NSFileManager.defaultManager
+            val contents = fileManager.contentsOfDirectoryAtPath(tempDirPath, null) as? List<*>
+            
+            var deletedCount = 0
+            contents?.forEach { item ->
+                val fileName = item as? String ?: return@forEach
+                if (fileName.startsWith(prefix)) {
+                    val filePath = "$tempDirPath/$fileName"
+                    if (fileManager.removeItemAtPath(filePath, null)) {
+                        deletedCount++
+                    }
+                }
+            }
+            deletedCount
+        } catch (e: Exception) {
+            0
+        }
+    }
 }
 
 private fun ByteArray.toNSData(): NSData {

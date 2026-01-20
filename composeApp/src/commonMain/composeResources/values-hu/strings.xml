@@ -38,6 +38,25 @@
     <string name="upload_guideline_light">Győződjön meg arról, hogy jó világítás van</string>
     <string name="upload_guideline_surface">Használjon fehér vagy egyszínű felületet, amelyre a dokumentumot helyezi</string>
     <string name="upload_guideline_preview">Küldés előtt kattintson a készített kép előnézetére, és győződjön meg arról, hogy a részletek világosak</string>
+    <string name="upload_cloud_images_title">Ebben a hónapban feltöltött képek</string>
+    <string name="upload_cloud_images_description">A jelenlegi hónapban feltöltött képek. Kattintson egy sorra a kép megtekintéséhez.</string>
+    <string name="upload_no_cloud_images">Nincsenek feltöltött képek ebben a hónapban</string>
+    <string name="upload_refresh_cloud_images">Lista frissítése</string>
+    <string name="upload_delete_cloud_image">Kép törlése a felhőből</string>
+    <string name="upload_downloading_preview">Kép letöltése...</string>
+    <string name="upload_col_name">Fájlnév</string>
+    <string name="upload_col_size">Méret</string>
+    <string name="upload_col_date">Dátum</string>
+    <string name="upload_success_cloud_deleted">A kép törölve a felhőből</string>
+    <string name="upload_error_load_cloud">Hiba a képlista betöltésekor</string>
+    <string name="upload_error_delete_cloud">Hiba a kép törlésekor a felhőből</string>
+    <string name="upload_error_download_preview">Hiba a kép letöltésekor az előnézethez</string>
+
+    <!-- Delete Confirmation -->
+    <string name="delete_confirm_title">Törlés megerősítése</string>
+    <string name="delete_confirm_message">Biztosan törli a következőt: %1$s?</string>
+    <string name="delete_confirm_delete">Törlés</string>
+    <string name="delete_confirm_cancel">Mégse</string>
     
     <!-- Common Errors -->
     <string name="error_unknown">Ismeretlen hiba</string>
@@ -60,7 +79,7 @@
     <string name="header_publishers">%1$d hirdetők</string>
     <string name="header_congregations">%1$d gyülekezetek</string>
     <string name="header_period">Időszak</string>
-    <string name="header_month">Aktuális hónap</string>
+    <string name="header_month">Munka hónap</string>
     <string name="select_year">Valassza ki az evet</string>
     <string name="select_month">Valassza ki a honapot</string>
     

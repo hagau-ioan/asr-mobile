@@ -22,7 +22,7 @@ expect class FirebaseStorage(logger: Logger) {
 
     /**
      * Upload a file to Firebase Cloud Storage.
-     * 
+     *
      * @param localPath Local file path to upload
      * @param remotePath Remote path in Firebase Storage (e.g., "documents/incoming/2026/01/receipt_20260118_143025.jpg")
      * @param onProgress Callback for upload progress (0.0 to 1.0)
@@ -33,4 +33,28 @@ expect class FirebaseStorage(logger: Logger) {
         remotePath: String,
         onProgress: (Float) -> Unit
     ): Boolean
+
+    /**
+     * List files in a Firebase Storage directory.
+     *
+     * @param path Directory path in Firebase Storage (e.g., "documents/incoming/2026/01")
+     * @return List of CloudStorageFile objects, or empty list if error or no files
+     */
+    suspend fun listFiles(path: String): List<CloudStorageFile>
+
+    /**
+     * Delete a file from Firebase Cloud Storage.
+     *
+     * @param remotePath Full path to the file in Firebase Storage
+     * @return true if deletion successful, false otherwise
+     */
+    suspend fun deleteFile(remotePath: String): Boolean
+
+    /**
+     * Download a file from Firebase Storage to a local temporary file.
+     *
+     * @param remotePath Path to the file in Firebase Storage
+     * @return Local file path if successful, null otherwise
+     */
+    suspend fun downloadFileToTemp(remotePath: String): String?
 }

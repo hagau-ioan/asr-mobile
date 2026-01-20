@@ -5,6 +5,7 @@ import com.google.firebase.storage.StorageException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import java.io.File
 
 /**
  * Android implementation of FirebaseStorage.
@@ -201,6 +202,128 @@ actual class FirebaseStorage actual constructor(
         } catch (e: Exception) {
             logger.error(TAG, "Unexpected error uploading file to Firebase Storage: $remotePath", e)
             false
+        }
+    }
+
+    actual suspend fun listFiles(path: String): List<CloudStorageFile> = withContext(Dispatchers.IO) {
+        try {
+            logger.debug(TAG, "Listing files in Firebase Storage: $path")
+
+            // Verify user is authenticated
+            val firebaseAuth = com.google.firebase.auth.FirebaseAuth.getInstance()
+            val currentUser = firebaseAuth.currentUser
+            if (currentUser == null) {
+                logger.error(TAG, "User not authenticated. Cannot list files from Firebase Storage: $path")
+                return@withContext emptyList()
+            }
+
+            val storageRef = firebaseStorage.reference.child(path)
+            val listResult = storageRef.listAll().await()
+
+            val files = mutableListOf<CloudStorageFile>()
+            for (item in listResult.items) {
+                try {
+                    val metadata = item.metadata.await()
+                    files.add(
+                        CloudStorageFile(
+                            path = item.path,
+                            name = item.name,
+                            sizeBytes = metadata.sizeBytes,
+                            updatedTimeMillis = metadata.updatedTimeMillis
+                        )
+                    )
+                } catch (e: Exception) {
+                    logger.warning(TAG, "Failed to get metadata for ${item.path}: ${e.message}")
+                    // Add file with default values if metadata fails
+                    files.add(
+                        CloudStorageFile(
+                            path = item.path,
+                            name = item.name,
+                            sizeBytes = 0L,
+                            updatedTimeMillis = 0L
+                        )
+                    )
+                }
+            }
+
+            // Sort by updated time descending (newest first)
+            files.sortByDescending { it.updatedTimeMillis }
+            logger.debug(TAG, "Successfully listed ${files.size} files from: $path")
+            files
+        } catch (e: StorageException) {
+            val errorCode = e.errorCode
+            logger.error(TAG, "Firebase Storage error listing $path: Error Code $errorCode")
+            emptyList()
+        } catch (e: Exception) {
+            logger.error(TAG, "Unexpected error listing files from Firebase Storage: $path", e)
+            emptyList()
+        }
+    }
+
+    actual suspend fun deleteFile(remotePath: String): Boolean = withContext(Dispatchers.IO) {
+        try {
+            logger.debug(TAG, "Deleting file from Firebase Storage: $remotePath")
+
+            // Verify user is authenticated
+            val firebaseAuth = com.google.firebase.auth.FirebaseAuth.getInstance()
+            val currentUser = firebaseAuth.currentUser
+            if (currentUser == null) {
+                logger.error(TAG, "User not authenticated. Cannot delete from Firebase Storage: $remotePath")
+                return@withContext false
+            }
+
+            val storageRef = firebaseStorage.reference.child(remotePath)
+            storageRef.delete().await()
+
+            logger.debug(TAG, "Successfully deleted file: $remotePath")
+            true
+        } catch (e: StorageException) {
+            val errorCode = e.errorCode
+            val errorMessage = e.message ?: "Unknown Firebase Storage error"
+            logger.error(TAG, "Firebase Storage error deleting $remotePath: Error Code $errorCode - $errorMessage")
+            false
+        } catch (e: Exception) {
+            logger.error(TAG, "Unexpected error deleting file from Firebase Storage: $remotePath", e)
+            false
+        }
+    }
+
+    actual suspend fun downloadFileToTemp(remotePath: String): String? = withContext(Dispatchers.IO) {
+        try {
+            logger.debug(TAG, "Downloading file to temp from Firebase Storage: $remotePath")
+
+            // Verify user is authenticated
+            val firebaseAuth = com.google.firebase.auth.FirebaseAuth.getInstance()
+            val currentUser = firebaseAuth.currentUser
+            if (currentUser == null) {
+                logger.error(TAG, "User not authenticated. Cannot download from Firebase Storage: $remotePath")
+                return@withContext null
+            }
+
+            val storageRef = firebaseStorage.reference.child(remotePath)
+
+            // Create temp file with appropriate extension
+            val fileName = remotePath.substringAfterLast("/")
+            val extension = fileName.substringAfterLast(".", "tmp")
+            val tempFile = File.createTempFile("firebase_", ".$extension")
+
+            storageRef.getFile(tempFile).await()
+
+            if (!tempFile.exists() || tempFile.length() == 0L) {
+                logger.error(TAG, "Downloaded file is empty or doesn't exist: $remotePath")
+                tempFile.delete()
+                return@withContext null
+            }
+
+            logger.debug(TAG, "Successfully downloaded file to temp: ${tempFile.absolutePath}")
+            tempFile.absolutePath
+        } catch (e: StorageException) {
+            val errorCode = e.errorCode
+            logger.error(TAG, "Firebase Storage error downloading $remotePath: Error Code $errorCode")
+            null
+        } catch (e: Exception) {
+            logger.error(TAG, "Unexpected error downloading file from Firebase Storage: $remotePath", e)
+            null
         }
     }
 }

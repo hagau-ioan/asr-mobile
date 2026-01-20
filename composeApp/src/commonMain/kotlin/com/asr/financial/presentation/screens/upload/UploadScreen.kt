@@ -24,12 +24,15 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import kotlin.math.max
 import kotlin.math.min
 import coil3.compose.rememberAsyncImagePainter
+import com.asr.financial.platform.CloudStorageFile
 import com.asr.financial.presentation.mvi.effect.UploadEffect
 import com.asr.financial.presentation.mvi.event.UploadEvent
 import com.asr.financial.presentation.mvi.interactor.UploadMessages
@@ -37,13 +40,22 @@ import com.asr.financial.presentation.mvi.state.UploadState
 import com.asr.financial.presentation.mvi.viewmodel.UploadViewModel
 import com.asr.financial.presentation.navigation.Routes
 import com.asr.financial.presentation.ui.components.BreadcrumbItem
+import com.asr.financial.presentation.ui.components.dialogs.DeleteConfirmationDialog
 import com.asr.financial.presentation.ui.components.states.LoadingContent
+import com.asr.financial.presentation.ui.components.table.DataTable
+import com.asr.financial.presentation.ui.components.table.TableCell
+import com.asr.financial.presentation.ui.components.table.TableColumn
+import com.asr.financial.presentation.ui.components.table.TableHeaderCell
+import com.asr.financial.presentation.ui.components.table.TableRow
 import com.asr.financial.presentation.ui.constants.UIConstants.CARD_PADDING_DP
 import com.asr.financial.presentation.ui.constants.UIConstants.SECTION_SPACING_DP
 import com.asr.financial.presentation.ui.responsive.WindowSizeClass
 import com.asr.financial.presentation.ui.scaffold.ScreenLayout
 import asr_financial.composeapp.generated.resources.*
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -79,25 +91,33 @@ fun UploadScreen(
         val errorDelete = stringResource(Res.string.upload_error_delete)
         val errorSend = stringResource(Res.string.upload_error_send)
         val errorUploadCancelled = stringResource(Res.string.upload_error_upload_cancelled)
+        val errorLoadCloud = stringResource(Res.string.upload_error_load_cloud)
+        val errorDeleteCloud = stringResource(Res.string.upload_error_delete_cloud)
+        val errorDownloadPreview = stringResource(Res.string.upload_error_download_preview)
         val successCaptured = stringResource(Res.string.upload_success_captured)
         val successDeleted = stringResource(Res.string.upload_success_deleted)
         val successSent = stringResource(Res.string.upload_success_sent)
-        
-        val errorMessages = remember(errorUnknown, errorCapture, errorProcessing, errorDelete, errorSend, errorUploadCancelled) {
+        val successCloudDeleted = stringResource(Res.string.upload_success_cloud_deleted)
+
+        val errorMessages = remember(errorUnknown, errorCapture, errorProcessing, errorDelete, errorSend, errorUploadCancelled, errorLoadCloud, errorDeleteCloud, errorDownloadPreview) {
             mapOf(
                 UploadMessages.ERROR_UNKNOWN to errorUnknown,
                 UploadMessages.ERROR_CAPTURE to errorCapture,
                 UploadMessages.ERROR_PROCESSING to errorProcessing,
                 UploadMessages.ERROR_DELETE to errorDelete,
                 UploadMessages.ERROR_SEND to errorSend,
-                UploadMessages.ERROR_UPLOAD_CANCELLED to errorUploadCancelled
+                UploadMessages.ERROR_UPLOAD_CANCELLED to errorUploadCancelled,
+                UploadMessages.ERROR_LOAD_CLOUD_IMAGES to errorLoadCloud,
+                UploadMessages.ERROR_DELETE_CLOUD_IMAGE to errorDeleteCloud,
+                UploadMessages.ERROR_DOWNLOAD_PREVIEW to errorDownloadPreview
             )
         }
-        val successMessages = remember(successCaptured, successDeleted, successSent) {
+        val successMessages = remember(successCaptured, successDeleted, successSent, successCloudDeleted) {
             mapOf(
                 UploadMessages.SUCCESS_CAPTURED to successCaptured,
                 UploadMessages.SUCCESS_DELETED to successDeleted,
-                UploadMessages.SUCCESS_SENT to successSent
+                UploadMessages.SUCCESS_SENT to successSent,
+                UploadMessages.SUCCESS_CLOUD_IMAGE_DELETED to successCloudDeleted
             )
         }
 
@@ -136,7 +156,11 @@ fun UploadScreen(
                         onCaptureClick = { viewModel.handleEvent(UploadEvent.RequestCapture) },
                         onDeleteClick = { viewModel.handleEvent(UploadEvent.DeleteImage) },
                         onSendClick = { viewModel.handleEvent(UploadEvent.SendImage) },
-                        onResetClick = { viewModel.handleEvent(UploadEvent.Reset) }
+                        onResetClick = { viewModel.handleEvent(UploadEvent.Reset) },
+                        onRefreshCloudImages = { viewModel.handleEvent(UploadEvent.RefreshCloudImages) },
+                        onDeleteCloudImage = { path -> viewModel.handleEvent(UploadEvent.DeleteCloudImage(path)) },
+                        onViewCloudImage = { path -> viewModel.handleEvent(UploadEvent.ViewCloudImage(path)) },
+                        onDismissCloudImagePreview = { viewModel.handleEvent(UploadEvent.DismissCloudImagePreview) }
                     )
                 }
                 is UploadState.Loading -> {
@@ -182,7 +206,11 @@ private fun UploadSuccessContent(
     onCaptureClick: () -> Unit,
     onDeleteClick: () -> Unit,
     onSendClick: () -> Unit,
-    onResetClick: () -> Unit
+    onResetClick: () -> Unit,
+    onRefreshCloudImages: () -> Unit,
+    onDeleteCloudImage: (String) -> Unit,
+    onViewCloudImage: (String) -> Unit,
+    onDismissCloudImagePreview: () -> Unit
 ) {
     ScreenLayout(
         windowSizeClass = windowSizeClass,
@@ -325,60 +353,10 @@ private fun UploadSuccessContent(
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onPrimaryContainer
                                 )
-                                
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                    verticalAlignment = Alignment.Top
-                                ) {
-                                    Text(
-                                        text = stringResource(Res.string.symbol_bullet),
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.onPrimaryContainer
-                                    )
-                                    Text(
-                                        text = stringResource(Res.string.upload_guideline_light),
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                        modifier = Modifier.weight(1f)
-                                    )
-                                }
-                                
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                    verticalAlignment = Alignment.Top
-                                ) {
-                                    Text(
-                                        text = stringResource(Res.string.symbol_bullet),
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.onPrimaryContainer
-                                    )
-                                    Text(
-                                        text = stringResource(Res.string.upload_guideline_surface),
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                        modifier = Modifier.weight(1f)
-                                    )
-                                }
-                                
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                    verticalAlignment = Alignment.Top
-                                ) {
-                                    Text(
-                                        text = stringResource(Res.string.symbol_bullet),
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.onPrimaryContainer
-                                    )
-                                    Text(
-                                        text = stringResource(Res.string.upload_guideline_preview),
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                        modifier = Modifier.weight(1f)
-                                    )
-                                }
+
+                                GuidelineRow(stringResource(Res.string.upload_guideline_light))
+                                GuidelineRow(stringResource(Res.string.upload_guideline_surface))
+                                GuidelineRow(stringResource(Res.string.upload_guideline_preview))
                             }
                         }
 
@@ -411,6 +389,272 @@ private fun UploadSuccessContent(
                 }
             }
         }
+
+        // Cloud images table section
+        item {
+            Spacer(Modifier.height(SECTION_SPACING_DP.dp))
+
+            CloudImagesSection(
+                cloudImages = state.cloudImages,
+                isLoading = state.isLoadingCloudImages,
+                isDeleting = state.isDeletingCloudImage,
+                onRefresh = onRefreshCloudImages,
+                onDeleteImage = onDeleteCloudImage,
+                onViewImage = onViewCloudImage
+            )
+        }
+    }
+
+    // Cloud image preview dialog
+    if (state.cloudImagePreviewPath != null) {
+        FullScreenImageViewer(
+            imagePath = state.cloudImagePreviewPath,
+            onDismiss = onDismissCloudImagePreview
+        )
+    }
+
+    // Show loading overlay when downloading for preview
+    if (state.isDownloadingForPreview) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.scrim.copy(alpha = 0.5f)),
+            contentAlignment = Alignment.Center
+        ) {
+            Card {
+                Column(
+                    modifier = Modifier.padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CircularProgressIndicator()
+                    Spacer(Modifier.height(16.dp))
+                    Text(stringResource(Res.string.upload_downloading_preview))
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun CloudImagesSection(
+    cloudImages: List<CloudStorageFile>,
+    isLoading: Boolean,
+    isDeleting: Boolean,
+    onRefresh: () -> Unit,
+    onDeleteImage: (String) -> Unit,
+    onViewImage: (String) -> Unit
+) {
+    var pendingDeleteFile by remember { mutableStateOf<CloudStorageFile?>(null) }
+
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(CARD_PADDING_DP.dp)
+        ) {
+            // Header with title and refresh button
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(Res.string.upload_cloud_images_title),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+
+                IconButton(
+                    onClick = onRefresh,
+                    enabled = !isLoading && !isDeleting
+                ) {
+                    if (isLoading) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(20.dp),
+                            strokeWidth = 2.dp
+                        )
+                    } else {
+                        Icon(
+                            imageVector = Icons.Default.Refresh,
+                            contentDescription = stringResource(Res.string.upload_refresh_cloud_images)
+                        )
+                    }
+                }
+            }
+
+            Spacer(Modifier.height(8.dp))
+
+            Text(
+                text = stringResource(Res.string.upload_cloud_images_description),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+
+            Spacer(Modifier.height(SECTION_SPACING_DP.dp))
+
+            if (isLoading && cloudImages.isEmpty()) {
+                // Show loading indicator only if no cached data
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(32.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            } else if (cloudImages.isEmpty()) {
+                // Empty state
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(32.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = stringResource(Res.string.upload_no_cloud_images),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            } else {
+                // Cloud images table
+                CloudImagesTable(
+                    cloudImages = cloudImages,
+                    isDeleting = isDeleting,
+                    onRequestDelete = { file -> pendingDeleteFile = file },
+                    onViewImage = onViewImage
+                )
+            }
+        }
+    }
+
+    pendingDeleteFile?.let { file ->
+        DeleteConfirmationDialog(
+            title = stringResource(Res.string.delete_confirm_title),
+            message = stringResource(Res.string.delete_confirm_message, file.name),
+            confirmText = stringResource(Res.string.delete_confirm_delete),
+            cancelText = stringResource(Res.string.delete_confirm_cancel),
+            isProcessing = isDeleting,
+            onConfirm = {
+                onDeleteImage(file.path)
+                pendingDeleteFile = null
+            },
+            onDismiss = { pendingDeleteFile = null }
+        )
+    }
+}
+
+// Table column widths
+private const val COL_NAME_WIDTH_DP = 200
+private const val COL_DATE_WIDTH_DP = 50
+private const val COL_ACTION_WIDTH_DP = 44
+
+@Composable
+private fun CloudImagesTable(
+    cloudImages: List<CloudStorageFile>,
+    isDeleting: Boolean,
+    onRequestDelete: (CloudStorageFile) -> Unit,
+    onViewImage: (String) -> Unit
+) {
+    // Pre-compute string resources
+    val colNameText = stringResource(Res.string.upload_col_name)
+    val colDateText = stringResource(Res.string.upload_col_date)
+
+    val columns = listOf(
+        TableColumn(colNameText, COL_NAME_WIDTH_DP.dp),
+        TableColumn(colDateText, COL_DATE_WIDTH_DP.dp),
+        TableColumn("", COL_ACTION_WIDTH_DP.dp, TextAlign.Center)
+    )
+
+    DataTable(
+        columns = columns,
+        headerContent = {
+            columns.forEach { column ->
+                TableHeaderCell(
+                    text = column.header,
+                    width = column.width,
+                    textAlign = column.textAlign
+                )
+            }
+        }
+    ) {
+        cloudImages.forEach { file ->
+            TableRow(
+                modifier = Modifier.clickable(enabled = !isDeleting) {
+                    onViewImage(file.path)
+                }
+            ) {
+                // Name cell
+                Text(
+                    text = file.name,
+                    style = MaterialTheme.typography.bodyMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.width(COL_NAME_WIDTH_DP.dp)
+                )
+
+                // Date cell
+                TableCell(
+                    text = formatTimestamp(file.updatedTimeMillis),
+                    width = COL_DATE_WIDTH_DP.dp
+                )
+
+                // Delete action cell
+                Box(
+                    modifier = Modifier.width(COL_ACTION_WIDTH_DP.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    IconButton(
+                        onClick = { onRequestDelete(file) },
+                        enabled = !isDeleting,
+                        modifier = Modifier.size(36.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = stringResource(Res.string.upload_delete_cloud_image),
+                            tint = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Format timestamp to a readable date string
+ */
+@Suppress("DEPRECATION")
+private fun formatTimestamp(timestampMillis: Long): String {
+    if (timestampMillis == 0L) return "-"
+    return try {
+        val instant = Instant.fromEpochMilliseconds(timestampMillis)
+        val localDateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
+        "${localDateTime.dayOfMonth.toString().padStart(2, '0')}/${localDateTime.monthNumber.toString().padStart(2, '0')}"
+    } catch (_: Exception) {
+        "-"
+    }
+}
+
+@Composable
+private fun GuidelineRow(text: String) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.Top
+    ) {
+        Text(
+            text = stringResource(Res.string.symbol_bullet),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onPrimaryContainer
+        )
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            modifier = Modifier.weight(1f)
+        )
     }
 }
 

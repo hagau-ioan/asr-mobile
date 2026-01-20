@@ -22,7 +22,7 @@ import kotlin.coroutines.resume
 actual class FirebaseStorage actual constructor(
     private val logger: Logger
 ) {
-    
+
     actual suspend fun downloadFileAsString(path: String): String? = withContext(Dispatchers.Main) {
         logger.debug("FirebaseStorage", "Downloading file from Firebase Storage: $path")
         suspendCancellableCoroutine { continuation ->
@@ -59,6 +59,53 @@ actual class FirebaseStorage actual constructor(
                     logger.error("FirebaseStorage", "Upload returned false for: $remotePath", null)
                 }
                 continuation.resume(success)
+            }
+        }
+    }
+
+    actual suspend fun listFiles(path: String): List<CloudStorageFile> = withContext(Dispatchers.Main) {
+        logger.debug("FirebaseStorage", "Listing files from Firebase Storage: $path")
+        suspendCancellableCoroutine { continuation ->
+            com.asr.financial.platform.FirebaseStorageBridge.listFiles(path) { files, error ->
+                if (error != null) {
+                    logger.error("FirebaseStorage", "Error listing files from $path: $error", null)
+                    continuation.resume(emptyList())
+                } else {
+                    logger.debug("FirebaseStorage", "Successfully listed ${files.size} files from: $path")
+                    continuation.resume(files)
+                }
+            }
+        }
+    }
+
+    actual suspend fun deleteFile(remotePath: String): Boolean = withContext(Dispatchers.Main) {
+        logger.debug("FirebaseStorage", "Deleting file from Firebase Storage: $remotePath")
+        suspendCancellableCoroutine { continuation ->
+            com.asr.financial.platform.FirebaseStorageBridge.deleteFile(remotePath) { success, error ->
+                if (error != null) {
+                    logger.error("FirebaseStorage", "Error deleting $remotePath: $error", null)
+                } else if (success) {
+                    logger.debug("FirebaseStorage", "Successfully deleted file: $remotePath")
+                } else {
+                    logger.error("FirebaseStorage", "Delete returned false for: $remotePath", null)
+                }
+                continuation.resume(success)
+            }
+        }
+    }
+
+    actual suspend fun downloadFileToTemp(remotePath: String): String? = withContext(Dispatchers.Main) {
+        logger.debug("FirebaseStorage", "Downloading file to temp from Firebase Storage: $remotePath")
+        suspendCancellableCoroutine { continuation ->
+            com.asr.financial.platform.FirebaseStorageBridge.downloadFileToTemp(remotePath) { localPath, error ->
+                if (error != null) {
+                    logger.error("FirebaseStorage", "Error downloading to temp $remotePath: $error", null)
+                } else if (localPath != null) {
+                    logger.debug("FirebaseStorage", "Successfully downloaded to temp: $localPath")
+                } else {
+                    logger.error("FirebaseStorage", "Download to temp returned null for: $remotePath", null)
+                }
+                continuation.resume(localPath)
             }
         }
     }
@@ -157,5 +204,86 @@ object FirebaseStorageBridge {
         uploadFileCallback?.invoke(success, error)
         uploadFileCallback = null
         uploadProgressCallback = null
+    }
+
+    // List files callback
+    private var listFilesCallback: ((List<CloudStorageFile>, String?) -> Unit)? = null
+
+    /**
+     * Called from Kotlin to list files from a Firebase Storage directory.
+     * The Swift bridge should observe this and call Firebase Storage.
+     */
+    fun listFiles(
+        path: String,
+        completion: (List<CloudStorageFile>, String?) -> Unit
+    ) {
+        listFilesCallback = completion
+        // Post notification to Swift layer
+        platform.Foundation.NSNotificationCenter.defaultCenter.postNotificationName(
+            "FirebaseStorageListFiles",
+            `object` = mapOf("path" to path)
+        )
+    }
+
+    /**
+     * Called from Swift bridge when list files completes.
+     */
+    fun reportListFilesResult(files: List<CloudStorageFile>, error: String?) {
+        listFilesCallback?.invoke(files, error)
+        listFilesCallback = null
+    }
+
+    // Delete file callback
+    private var deleteFileCallback: ((Boolean, String?) -> Unit)? = null
+
+    /**
+     * Called from Kotlin to delete a file from Firebase Storage.
+     * The Swift bridge should observe this and call Firebase Storage.
+     */
+    fun deleteFile(
+        remotePath: String,
+        completion: (Boolean, String?) -> Unit
+    ) {
+        deleteFileCallback = completion
+        // Post notification to Swift layer
+        platform.Foundation.NSNotificationCenter.defaultCenter.postNotificationName(
+            "FirebaseStorageDeleteFile",
+            `object` = mapOf("remotePath" to remotePath)
+        )
+    }
+
+    /**
+     * Called from Swift bridge when file delete completes.
+     */
+    fun reportDeleteFileResult(success: Boolean, error: String?) {
+        deleteFileCallback?.invoke(success, error)
+        deleteFileCallback = null
+    }
+
+    // Download to temp callback
+    private var downloadToTempCallback: ((String?, String?) -> Unit)? = null
+
+    /**
+     * Called from Kotlin to download a file to a temp location.
+     * The Swift bridge should observe this and call Firebase Storage.
+     */
+    fun downloadFileToTemp(
+        remotePath: String,
+        completion: (String?, String?) -> Unit
+    ) {
+        downloadToTempCallback = completion
+        // Post notification to Swift layer
+        platform.Foundation.NSNotificationCenter.defaultCenter.postNotificationName(
+            "FirebaseStorageDownloadToTemp",
+            `object` = mapOf("remotePath" to remotePath)
+        )
+    }
+
+    /**
+     * Called from Swift bridge when download to temp completes.
+     */
+    fun reportDownloadToTempResult(localPath: String?, error: String?) {
+        downloadToTempCallback?.invoke(localPath, error)
+        downloadToTempCallback = null
     }
 }

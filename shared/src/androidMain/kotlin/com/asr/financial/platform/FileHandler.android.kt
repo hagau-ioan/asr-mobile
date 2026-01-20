@@ -38,4 +38,25 @@ actual class FileHandler(private val context: Context) {
     actual fun getFilePath(fileName: String): String {
         return File(filesDir, fileName).absolutePath
     }
+    
+    actual suspend fun cleanupTempFiles(prefix: String): Int = withContext(Dispatchers.IO) {
+        try {
+            val tempDir = File(System.getProperty("java.io.tmpdir"))
+            if (!tempDir.exists() || !tempDir.isDirectory) {
+                return@withContext 0
+            }
+            
+            var deletedCount = 0
+            tempDir.listFiles()?.forEach { file ->
+                if (file.isFile && file.name.startsWith(prefix)) {
+                    if (file.delete()) {
+                        deletedCount++
+                    }
+                }
+            }
+            deletedCount
+        } catch (e: Exception) {
+            0
+        }
+    }
 }

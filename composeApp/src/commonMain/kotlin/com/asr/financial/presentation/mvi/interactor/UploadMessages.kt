@@ -14,4 +14,9 @@ internal object UploadMessages {
     const val ERROR_DELETE = "upload_error_delete"
     const val ERROR_SEND = "upload_error_send"
     const val ERROR_UPLOAD_CANCELLED = "upload_error_upload_cancelled"
+    // Cloud images messages
+    const val SUCCESS_CLOUD_IMAGE_DELETED = "upload_success_cloud_deleted"
+    const val ERROR_LOAD_CLOUD_IMAGES = "upload_error_load_cloud"
+    const val ERROR_DELETE_CLOUD_IMAGE = "upload_error_delete_cloud"
+    const val ERROR_DOWNLOAD_PREVIEW = "upload_error_download_preview"
 }

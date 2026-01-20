@@ -46,7 +46,7 @@ val presentationModule = module {
     factory { CalculatorInteractor(get(), get(), get(), get()) }
     factory { AsrExpensesInteractor(get()) }
     factory { DecontInteractor(get()) }
-    factory { UploadInteractor(get(), get(), get()) }
+    factory { UploadInteractor(get(), get(), get(), get()) }
     factory { LoginInteractor(get()) }
 
     // ═══════════════════════════════════════════════════════════════════

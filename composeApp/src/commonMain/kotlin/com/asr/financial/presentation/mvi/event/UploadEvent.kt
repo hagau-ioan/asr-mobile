@@ -11,4 +11,9 @@ sealed interface UploadEvent {
     data object DeleteImage : UploadEvent
     data object SendImage : UploadEvent
     data object Reset : UploadEvent
+    // Cloud images events
+    data object RefreshCloudImages : UploadEvent
+    data class DeleteCloudImage(val remotePath: String) : UploadEvent
+    data class ViewCloudImage(val remotePath: String) : UploadEvent
+    data object DismissCloudImagePreview : UploadEvent
 }
