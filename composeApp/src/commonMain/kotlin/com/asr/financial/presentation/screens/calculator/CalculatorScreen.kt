@@ -1,12 +1,18 @@
 package com.asr.financial.presentation.screens.calculator
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.asr.financial.platform.Clock
+import com.asr.financial.platform.Clipboard
+import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
 import com.asr.financial.presentation.mvi.event.CalculatorEvent
 import com.asr.financial.presentation.mvi.interactor.CalculatorMessages
 import com.asr.financial.presentation.mvi.state.CalculatorState
@@ -21,13 +27,9 @@ import com.asr.financial.presentation.ui.constants.UIConstants.CARD_PADDING_DP
 import com.asr.financial.presentation.ui.constants.UIConstants.SECTION_SPACING_DP
 import com.asr.financial.presentation.ui.responsive.WindowSizeClass
 import com.asr.financial.presentation.ui.scaffold.ScreenLayout
-import com.asr.financial.utils.getCurrentMonth
-import com.asr.financial.utils.getCurrentYear
-import com.asr.financial.utils.calculatePreviousMonth
-import com.asr.financial.utils.getMonthAbbreviationResource
+import com.asr.financial.utils.formatCurrency
 import asr_financial.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -35,26 +37,18 @@ fun CalculatorScreen(
     windowSizeClass: WindowSizeClass,
     onNavigate: (String) -> Unit,
     onMenuClick: () -> Unit = {},
-    viewModel: CalculatorViewModel = koinViewModel(),
-    clock: Clock = koinInject()
+    viewModel: CalculatorViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    
-    val (selectedMonth, selectedYear) = remember {
-        val (prevMonth, prevYear) = calculatePreviousMonth(getCurrentMonth(clock), getCurrentYear(clock))
-        prevMonth to prevYear
-    }
 
     LaunchedEffect(Unit) {
-        viewModel.handleEvent(CalculatorEvent.LoadData(selectedYear, selectedMonth))
+        viewModel.handleEvent(CalculatorEvent.LoadData)
     }
 
     when (val state = uiState) {
         is CalculatorState.Success -> {
             CalculatorSuccessContent(
                 state = state,
-                selectedYear = selectedYear,
-                selectedMonth = selectedMonth,
                 windowSizeClass = windowSizeClass,
                 onNavigate = onNavigate,
                 onMenuClick = onMenuClick
@@ -96,14 +90,10 @@ fun CalculatorScreen(
 @Composable
 private fun CalculatorSuccessContent(
     state: CalculatorState.Success,
-    selectedYear: Int,
-    selectedMonth: Int,
     windowSizeClass: WindowSizeClass,
     onNavigate: (String) -> Unit,
     onMenuClick: () -> Unit
 ) {
-    val selectedMonthName = getMonthAbbreviationResource(selectedMonth)?.let { stringResource(it) } ?: ""
-    
     ScreenLayout(
         windowSizeClass = windowSizeClass,
         breadcrumbItems = listOf(
@@ -139,11 +129,7 @@ private fun CalculatorSuccessContent(
                     ContributionCard(
                         title = stringResource(Res.string.calculator_monthly_title),
                         contribution = state.monthlyContribution,
-                        periodLabel = stringResource(
-                            Res.string.calculator_for_month,
-                            selectedMonthName,
-                            selectedYear
-                        ),
+                        periodLabel = stringResource(Res.string.calculator_based_on_12_months),
                         containerColor = MaterialTheme.colorScheme.primaryContainer,
                         contentColor = MaterialTheme.colorScheme.primary
                     )
@@ -153,12 +139,26 @@ private fun CalculatorSuccessContent(
                     ContributionCard(
                         title = stringResource(Res.string.calculator_yearly_title),
                         contribution = state.yearlyContribution,
-                        periodLabel = stringResource(Res.string.calculator_for_year, selectedYear),
+                        periodLabel = stringResource(Res.string.calculator_based_on_12_months),
                         containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                         contentColor = MaterialTheme.colorScheme.tertiary
                     )
                 }
             }
+        }
+
+        // Situatie Curenta ASR Section
+        state.situatieCurentaAsr?.let { situatie ->
+            item {
+                Spacer(Modifier.height(SECTION_SPACING_DP.dp))
+            }
+            item {
+                SituatieCurentaAsrSection(situatie = situatie)
+            }
+        }
+
+        item {
+            Spacer(Modifier.height(SECTION_SPACING_DP.dp))
         }
 
         item {
@@ -174,6 +174,199 @@ private fun CalculatorSuccessContent(
                 CongregationContributionRow(contribution = contribution)
             }
         }
+    }
+}
+
+@Composable
+private fun SituatieCurentaAsrSection(
+    situatie: com.asr.financial.domain.models.SituatieCurentaAsr,
+    clipboard: Clipboard = koinInject()
+) {
+    val scope = rememberCoroutineScope()
+    var showCopySuccess by remember { mutableStateOf(false) }
+    
+    LaunchedEffect(showCopySuccess) {
+        if (showCopySuccess) {
+            kotlinx.coroutines.delay(2000)
+            showCopySuccess = false
+        }
+    }
+    
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(CARD_PADDING_DP.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(Res.string.calculator_situatie_curenta_title),
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold
+                )
+                IconButton(
+                    onClick = {
+                        scope.launch {
+                            val textToCopy = formatSituatieForClipboard(situatie)
+                            if (clipboard.copyToClipboard(textToCopy)) {
+                                showCopySuccess = true
+                            }
+                        }
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ContentCopy,
+                        contentDescription = stringResource(Res.string.calculator_copy_to_clipboard),
+                        tint = if (showCopySuccess) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+            Spacer(Modifier.height(8.dp))
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
+                )
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 12.dp, vertical = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(Res.string.calculator_data_end_date_label),
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        text = situatie.endDate,
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+            Spacer(Modifier.height(16.dp))
+
+            // Financial metrics displayed in rows
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                SituatieRow(
+                    label = stringResource(Res.string.calculator_total_disponibil),
+                    value = situatie.totalDisponibil.formatCurrency(),
+                    valueColor = MaterialTheme.colorScheme.primary
+                )
+                SituatieRow(
+                    label = stringResource(Res.string.calculator_incasare_asr),
+                    value = situatie.incasareAsr.formatCurrency(),
+                    valueColor = MaterialTheme.colorScheme.tertiary
+                )
+                SituatieRow(
+                    label = stringResource(Res.string.calculator_plata_asr),
+                    value = situatie.plataAsr.formatCurrency(),
+                    valueColor = MaterialTheme.colorScheme.error
+                )
+                SituatieRow(
+                    label = stringResource(Res.string.calculator_disponibil_cg_initial),
+                    value = situatie.disponibilCgInitial.formatCurrency()
+                )
+                SituatieRow(
+                    label = stringResource(Res.string.calculator_incasare_cg),
+                    value = situatie.incasareCg.formatCurrency(),
+                    valueColor = MaterialTheme.colorScheme.tertiary
+                )
+                SituatieRow(
+                    label = stringResource(Res.string.calculator_disponibil_cg_final),
+                    value = situatie.disponibilCgFinal.formatCurrency()
+                )
+                SituatieRow(
+                    label = stringResource(Res.string.calculator_total_asr),
+                    value = situatie.totalAsr.formatCurrency(),
+                    valueColor = MaterialTheme.colorScheme.primary,
+                    isLarge = true
+                )
+            }
+            
+            Spacer(Modifier.height(16.dp))
+            
+            // Informational note
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.3f)
+                )
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp),
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.Top
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(Modifier.width(8.dp))
+                    Text(
+                        text = stringResource(Res.string.calculator_situatie_info_note),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SituatieRow(
+    label: String,
+    value: String,
+    valueColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.onSurface,
+    isLarge: Boolean = false
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = label,
+            style = if (isLarge) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Text(
+            text = value,
+            style = if (isLarge) MaterialTheme.typography.titleMedium else MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Bold,
+            color = valueColor
+        )
+    }
+}
+
+/**
+ * Format situatie data for clipboard
+ */
+private fun formatSituatieForClipboard(situatie: com.asr.financial.domain.models.SituatieCurentaAsr): String {
+    return buildString {
+        appendLine("Situație Curentă ASR")
+        appendLine("Date până la: ${situatie.endDate}")
+        appendLine()
+        appendLine("Total Disponibil: ${situatie.totalDisponibil.formatCurrency()}")
+        appendLine("Încasare ASR: ${situatie.incasareAsr.formatCurrency()}")
+        appendLine("Plată ASR: ${situatie.plataAsr.formatCurrency()}")
+        appendLine("Disponibil CG Inițial: ${situatie.disponibilCgInitial.formatCurrency()}")
+        appendLine("Încasare CG: ${situatie.incasareCg.formatCurrency()}")
+        appendLine("Disponibil CG Final: ${situatie.disponibilCgFinal.formatCurrency()}")
+        appendLine("Total ASR: ${situatie.totalAsr.formatCurrency()}")
     }
 }
 

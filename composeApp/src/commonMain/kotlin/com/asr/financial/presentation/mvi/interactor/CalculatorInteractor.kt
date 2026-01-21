@@ -2,9 +2,11 @@ package com.asr.financial.presentation.mvi.interactor
 
 import com.asr.financial.domain.models.TransactionType
 import com.asr.financial.domain.usecase.GetAllCongregationsUseCase
-import com.asr.financial.domain.usecase.GetPublisherExpectedContributionUseCase
+import com.asr.financial.domain.usecase.GetSituatieCurentaAsrUseCase
 import com.asr.financial.domain.usecase.GetTotalPublishersUseCase
-import com.asr.financial.domain.usecase.GetTransactionsByMonthUseCase
+import com.asr.financial.domain.usecase.GetTransactionsUseCase
+import com.asr.financial.domain.usecase.IsAdminUseCase
+import com.asr.financial.platform.Clock
 import com.asr.financial.presentation.mvi.effect.CalculatorEffect
 import com.asr.financial.presentation.mvi.event.CalculatorEvent
 import com.asr.financial.presentation.mvi.interactor.CalculatorMessages
@@ -12,6 +14,8 @@ import com.asr.financial.presentation.mvi.state.CalculatorState
 import com.asr.financial.presentation.screens.calculator.CongregationContribution
 import com.asr.financial.presentation.screens.calculator.ContributionCalculation
 import com.asr.financial.utils.divide
+import com.asr.financial.utils.getCurrentMonth
+import com.asr.financial.utils.getCurrentYear
 import com.asr.financial.utils.roundTo
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -22,12 +26,15 @@ import kotlinx.coroutines.flow.receiveAsFlow
 /**
  * Interactor for Calculator Screen
  * Handles business logic for contribution calculations
+ * All calculations are based on the last 12 months of expenses
  */
 class CalculatorInteractor(
     private val getAllCongregationsUseCase: GetAllCongregationsUseCase,
     private val getTotalPublishersUseCase: GetTotalPublishersUseCase,
-    private val getPublisherExpectedContributionUseCase: GetPublisherExpectedContributionUseCase,
-    private val getTransactionsByMonthUseCase: GetTransactionsByMonthUseCase
+    private val getTransactionsUseCase: GetTransactionsUseCase,
+    private val getSituatieCurentaAsrUseCase: GetSituatieCurentaAsrUseCase,
+    private val isAdminUseCase: IsAdminUseCase,
+    private val clock: Clock
 ) {
     private val _uiState = MutableStateFlow<CalculatorState>(CalculatorState.Loading)
     val uiState: Flow<CalculatorState> = _uiState.asStateFlow()
@@ -37,41 +44,45 @@ class CalculatorInteractor(
 
     suspend fun handleEvent(event: CalculatorEvent) {
         when (event) {
-            is CalculatorEvent.LoadData -> loadData(event.year, event.month)
-            is CalculatorEvent.FilterByPeriod -> loadData(event.year, event.month)
+            is CalculatorEvent.LoadData -> loadData()
+            is CalculatorEvent.FilterByPeriod -> loadData() // Period filter no longer needed, always uses last 12 months
         }
     }
 
-    private suspend fun loadData(year: Int, month: Int) {
+    private suspend fun loadData() {
         try {
             _uiState.emit(CalculatorState.Loading)
 
             val congregations = getAllCongregationsUseCase()
             val totalPublishers = getTotalPublishersUseCase()
-            val publisherExpectedContribution = getPublisherExpectedContributionUseCase()
             
-            // Calculate monthly expenses from transactions
-            val monthlyTransactions = getTransactionsByMonthUseCase(month, year)
-            val monthlyExpenses = monthlyTransactions
-                .filter { it.type == TransactionType.EXPENSE }
-                .sumOf { it.amount }
-
             if (totalPublishers == 0) {
                 _uiState.emit(CalculatorState.Error(CalculatorMessages.ERROR_NO_PUBLISHERS))
                 return
             }
 
-            // Calculate contributions based on expected contribution per publisher
+            // Get all transactions and filter for last 12 months
+            val allTransactions = getTransactionsUseCase()
+            val last12MonthsExpenses = getLast12MonthsExpenses(allTransactions)
+
+            // Calculate contributions based on last 12 months expenses
+            // Monthly contribution = (Total expenses last 12 months / 12) / Number of publishers
+            val averageMonthlyExpenses = last12MonthsExpenses.divide(12.0)
+            val monthlyPerPublisher = averageMonthlyExpenses.divide(totalPublishers.toDouble())
+            
+            // Yearly contribution = Total expenses last 12 months / Number of publishers
+            val yearlyPerPublisher = last12MonthsExpenses.divide(totalPublishers.toDouble())
+
             val monthlyContribution = ContributionCalculation(
-                totalExpenses = monthlyExpenses,
+                totalExpenses = averageMonthlyExpenses,
                 numberOfPublishers = totalPublishers,
-                perPublisherAmount = publisherExpectedContribution
+                perPublisherAmount = monthlyPerPublisher.roundTo(2)
             )
 
             val yearlyContribution = ContributionCalculation(
-                totalExpenses = monthlyExpenses * com.asr.financial.presentation.ui.constants.AppConstants.Business.MONTHS_IN_YEAR,
+                totalExpenses = last12MonthsExpenses,
                 numberOfPublishers = totalPublishers,
-                perPublisherAmount = publisherExpectedContribution * com.asr.financial.presentation.ui.constants.AppConstants.Business.MONTHS_IN_YEAR
+                perPublisherAmount = yearlyPerPublisher.roundTo(2)
             )
 
             // Calculate per congregation using fixed monthly ceiling from JSON
@@ -86,11 +97,40 @@ class CalculatorInteractor(
                 )
             }.sortedBy { it.congregationName }
 
+            // Load current ASR situation from Firebase Storage
+            // Only load if user is admin, and only include if data matches current month/year
+            // Data is cached for 12 hours
+            val situatieCurentaAsr = try {
+                // Check if user is admin - only admins can view this data
+                val isAdmin = isAdminUseCase()
+                if (!isAdmin) {
+                    // User is not admin, don't load data
+                    null
+                } else {
+                    val situatie = getSituatieCurentaAsrUseCase()
+                    val currentYear = getCurrentYear(clock)
+                    val currentMonth = getCurrentMonth(clock)
+                    
+                    // Only include if data matches current month and year
+                    if (situatie != null && situatie.year == currentYear && situatie.month == currentMonth) {
+                        situatie
+                    } else {
+                        // Data doesn't match current month/year, don't display
+                        null
+                    }
+                }
+            } catch (e: Exception) {
+                // If loading fails, continue without it (non-critical data)
+                // Exception is silently handled to not break the screen
+                null
+            }
+
             _uiState.emit(
                 CalculatorState.Success(
                     monthlyContribution = monthlyContribution,
                     yearlyContribution = yearlyContribution,
-                    congregationContributions = congregationContributions
+                    congregationContributions = congregationContributions,
+                    situatieCurentaAsr = situatieCurentaAsr
                 )
             )
         } catch (e: Exception) {
@@ -103,5 +143,49 @@ class CalculatorInteractor(
             _uiState.emit(CalculatorState.Error(errorKey))
             _effect.send(CalculatorEffect.ShowError(errorKey))
         }
+    }
+
+    /**
+     * Get total expenses from the last 12 months
+     * Based on transaction dates (YYYY-MM-DD format)
+     */
+    private fun getLast12MonthsExpenses(transactions: List<com.asr.financial.domain.models.Transaction>): Double {
+        val currentYear = getCurrentYear(clock)
+        val currentMonth = getCurrentMonth(clock)
+        
+        // Calculate date range for last 12 months
+        val monthsToInclude = mutableListOf<Pair<Int, Int>>() // (year, month)
+        
+        for (i in 0 until 12) {
+            var year = currentYear
+            var month = currentMonth - i
+            
+            while (month <= 0) {
+                month += 12
+                year -= 1
+            }
+            
+            monthsToInclude.add(year to month)
+        }
+        
+        // Filter transactions from last 12 months and sum expenses
+        return transactions
+            .filter { transaction ->
+                if (transaction.type != TransactionType.EXPENSE) return@filter false
+                
+                val parts = transaction.date.split("-")
+                if (parts.size >= 2) {
+                    val txnYear = parts[0].toIntOrNull()
+                    val txnMonth = parts[1].toIntOrNull()
+                    if (txnYear != null && txnMonth != null) {
+                        monthsToInclude.contains(txnYear to txnMonth)
+                    } else {
+                        false
+                    }
+                } else {
+                    false
+                }
+            }
+            .sumOf { it.amount }
     }
 }

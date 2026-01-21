@@ -4,6 +4,7 @@ import com.asr.financial.domain.repository.AppConfigRepository
 import com.asr.financial.domain.repository.AsrExpenseRepository
 import com.asr.financial.domain.repository.CongregationInfoRepository
 import com.asr.financial.domain.repository.DecontRepository
+import com.asr.financial.domain.repository.CurrentAsrSituationRepository
 import com.asr.financial.domain.repository.TransactionRepository
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
@@ -21,7 +22,8 @@ class RefreshDataUseCase(
     private val appConfigRepository: AppConfigRepository,
     private val congregationRepository: CongregationInfoRepository,
     private val asrExpenseRepository: AsrExpenseRepository,
-    private val decontRepository: DecontRepository
+    private val decontRepository: DecontRepository,
+    private val currentAsrSituationRepository: CurrentAsrSituationRepository
 ) {
     suspend operator fun invoke() {
         // Exception handler to log errors without cancelling other operations
@@ -69,6 +71,15 @@ class RefreshDataUseCase(
                     decontRepository.refreshData()
                 } catch (e: Exception) {
                     // Individual error handling - this refresh failed but others continue
+                }
+            }
+
+            launch(exceptionHandler) {
+                try {
+                    currentAsrSituationRepository.refreshData()
+                } catch (e: Exception) {
+                    // Individual error handling - this refresh failed but others continue
+                    // CurrentAsrSituation is non-critical, so we silently handle errors
                 }
             }
         }

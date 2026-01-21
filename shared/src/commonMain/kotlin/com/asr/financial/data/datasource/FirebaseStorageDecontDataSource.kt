@@ -24,19 +24,10 @@ class FirebaseStorageDecontDataSource(
         // Load directly from Firebase Storage (caching is handled at repository level)
         val jsonString = firebaseStorage.downloadFileAsString(FILE_PATH)
             ?: throw IllegalStateException("data_error_load_failed")
-        return try {
-            // Try to decode as wrapped JSON first (Firebase Storage format)
-            val wrapped = json.decodeFromString<JsonResponseWrapper<DecontResponse>>(jsonString)
-            wrapped.data.deconts
-        } catch (e: Exception) {
-            // Fallback to direct DecontResponse (for backward compatibility)
-            try {
-                val response = json.decodeFromString<DecontResponse>(jsonString)
-                response.deconts
-            } catch (e2: Exception) {
-                emptyList()
-            }
-        }
+        
+        // Parse as wrapped JSON with direct List<Decont> (API format: { "_meta": {...}, "data": [...] })
+        val wrapped = json.decodeFromString<JsonResponseWrapper<List<Decont>>>(jsonString)
+        return wrapped.data
     }
 
     override suspend fun getByMonth(year: Int, month: Int): Decont? {

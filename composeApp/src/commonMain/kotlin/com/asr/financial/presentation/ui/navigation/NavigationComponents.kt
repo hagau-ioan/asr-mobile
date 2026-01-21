@@ -49,16 +49,33 @@ sealed class NavigationItem(
     data object Upload : NavigationItem(Routes.UPLOAD, Res.string.nav_upload, Icons.Default.Upload)
 }
 
-val navigationItems = listOf(
-    NavigationItem.Home,
-    NavigationItem.Congregations,
-    NavigationItem.Expenses,
-    NavigationItem.Utilities,
-    NavigationItem.Yearly,
-    NavigationItem.Calculator,
-    NavigationItem.AsrExpenses,
-    NavigationItem.Upload
+/**
+ * Navigation items organized by functional groups
+ * Groups are separated visually in the UI without headers
+ */
+val navigationItemGroups = listOf(
+    // Dashboard & Overview
+    listOf(NavigationItem.Home),
+    // Data Entry & Management
+    listOf(
+        NavigationItem.Congregations,
+        NavigationItem.Expenses,
+        NavigationItem.Utilities,
+        NavigationItem.Upload
+    ),
+    // Reports & Analytics
+    listOf(
+        NavigationItem.Yearly,
+        NavigationItem.AsrExpenses
+    ),
+    // Tools & Calculations
+    listOf(NavigationItem.Calculator)
 )
+
+/**
+ * Flattened list of all navigation items (for backward compatibility)
+ */
+val navigationItems = navigationItemGroups.flatten()
 
 /**
  * Maps NavigationItem to AppSection for permission checking
@@ -148,7 +165,7 @@ fun DrawerNavigationContent(
             }
         }
         
-        // Menu Items - Scrollable on small screens
+        // Menu Items - Scrollable on small screens, organized in groups
         Column(
             modifier = Modifier
                 .weight(1f)
@@ -156,35 +173,45 @@ fun DrawerNavigationContent(
                 .padding(vertical = 16.dp, horizontal = 12.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            getFilteredNavigationItems(currentUserEmail, checkPermissionUseCase).forEach { item ->
-                val isSelected = selectedRoute == item.route
-                
-                Button(
-                    onClick = { onNavigate(item.route) },
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = if (isSelected) MaterialTheme.colorScheme.tertiary else Color.Transparent,
-                        contentColor = if (isSelected) MaterialTheme.colorScheme.onTertiary else MaterialTheme.colorScheme.onSurfaceVariant
-                    ),
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
-                    elevation = if (isSelected) ButtonDefaults.buttonElevation(4.dp) else ButtonDefaults.buttonElevation(0.dp)
-                ) {
-                    Row(
+            val filteredItems = getFilteredNavigationItems(currentUserEmail, checkPermissionUseCase)
+            
+            // Group filtered items by their original groups
+            val filteredGroups = navigationItemGroups.map { group ->
+                group.filter { item -> filteredItems.contains(item) }
+            }.filter { it.isNotEmpty() }
+            
+            // Render all items from all groups without separators
+            filteredGroups.forEach { group ->
+                group.forEach { item ->
+                    val isSelected = selectedRoute == item.route
+                    
+                    Button(
+                        onClick = { onNavigate(item.route) },
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Start,
-                        verticalAlignment = Alignment.CenterVertically
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = if (isSelected) MaterialTheme.colorScheme.tertiary else Color.Transparent,
+                            contentColor = if (isSelected) MaterialTheme.colorScheme.onTertiary else MaterialTheme.colorScheme.onSurfaceVariant
+                        ),
+                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
+                        elevation = if (isSelected) ButtonDefaults.buttonElevation(4.dp) else ButtonDefaults.buttonElevation(0.dp)
                     ) {
-                        Icon(
-                            imageVector = item.icon,
-                            contentDescription = null,
-                            tint = if (isSelected) MaterialTheme.colorScheme.onTertiary else MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(AppConstants.UI.NAVIGATION_ICON_SIZE_DP.dp)
-                        )
-                        Spacer(Modifier.width(AppConstants.UI.NAVIGATION_SPACING_DP.dp))
-                        Text(
-                            text = stringResource(item.titleRes),
-                            fontWeight = FontWeight.Medium
-                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Start,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = item.icon,
+                                contentDescription = null,
+                                tint = if (isSelected) MaterialTheme.colorScheme.onTertiary else MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.size(AppConstants.UI.NAVIGATION_ICON_SIZE_DP.dp)
+                            )
+                            Spacer(Modifier.width(AppConstants.UI.NAVIGATION_SPACING_DP.dp))
+                            Text(
+                                text = stringResource(item.titleRes),
+                                fontWeight = FontWeight.Medium
+                            )
+                        }
                     }
                 }
             }

@@ -15,6 +15,7 @@ actual val platformModule = module {
     single { Logger() }
     single { ImageCapture() }
     single { FileSharer() }
+    single { Clipboard() }
     single { FirebaseAuth() }
     single { FirebaseStorage(get()) }  // Logger injected for error logging
 }

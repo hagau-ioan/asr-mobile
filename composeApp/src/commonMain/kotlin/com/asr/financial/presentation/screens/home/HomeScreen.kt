@@ -142,7 +142,6 @@ fun HomeScreen(
                             yearlyIncome = state.yearlyIncome,
                             yearlyExpenses = state.yearlyExpenses,
                             yearlyBalance = state.yearlyBalance,
-                            perPublisherExpense = state.perPublisherExpense,
                             totalPublishers = state.totalPublishers,
                             congregationCount = state.congregationCount,
                             selectedYear = state.selectedYear
@@ -218,6 +217,7 @@ private fun StatisticsCards(
             amount = publisherExpectedContribution.formatCurrency(),
             amountColor = MaterialTheme.colorScheme.primary,
             subtitle = stringResource(Res.string.stat_for_publishers, totalPublishers),
+            footnote = stringResource(Res.string.calculator_based_on_12_months),
             modifier = Modifier.weight(1f)
         )
 
@@ -329,7 +329,6 @@ private fun AnnualSummarySection(
     yearlyIncome: Double,
     yearlyExpenses: Double,
     yearlyBalance: Double,
-    perPublisherExpense: Double,
     totalPublishers: Int,
     congregationCount: Int,
     selectedYear: Int
@@ -370,14 +369,6 @@ private fun AnnualSummarySection(
                     value = yearlyBalance.formatCurrency(),
                     valueColor = if (yearlyBalance >= 0) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.error,
                     isLarge = true
-                )
-
-                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
-
-                SummaryRow(
-                    label = stringResource(Res.string.annual_per_publisher),
-                    value = perPublisherExpense.formatCurrency(),
-                    valueColor = MaterialTheme.colorScheme.primary
                 )
             }
         }
@@ -443,7 +434,8 @@ private fun StatCard(
     amountColor: Color,
     subtitle: String,
     modifier: Modifier = Modifier,
-    subtitleColor: Color = MaterialTheme.colorScheme.onSurfaceVariant
+    subtitleColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    footnote: String? = null
 ) {
     Card(
         modifier = modifier,
@@ -472,6 +464,13 @@ private fun StatCard(
                 style = MaterialTheme.typography.bodySmall,
                 color = subtitleColor
             )
+            if (footnote != null) {
+                Text(
+                    text = footnote,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                )
+            }
         }
     }
 }

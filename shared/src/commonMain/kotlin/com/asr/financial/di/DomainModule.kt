@@ -31,7 +31,8 @@ val domainModule = module {
             appConfigRepository = get(),
             congregationRepository = get(),
             asrExpenseRepository = get(),
-            decontRepository = get()
+            decontRepository = get(),
+            currentAsrSituationRepository = get()
         )
     }
     
@@ -40,6 +41,9 @@ val domainModule = module {
 
     // Decont use cases
     factory { GetDecontUseCase(get()) }
+    
+    // Situatie Curenta ASR use cases
+    factory { GetSituatieCurentaAsrUseCase(get()) }
     
     // Auth use cases
     factory { LoginUseCase(get()) }

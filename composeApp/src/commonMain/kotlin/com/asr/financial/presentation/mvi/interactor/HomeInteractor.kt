@@ -13,6 +13,8 @@ import com.asr.financial.presentation.ui.constants.UIConstants
 import com.asr.financial.utils.calculatePreviousMonth
 import com.asr.financial.utils.getCurrentMonth
 import com.asr.financial.utils.getCurrentYear
+import com.asr.financial.utils.divide
+import com.asr.financial.utils.roundTo
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,7 +34,7 @@ class HomeInteractor(
     private val getAvailableYearsUseCase: GetAvailableYearsUseCase,
     private val getAppConfigUseCase: GetAppConfigUseCase,
     private val refreshDataUseCase: RefreshDataUseCase,
-    clock: Clock
+    private val clock: Clock
 ) {
     private val _uiState = MutableStateFlow<HomeState>(HomeState.Loading)
     val uiState = _uiState.asStateFlow()
@@ -127,6 +129,16 @@ class HomeInteractor(
             allCongregationsData = allCongregationsData
         )
 
+        // Calculate per publisher contribution based on last 12 months (same as CalculatorScreen)
+        // Formula: (Total expenses last 12 months / 12) / Number of publishers
+        val last12MonthsExpenses = getLast12MonthsExpenses(allTransactions)
+        val averageMonthlyExpenses = last12MonthsExpenses.divide(12.0)
+        val perPublisherContribution = if (totalPublishers > 0) {
+            averageMonthlyExpenses.divide(totalPublishers.toDouble()).roundTo(2)
+        } else {
+            0.0
+        }
+
         _uiState.emit(
             HomeState.Success(
                 selectedYear = year,
@@ -142,7 +154,7 @@ class HomeInteractor(
                 expectedDonationPerCongregation = allCongregationsData.sumOf { it.monthlyCeiling } / allCongregationsData.size.coerceAtLeast(1),
                 totalPublishers = totalPublishers,
                 congregationCount = congregationCount,
-                perPublisherExpense = publisherExpectedContribution
+                perPublisherExpense = perPublisherContribution
             )
         )
     }
@@ -186,5 +198,50 @@ class HomeInteractor(
         refreshDataUseCase()
         loadData(currentYear, currentMonth)
         _uiEffectChannel.send(HomeEffect.ScrollToTop)
+    }
+
+    /**
+     * Get total expenses from the last 12 months
+     * Based on transaction dates (YYYY-MM-DD format)
+     * Same calculation as in CalculatorInteractor
+     */
+    private fun getLast12MonthsExpenses(transactions: List<Transaction>): Double {
+        val currentYear = getCurrentYear(clock)
+        val currentMonth = getCurrentMonth(clock)
+        
+        // Calculate date range for last 12 months
+        val monthsToInclude = mutableListOf<Pair<Int, Int>>() // (year, month)
+        
+        for (i in 0 until 12) {
+            var year = currentYear
+            var month = currentMonth - i
+            
+            while (month <= 0) {
+                month += 12
+                year -= 1
+            }
+            
+            monthsToInclude.add(year to month)
+        }
+        
+        // Filter transactions from last 12 months and sum expenses
+        return transactions
+            .filter { transaction ->
+                if (transaction.type != TransactionType.EXPENSE) return@filter false
+                
+                val parts = transaction.date.split("-")
+                if (parts.size >= 2) {
+                    val txnYear = parts[0].toIntOrNull()
+                    val txnMonth = parts[1].toIntOrNull()
+                    if (txnYear != null && txnMonth != null) {
+                        monthsToInclude.contains(txnYear to txnMonth)
+                    } else {
+                        false
+                    }
+                } else {
+                    false
+                }
+            }
+            .sumOf { it.amount }
     }
 }
