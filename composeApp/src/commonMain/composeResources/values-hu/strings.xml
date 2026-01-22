@@ -143,6 +143,7 @@
     <string name="expenses_distribution">Eloszlas Kategoriak Szerint</string>
     <string name="expenses_total_yearly">Osszes Kiadas - Utolso 12 Honap</string>
     <string name="expenses_yearly_range">%1$s %2$d-tol %3$s %4$d-ig (12 honap)</string>
+    <string name="expenses_yearly_range_full_year">%1$d év (Január - December)</string>
     <string name="expenses_empty">Nincsenek kiadasok ehhez az idoszakhoz</string>
     
     <!-- Utilities Screen -->

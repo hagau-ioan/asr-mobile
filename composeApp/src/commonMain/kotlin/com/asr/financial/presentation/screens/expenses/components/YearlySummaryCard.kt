@@ -8,8 +8,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.asr.financial.presentation.ui.constants.UIConstants.CARD_PADDING_DP
 import com.asr.financial.presentation.ui.constants.UIConstants.SMALL_SPACING_DP
-import com.asr.financial.utils.calculateStartMonthFor12Months
-import com.asr.financial.utils.calculateStartYearFor12Months
 import com.asr.financial.utils.formatCurrency
 import asr_financial.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.StringResource
@@ -25,10 +23,6 @@ fun YearlySummaryCard(
     yearlyEndYear: Int,
     months: List<Pair<Int, StringResource>>
 ) {
-    val endMonthName = months.find { it.first == yearlyEndMonth }?.second?.let { stringResource(it) } ?: ""
-    val startYear = calculateStartYearFor12Months(yearlyEndMonth, yearlyEndYear)
-    val startMonth = calculateStartMonthFor12Months(yearlyEndMonth)
-    val startMonthName = months.find { it.first == startMonth }?.second?.let { stringResource(it) } ?: ""
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -51,10 +45,7 @@ fun YearlySummaryCard(
             )
             Text(
                 text = stringResource(
-                    Res.string.expenses_yearly_range,
-                    startMonthName,
-                    startYear,
-                    endMonthName,
+                    Res.string.expenses_yearly_range_full_year,
                     yearlyEndYear
                 ),
                 style = MaterialTheme.typography.bodySmall,

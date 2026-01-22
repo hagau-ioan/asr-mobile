@@ -181,8 +181,11 @@ private fun ExpensesSuccessContent(
             MonthlySummaryCard(totalExpenses = state.totalExpenses)
         }
 
-        item {
-            PieChartCard(expenses = state.expenses)
+        // Only show distribution chart if there are expenses
+        if (state.expenses.isNotEmpty()) {
+            item {
+                PieChartCard(expenses = state.expenses)
+            }
         }
 
         state.expenses.forEach { expense ->

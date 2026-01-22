@@ -12,7 +12,8 @@ sealed interface AsrExpensesState {
         val totalAmount: Double,
         val selectedYear: Int,
         val selectedMonth: Int,
-        val availableYears: List<Int>
+        val availableYears: List<Int>,
+        val monthsWithDecontData: Set<Pair<Int, Int>> = emptySet() // Set of (year, month) pairs that have decont data with products
     ) : AsrExpensesState
     data class Error(val message: String) : AsrExpensesState
 }

@@ -14,11 +14,25 @@ import com.asr.financial.utils.formatCurrency
 import androidx.compose.material3.MaterialTheme
 
 /**
- * Check if an expense is a Decont item
+ * Check if an expense is a Decont item based on text
  */
-fun AsrExpense.isDecont(): Boolean {
+fun AsrExpense.isDecontText(): Boolean {
     return description.contains("Decont", ignoreCase = true) ||
            category.contains("Decont", ignoreCase = true)
+}
+
+/**
+ * Check if an expense has actual decont data (with products) for its date
+ */
+fun AsrExpense.hasDecontData(monthsWithDecontData: Set<Pair<Int, Int>>): Boolean {
+    if (!isDecontText()) return false
+    
+    val dateComponents = com.asr.financial.utils.parseDateComponentsSafe(date)
+    if (dateComponents != null) {
+        val (year, month, _) = dateComponents
+        return monthsWithDecontData.contains(year to month)
+    }
+    return false
 }
 
 /**
@@ -29,9 +43,10 @@ fun AsrExpense.isDecont(): Boolean {
 @Composable
 fun AsrExpenseRow(
     expense: AsrExpense,
-    onDecontClick: ((year: Int, month: Int) -> Unit)? = null
+    onDecontClick: ((year: Int, month: Int) -> Unit)? = null,
+    monthsWithDecontData: Set<Pair<Int, Int>> = emptySet()
 ) {
-    val isDecont = expense.isDecont()
+    val isDecont = expense.hasDecontData(monthsWithDecontData)
     val textColor = if (isDecont) SuccessGreen else MaterialTheme.colorScheme.onSurface
     val amountColor = when {
         isDecont -> SuccessGreen

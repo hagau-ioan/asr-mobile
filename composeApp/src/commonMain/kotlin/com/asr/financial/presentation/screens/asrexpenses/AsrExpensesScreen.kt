@@ -109,7 +109,8 @@ fun AsrExpensesScreen(
                         onMonthSelected = { month ->
                             viewModel.handleEvent(AsrExpensesEvent.FilterByPeriod(null, month))
                         },
-                        onNavigateToDecont = onNavigateToDecont
+                        onNavigateToDecont = onNavigateToDecont,
+                        monthsWithDecontData = state.monthsWithDecontData
                     )
                 }
             }
@@ -136,7 +137,8 @@ private fun AsrExpensesSuccessContent(
     onMonthDropdownChange: (Boolean) -> Unit,
     onYearSelected: (Int) -> Unit,
     onMonthSelected: (Int) -> Unit,
-    onNavigateToDecont: (Int, Int) -> Unit
+    onNavigateToDecont: (Int, Int) -> Unit,
+    monthsWithDecontData: Set<Pair<Int, Int>> = emptySet()
 ) {
     val selectedMonthName = if (selectedMonth == 0) {
         stringResource(Res.string.filter_all_months)
@@ -226,7 +228,8 @@ private fun AsrExpensesSuccessContent(
                     expense = expense,
                     onDecontClick = { year, month ->
                         onNavigateToDecont(year, month)
-                    }
+                    },
+                    monthsWithDecontData = monthsWithDecontData
                 )
             }
         }

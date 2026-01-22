@@ -124,6 +124,7 @@
     <string name="expenses_distribution">Distribuție pe Categorii</string>
     <string name="expenses_total_yearly">Total Cheltuieli - Ultimele 12 Luni</string>
     <string name="expenses_yearly_range">De la %1$s %2$d până la %3$s %4$d (12 luni)</string>
+    <string name="expenses_yearly_range_full_year">Anul %1$d (Ianuarie - Decembrie)</string>
     <string name="expenses_empty">Nu există cheltuieli în această perioadă</string>
     
     <!-- Utilities Screen -->

@@ -47,6 +47,7 @@ fun usePeriodSelectorState(
     var selectedMonth by remember { mutableStateOf(defaultMonth) }
     var showYearDropdown by remember { mutableStateOf(false) }
     var showMonthDropdown by remember { mutableStateOf(false) }
+    var hasUserChangedPeriod by remember { mutableStateOf(false) }
 
     val months = remember { getMonthsList() }
     val selectedMonthName = months.find { it.first == selectedMonth }?.second?.let { stringResource(it) } ?: ""
@@ -61,10 +62,12 @@ fun usePeriodSelectorState(
 
     // Notify when period changes
     LaunchedEffect(selectedYear, selectedMonth) {
-        if (skipInitialChange && selectedYear == defaultYear && selectedMonth == defaultMonth) {
+        if (skipInitialChange && !hasUserChangedPeriod && selectedYear == defaultYear && selectedMonth == defaultMonth) {
             // Skip the initial change if requested (for screens that only trigger on user changes)
             return@LaunchedEffect
         }
+        // Mark that user has changed period (even if they return to default)
+        hasUserChangedPeriod = true
         onPeriodChange(selectedYear, selectedMonth)
     }
 

@@ -13,7 +13,6 @@ import com.asr.financial.presentation.screens.expenses.ExpenseStat
 import com.asr.financial.utils.calculatePreviousMonth
 import com.asr.financial.utils.getCurrentMonth
 import com.asr.financial.utils.getCurrentYear
-import com.asr.financial.utils.isWithinLastNMonths
 import kotlin.concurrent.Volatile
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -70,8 +69,14 @@ class ExpensesInteractor(
         currentYear = year
         currentMonth = month
         
-        // Use cached data for filtering
+        // Use cached data for filtering - no refresh needed when switching between months
+        // Cache is already loaded in loadData() and contains all transactions
         try {
+            // Ensure cache is loaded if empty (shouldn't happen, but safety check)
+            if (cachedTransactions.isEmpty()) {
+                cachedTransactions = getTransactionsUseCase()
+            }
+            
             val expenses = calculateExpenses(year, month)
             emitSuccessState(expenses, year, month)
         } catch (e: Exception) {
@@ -115,31 +120,23 @@ class ExpensesInteractor(
         val totalExpenses = expenses.sumOf { it.amount }
         val availableYears = getAvailableYearsUseCase()
         
-        // Calculate last 12 months total ending at previous month
-        val currentYear = getCurrentYear(clock)
-        val currentMonth = getCurrentMonth(clock)
-        
-        // Calculate previous month using utility
-        val (endMonth, endYear) = calculatePreviousMonth(currentMonth, currentYear)
-        
-        val transactions = getTransactionsUseCase()
-        val yearlyTotal = transactions
+        // Calculate total expenses for the entire selected year (January - December)
+        // This is for the bottom section "Total Cheltuieli - Ultimele 12 Luni"
+        // which should show the full year total based on selected year
+        // Use cached transactions instead of fetching again
+        val yearlyTotal = cachedTransactions
             .filter { transaction ->
                 if (transaction.type != TransactionType.EXPENSE) return@filter false
                 
-                val txnYear = transaction.getYear()
-                val txnMonth = transaction.getMonth()
-                
-                // Use utility to check if within last 12 months
-                isWithinLastNMonths(
-                    targetMonth = txnMonth,
-                    targetYear = txnYear,
-                    referenceMonth = endMonth,
-                    referenceYear = endYear,
-                    monthsBack = com.asr.financial.presentation.ui.constants.AppConstants.Business.MONTHS_IN_YEAR
-                )
+                // Filter by selected year only (all 12 months of that year)
+                transaction.getYear() == year
             }
             .sumOf { it.amount }
+
+        // For display purposes, set end month to December and year to selected year
+        // This represents the full year period
+        val endMonth = 12
+        val endYear = year
 
         _uiState.emit(
             ExpensesState.Success(
