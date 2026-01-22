@@ -18,4 +18,7 @@ actual val platformModule = module {
     single { Clipboard(get()) }
     single { FirebaseAuth() }
     single { FirebaseStorage(get()) }  // Logger injected for error logging
+    single { FirebaseMessaging(get()) }  // Logger injected for error logging
+    single { UrlLauncher(get()) }  // Context injected for opening URLs
+    single { NotificationDataStore(get()) }  // Context injected for DataStore file path
 }

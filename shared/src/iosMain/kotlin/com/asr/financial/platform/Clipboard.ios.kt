@@ -3,7 +3,6 @@ package com.asr.financial.platform
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import platform.UIKit.UIPasteboard
-import platform.UIKit.generalPasteboard
 
 /**
  * iOS implementation of Clipboard.

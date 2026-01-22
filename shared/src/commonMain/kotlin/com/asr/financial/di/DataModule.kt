@@ -17,6 +17,8 @@ import com.asr.financial.data.datasource.DecontDataSource
 import com.asr.financial.data.datasource.FirebaseStorageDecontDataSource
 import com.asr.financial.data.datasource.FirebaseStorageSituatieCurentaAsrDataSource
 import com.asr.financial.data.datasource.SituatieCurentaAsrDataSource
+import com.asr.financial.data.datasource.DataStorePendingNotificationDataSource
+import com.asr.financial.data.datasource.PendingNotificationDataSource
 import com.asr.financial.data.datasource.TransactionDataSource
 import com.asr.financial.data.repository.AppConfigRepositoryImpl
 import com.asr.financial.data.repository.AsrExpenseRepositoryImpl
@@ -24,6 +26,7 @@ import com.asr.financial.data.repository.AuthRepositoryImpl
 import com.asr.financial.data.repository.CongregationInfoRepositoryImpl
 import com.asr.financial.data.repository.DecontRepositoryImpl
 import com.asr.financial.data.repository.CurrentAsrSituationRepositoryImpl
+import com.asr.financial.data.repository.NotificationRepositoryImpl
 import com.asr.financial.data.repository.TransactionRepositoryImpl
 import com.asr.financial.domain.repository.AppConfigRepository
 import com.asr.financial.domain.repository.AsrExpenseRepository
@@ -31,7 +34,9 @@ import com.asr.financial.domain.repository.AuthRepository
 import com.asr.financial.domain.repository.CongregationInfoRepository
 import com.asr.financial.domain.repository.DecontRepository
 import com.asr.financial.domain.repository.CurrentAsrSituationRepository
+import com.asr.financial.domain.repository.NotificationRepository
 import com.asr.financial.domain.repository.TransactionRepository
+import com.asr.financial.platform.NotificationDataStore
 import com.asr.financial.platform.ResourceLoader
 import org.koin.dsl.module
 
@@ -65,6 +70,11 @@ val dataModule = module {
         single<SituatieCurentaAsrDataSource> { FirebaseStorageSituatieCurentaAsrDataSource(get()) }
     }
     
+    // Pending Notification DataSource
+    single<PendingNotificationDataSource> { 
+        DataStorePendingNotificationDataSource(get<NotificationDataStore>().dataStore) 
+    }
+    
     // Repository implementations (unchanged - they use interfaces)
     single<TransactionRepository> { TransactionRepositoryImpl(get()) }
     single<CongregationInfoRepository> { CongregationInfoRepositoryImpl(get()) }
@@ -73,4 +83,5 @@ val dataModule = module {
     single<DecontRepository> { DecontRepositoryImpl(get()) }
     single<CurrentAsrSituationRepository> { CurrentAsrSituationRepositoryImpl(get(), get()) }
     single<AuthRepository> { AuthRepositoryImpl(get()) }
+    single<NotificationRepository> { NotificationRepositoryImpl(get(), get(), get(), get()) }
 }

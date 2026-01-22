@@ -1,9 +1,9 @@
 package com.asr.financial.presentation.mvi.interactor
 
+import com.asr.financial.domain.usecase.InitializeFcmSubscriptionsUseCase
 import com.asr.financial.domain.usecase.LoginUseCase
 import com.asr.financial.presentation.mvi.effect.LoginEffect
 import com.asr.financial.presentation.mvi.event.LoginEvent
-import com.asr.financial.presentation.mvi.interactor.LoginMessages
 import com.asr.financial.presentation.mvi.state.LoginState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +17,8 @@ import kotlinx.coroutines.flow.receiveAsFlow
  * Follows MVI pattern consistent with other Interactors
  */
 class LoginInteractor(
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val initializeFcmSubscriptionsUseCase: InitializeFcmSubscriptionsUseCase
 ) {
     private val _uiState = MutableStateFlow<LoginState>(LoginState.Ready())
     val uiState = _uiState.asStateFlow()
@@ -77,7 +78,15 @@ class LoginInteractor(
             
             result.fold(
                 onSuccess = { user ->
-                    // Login successful - navigate to home
+                    // Login successful - initialize FCM subscriptions
+                    // This will automatically subscribe to "all_users" and "admins" if user is admin
+                    try {
+                        initializeFcmSubscriptionsUseCase()
+                    } catch (e: Exception) {
+                        // Silently handle FCM subscription errors - don't block login
+                    }
+                    
+                    // Navigate to home
                     _uiState.emit(currentState.copy(isLoading = false))
                     _uiEffectChannel.send(LoginEffect.NavigateToHome)
                 },

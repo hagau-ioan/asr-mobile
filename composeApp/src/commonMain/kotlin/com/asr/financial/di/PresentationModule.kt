@@ -38,7 +38,7 @@ val presentationModule = module {
     // ═══════════════════════════════════════════════════════════════════
     // INTERACTORS
     // ═══════════════════════════════════════════════════════════════════
-    factory { HomeInteractor(get(), get(), get(), get(), get(), get(), get()) }
+    factory { HomeInteractor(get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     factory { CongregationsInteractor(get(), get(), get(), get(), get()) }
     factory { ExpensesInteractor(get(), get(), get(), get()) }
     factory { UtilitiesInteractor(get(), get(), get(), get()) }
@@ -47,7 +47,7 @@ val presentationModule = module {
     factory { AsrExpensesInteractor(get(), get(), get()) }
     factory { DecontInteractor(get()) }
     factory { UploadInteractor(get(), get(), get(), get()) }
-    factory { LoginInteractor(get()) }
+    factory { LoginInteractor(get(), get()) }
 
     // ═══════════════════════════════════════════════════════════════════
     // VIEWMODELS

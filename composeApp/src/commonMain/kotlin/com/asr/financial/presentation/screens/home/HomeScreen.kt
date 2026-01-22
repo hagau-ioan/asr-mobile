@@ -1,32 +1,76 @@
 package com.asr.financial.presentation.screens.home
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import asr_financial.composeapp.generated.resources.Res
+import asr_financial.composeapp.generated.resources.alert_donated_amount
+import asr_financial.composeapp.generated.resources.alert_expected_amount
+import asr_financial.composeapp.generated.resources.alert_missing_amount
+import asr_financial.composeapp.generated.resources.alert_missing_description
+import asr_financial.composeapp.generated.resources.alert_missing_title
+import asr_financial.composeapp.generated.resources.annual_balance
+import asr_financial.composeapp.generated.resources.annual_summary_title
+import asr_financial.composeapp.generated.resources.annual_total_donations
+import asr_financial.composeapp.generated.resources.annual_total_expenses
+import asr_financial.composeapp.generated.resources.calculator_based_on_12_months
+import asr_financial.composeapp.generated.resources.general_avg_per_congregation
+import asr_financial.composeapp.generated.resources.general_info_title
+import asr_financial.composeapp.generated.resources.general_total_congregations
+import asr_financial.composeapp.generated.resources.general_total_publishers
+import asr_financial.composeapp.generated.resources.home_month
+import asr_financial.composeapp.generated.resources.home_select_period
+import asr_financial.composeapp.generated.resources.home_year
+import asr_financial.composeapp.generated.resources.nav_home
+import asr_financial.composeapp.generated.resources.stat_balance
+import asr_financial.composeapp.generated.resources.stat_for_publishers
+import asr_financial.composeapp.generated.resources.stat_missing_congregations
+import asr_financial.composeapp.generated.resources.stat_monthly_donations
+import asr_financial.composeapp.generated.resources.stat_monthly_expenses
+import asr_financial.composeapp.generated.resources.stat_of_congregations
+import asr_financial.composeapp.generated.resources.stat_per_publisher
 import com.asr.financial.platform.Clock
+import com.asr.financial.platform.UrlLauncher
 import com.asr.financial.presentation.mvi.event.HomeEvent
 import com.asr.financial.presentation.mvi.state.HomeState
 import com.asr.financial.presentation.mvi.viewmodel.HomeViewModel
-import com.asr.financial.presentation.navigation.Routes
 import com.asr.financial.presentation.ui.components.BreadcrumbItem
+import com.asr.financial.presentation.ui.components.NotificationBanner
 import com.asr.financial.presentation.ui.components.period.PeriodSelectorCard
 import com.asr.financial.presentation.ui.components.states.ErrorContent
 import com.asr.financial.presentation.ui.components.states.LoadingContent
 import com.asr.financial.presentation.ui.responsive.WindowSizeClass
 import com.asr.financial.presentation.ui.scaffold.ScreenLayout
-import com.asr.financial.utils.formatCurrency
-import com.asr.financial.utils.getCurrentYear
-import com.asr.financial.utils.getCurrentMonth
 import com.asr.financial.utils.calculatePreviousMonth
+import com.asr.financial.utils.formatCurrency
+import com.asr.financial.utils.getCurrentMonth
+import com.asr.financial.utils.getCurrentYear
 import com.asr.financial.utils.getMonthsList
-import asr_financial.composeapp.generated.resources.*
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
@@ -76,10 +120,24 @@ fun HomeScreen(
     val selectedMonthName = months.find { it.first == selectedMonth }?.second?.let { stringResource(it) } ?: ""
     
     // Header always shows previous month
-    val (headerMonthNum, headerYear) = remember<Pair<Int, Int>> {
+    val (headerMonthNum, headerYear) = remember {
         calculatePreviousMonth(getCurrentMonth(clock), getCurrentYear(clock))
     }
     val headerMonth = months.find { it.first == headerMonthNum }?.second?.let { stringResource(it) } ?: ""
+
+    // Get pending notification from state (managed by HomeInteractor via MVI pattern)
+    val pendingNotification = (uiState as? HomeState.Success)?.pendingNotification
+    
+    // Get dependencies for NotificationBanner
+    val urlLauncher: UrlLauncher = koinInject()
+    val scope = rememberCoroutineScope()
+    
+    // Handle dismiss - dispatch event to ViewModel
+    val onDismissNotification: () -> Unit = {
+        scope.launch {
+            viewModel.handleEvent(HomeEvent.DismissNotification)
+        }
+    }
 
     ScreenLayout(
         windowSizeClass = windowSizeClass,
@@ -92,6 +150,18 @@ fun HomeScreen(
         onMenuClick = onMenuClick,
         onRefreshClick = { viewModel.handleEvent(HomeEvent.Refresh) }
     ) {
+        // Notification Banner (if pending notification exists)
+        pendingNotification?.let { notification ->
+            item {
+                NotificationBanner(
+                    notification = notification,
+                    onDismiss = onDismissNotification,
+                    urlLauncher = urlLauncher,
+                    scope = scope
+                )
+            }
+        }
+        
         // Period Selector Card
         item {
             PeriodSelectorCard(
@@ -154,7 +224,6 @@ fun HomeScreen(
                     item {
                         MissingCongregationsAlert(
                             missingCongregations = state.missingCongregations,
-                            expectedAmount = state.expectedDonationPerCongregation,
                             selectedMonth = selectedMonthName,
                             selectedYear = state.selectedYear
                         )
@@ -234,7 +303,6 @@ private fun StatisticsCards(
 @Composable
 private fun MissingCongregationsAlert(
     missingCongregations: List<MissingCongregation>,
-    expectedAmount: Double,
     selectedMonth: String,
     selectedYear: Int
 ) {
@@ -265,8 +333,7 @@ private fun MissingCongregationsAlert(
 
             missingCongregations.forEach { missing ->
                 MissingCongregationCard(
-                    missingCongregation = missing,
-                    expectedAmount = expectedAmount
+                    missingCongregation = missing
                 )
             }
         }
@@ -275,8 +342,7 @@ private fun MissingCongregationsAlert(
 
 @Composable
 private fun MissingCongregationCard(
-    missingCongregation: MissingCongregation,
-    expectedAmount: Double
+    missingCongregation: MissingCongregation
 ) {
     Card(
         modifier = Modifier

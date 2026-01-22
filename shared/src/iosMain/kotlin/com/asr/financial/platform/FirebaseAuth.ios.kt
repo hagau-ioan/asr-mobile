@@ -9,21 +9,29 @@ import kotlin.coroutines.resume
 
 /**
  * iOS implementation of FirebaseAuth using a bridge pattern.
- * 
+ *
  * This uses FirebaseAuthBridge (Swift) which must be called from the iOS app layer.
  * The bridge is accessed via a singleton pattern similar to CameraBridge.
- * 
+ *
  * Note: The Swift bridge (FirebaseAuthBridge.swift) must be added to the Xcode project
  * and the Firebase iOS SDK must be added via Swift Package Manager.
  */
 actual class FirebaseAuth {
+
+    private companion object {
+        // Array indices for user data returned from Swift bridge
+        const val USER_DATA_UID_INDEX = 0uL
+        const val USER_DATA_EMAIL_INDEX = 1uL
+        const val USER_DATA_DISPLAY_NAME_INDEX = 2uL
+        const val USER_DATA_MIN_COUNT = 3
+    }
     
     actual suspend fun signInWithEmailAndPassword(
         email: String,
         password: String
     ): AuthResult = withContext(Dispatchers.Main) {
         suspendCancellableCoroutine { continuation ->
-            com.asr.financial.platform.FirebaseAuthBridge.signIn(email, password) { success, uid, email, displayName, errorMessage ->
+            FirebaseAuthBridge.signIn(email, password) { success, uid, email, displayName, errorMessage ->
                 if (success && uid != null) {
                     continuation.resume(
                         AuthResult(
@@ -48,18 +56,18 @@ actual class FirebaseAuth {
     }
     
     actual suspend fun signOut() = withContext(Dispatchers.Main) {
-        com.asr.financial.platform.FirebaseAuthBridge.signOut()
+        FirebaseAuthBridge.signOut()
     }
     
     actual suspend fun getCurrentUser(): User? = withContext(Dispatchers.Main) {
-        val result = com.asr.financial.platform.FirebaseAuthBridge.getCurrentUser()
-        if (result == null || result.count.toInt() < 3) {
+        val result = FirebaseAuthBridge.getCurrentUser()
+        if (result == null || result.count.toInt() < USER_DATA_MIN_COUNT) {
             return@withContext null
         }
 
-        val uid = result.objectAtIndex(0u) as? String
-        val email = result.objectAtIndex(1u) as? String
-        val displayName = result.objectAtIndex(2u) as? String
+        val uid = result.objectAtIndex(USER_DATA_UID_INDEX) as? String
+        val email = result.objectAtIndex(USER_DATA_EMAIL_INDEX) as? String
+        val displayName = result.objectAtIndex(USER_DATA_DISPLAY_NAME_INDEX) as? String
 
         if (uid != null) {
             User(
@@ -73,12 +81,12 @@ actual class FirebaseAuth {
     }
     
     actual suspend fun isUserSignedIn(): Boolean = withContext(Dispatchers.Main) {
-        com.asr.financial.platform.FirebaseAuthBridge.isUserSignedIn()
+        FirebaseAuthBridge.isUserSignedIn()
     }
     
     actual suspend fun getAuthToken(): String? = withContext(Dispatchers.Main) {
         suspendCancellableCoroutine { continuation ->
-            com.asr.financial.platform.FirebaseAuthBridge.getAuthToken(forceRefresh = false) { token, error ->
+            FirebaseAuthBridge.getAuthToken(forceRefresh = false) { token, error ->
                 continuation.resume(token)
             }
         }
@@ -86,7 +94,7 @@ actual class FirebaseAuth {
     
     actual suspend fun refreshToken(): String? = withContext(Dispatchers.Main) {
         suspendCancellableCoroutine { continuation ->
-            com.asr.financial.platform.FirebaseAuthBridge.getAuthToken(forceRefresh = true) { token, error ->
+            FirebaseAuthBridge.getAuthToken(forceRefresh = true) { token, error ->
                 continuation.resume(token)
             }
         }
@@ -94,7 +102,7 @@ actual class FirebaseAuth {
     
     actual suspend fun verifySession(): Boolean = withContext(Dispatchers.Main) {
         suspendCancellableCoroutine { continuation ->
-            com.asr.financial.platform.FirebaseAuthBridge.verifySession { isValid ->
+            FirebaseAuthBridge.verifySession { isValid ->
                 continuation.resume(isValid)
             }
         }

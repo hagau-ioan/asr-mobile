@@ -19,12 +19,12 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace = "com.asr.financial.android"
-    compileSdk = 36
+    compileSdk = libs.versions.android.compile.sdk.get().toInt()
     
     defaultConfig {
         applicationId = "com.asr.financial"
-        minSdk = 26
-        targetSdk = 36
+        minSdk = libs.versions.android.min.sdk.get().toInt()
+        targetSdk = libs.versions.android.target.sdk.get().toInt()
         // Read version from libs.versions.toml (or gradle.properties as fallback)
         val appVersionName = try {
             libs.versions.appVersion.get()
@@ -114,4 +114,6 @@ dependencies {
     // Firebase (for MainActivity initialization)
     // Note: firebase-auth-ktx includes Firebase Core automatically
     implementation(libs.firebase.auth)
+    // Firebase Messaging (for FCM push notifications)
+    implementation(libs.firebase.messaging)
 }

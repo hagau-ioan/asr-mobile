@@ -1,5 +1,6 @@
 package com.asr.financial.presentation.mvi.state
 
+import com.asr.financial.domain.models.PendingNotification
 import com.asr.financial.presentation.screens.home.MissingCongregation
 
 /**
@@ -38,7 +39,10 @@ sealed interface HomeState {
         val perPublisherExpense: Double,
         
         // UI state
-        val isRefreshing: Boolean = false
+        val isRefreshing: Boolean = false,
+        
+        // Pending notification to display in banner
+        val pendingNotification: PendingNotification? = null
     ) : HomeState
 
     data class Error(val message: String) : HomeState

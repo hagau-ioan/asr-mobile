@@ -44,7 +44,7 @@ kotlin {
             implementation(libs.sqldelight.coroutines)
 
             // DataStore
-            implementation(libs.datastore.preferences)
+            implementation(libs.datastore.preferences.core)
 
             // Koin
             implementation(libs.koin.core)
@@ -63,12 +63,17 @@ kotlin {
             implementation(libs.androidx.exifinterface)
             implementation(libs.ktor.client.okhttp)
             
+            // DataStore (Android-specific)
+            implementation(libs.datastore.preferences)
+            
             // Firebase Auth (Android)
             // Note: firebase-auth-ktx includes Firebase Core automatically
             implementation(libs.firebase.auth)
             
             // Firebase Storage (Android)
             implementation(libs.firebase.storage)
+            // Firebase Messaging (Android)
+            implementation(libs.firebase.messaging)
             implementation(libs.kotlinx.coroutines.play.services)
         }
 

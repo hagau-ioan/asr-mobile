@@ -54,4 +54,17 @@ val domainModule = module {
     factory { GetUserRoleUseCase(get()) }
     factory { IsAdminUseCase(get()) }
     factory { CheckPermissionUseCase(get()) }
+    
+    // Notification use cases
+    factory { GetFcmTokenUseCase(get()) }
+    factory { SubscribeToTopicUseCase(get()) }
+    factory { UnsubscribeFromTopicUseCase(get()) }
+    factory { GetSubscribedTopicsUseCase(get()) }
+    factory { InitializeFcmSubscriptionsUseCase(get(), get()) }
+    factory { GetPendingNotificationUseCase(get()) }
+    factory { SavePendingNotificationUseCase(get()) }
+    factory { ClearPendingNotificationUseCase(get()) }
+    factory { ObservePendingNotificationUseCase(get()) }
+    factory { ConvertAndSavePendingNotificationUseCase(get(), get()) }
+    factory { ConvertIntentDataAndSavePendingNotificationUseCase(get(), get()) }
 }

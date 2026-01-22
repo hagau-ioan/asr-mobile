@@ -15,11 +15,16 @@ import com.asr.financial.utils.getCurrentMonth
 import com.asr.financial.utils.getCurrentYear
 import com.asr.financial.utils.divide
 import com.asr.financial.utils.roundTo
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlin.concurrent.Volatile
 
 /**
@@ -34,6 +39,9 @@ class HomeInteractor(
     private val getAvailableYearsUseCase: GetAvailableYearsUseCase,
     private val getAppConfigUseCase: GetAppConfigUseCase,
     private val refreshDataUseCase: RefreshDataUseCase,
+    private val observePendingNotificationUseCase: ObservePendingNotificationUseCase,
+    private val getPendingNotificationUseCase: GetPendingNotificationUseCase,
+    private val clearPendingNotificationUseCase: ClearPendingNotificationUseCase,
     private val clock: Clock
 ) {
     private val _uiState = MutableStateFlow<HomeState>(HomeState.Loading)
@@ -41,6 +49,25 @@ class HomeInteractor(
 
     private val _uiEffectChannel = Channel<HomeEffect>(Channel.BUFFERED)
     val uiEffect: Flow<HomeEffect> = _uiEffectChannel.receiveAsFlow()
+    
+    // Coroutine scope for observing notification Flow
+    private val interactorScope = CoroutineScope(SupervisorJob())
+    
+    // Observe pending notification changes and update state
+    init {
+        // Observe pending notification Flow and update state when it changes
+        interactorScope.launch {
+            observePendingNotificationUseCase().collect { notification ->
+                _uiState.update { currentState ->
+                    if (currentState is HomeState.Success) {
+                        currentState.copy(pendingNotification = notification)
+                    } else {
+                        currentState
+                    }
+                }
+            }
+        }
+    }
 
     @Volatile
     private var currentYear: Int
@@ -61,6 +88,7 @@ class HomeInteractor(
             is HomeEvent.FilterByMonth -> filterByPeriod(event.year, event.month)
             is HomeEvent.NavigateToDetails -> navigateToDetails(event.transactionId)
             is HomeEvent.Refresh -> refreshData()
+            is HomeEvent.DismissNotification -> dismissNotification()
         }
     }
 
@@ -139,6 +167,11 @@ class HomeInteractor(
             0.0
         }
 
+        // Load pending notification from DataStore to ensure it persists after app restart
+        // First try to get from current state (if already loaded), otherwise load from DataStore
+        val currentPendingNotification = (_uiState.value as? HomeState.Success)?.pendingNotification
+            ?: getPendingNotificationUseCase()
+        
         _uiState.emit(
             HomeState.Success(
                 selectedYear = year,
@@ -154,7 +187,8 @@ class HomeInteractor(
                 expectedDonationPerCongregation = allCongregationsData.sumOf { it.monthlyCeiling } / allCongregationsData.size.coerceAtLeast(1),
                 totalPublishers = totalPublishers,
                 congregationCount = congregationCount,
-                perPublisherExpense = perPublisherContribution
+                perPublisherExpense = perPublisherContribution,
+                pendingNotification = currentPendingNotification // Load from DataStore if not in state (e.g., after app restart)
             )
         )
     }
@@ -243,5 +277,10 @@ class HomeInteractor(
                 }
             }
             .sumOf { it.amount }
+    }
+    
+    private suspend fun dismissNotification() {
+        clearPendingNotificationUseCase()
+        // State will be updated automatically via Flow observation in init block
     }
 }

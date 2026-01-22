@@ -10,9 +10,11 @@
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
 		B2C3D4E5F6789012345678AB /* FirebaseAuthBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C3D4E5F6789012345678AC /* FirebaseAuthBridge.swift */; };
 		D4E5F6789012345678AB12 /* FirebaseStorageBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E5F6789012345678AC12 /* FirebaseStorageBridge.swift */; };
+		E5F6789012345678AB12CD /* FirebaseMessagingBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F6789012345678AC12CD /* FirebaseMessagingBridge.swift */; };
 		A1B2C3D4E5F6789012345678 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6789012345679 /* GoogleService-Info.plist */; };
 		F1A2B3C4D5E6F7890123456A /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F1A2B3C4D5E6F7890123456B /* FirebaseAuth */; };
 		F1A2B3C4D5E6F7890123456F /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = F1A2B3C4D5E6F7890123456G /* FirebaseStorage */; };
+		F1A2B3C4D5E6F7890123456I /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = F1A2B3C4D5E6F7890123456D /* FirebaseMessaging */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,7 +25,10 @@
 		B2C3D4E5F6789012345678AD /* FirebaseAuthBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FirebaseAuthBridge.h; sourceTree = "<group>"; };
 		D4E5F6789012345678AC12 /* FirebaseStorageBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseStorageBridge.swift; sourceTree = "<group>"; };
 		D4E5F6789012345678AD12 /* FirebaseStorageBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FirebaseStorageBridge.h; sourceTree = "<group>"; };
+		E5F6789012345678AC12CD /* FirebaseMessagingBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseMessagingBridge.swift; sourceTree = "<group>"; };
+		E5F6789012345678AD12CD /* FirebaseMessagingBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FirebaseMessagingBridge.h; sourceTree = "<group>"; };
 		A1B2C3D4E5F6789012345679 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F1A2B3C4D5E6F7890123456J /* iosApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iosApp.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +37,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F1A2B3C4D5E6F7890123456A /* FirebaseAuth in Frameworks */,
+				F1A2B3C4D5E6F7890123456I /* FirebaseMessaging in Frameworks */,
 				F1A2B3C4D5E6F7890123456F /* FirebaseStorage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -63,8 +69,11 @@
 				B2C3D4E5F6789012345678AD /* FirebaseAuthBridge.h */,
 				D4E5F6789012345678AC12 /* FirebaseStorageBridge.swift */,
 				D4E5F6789012345678AD12 /* FirebaseStorageBridge.h */,
+				E5F6789012345678AC12CD /* FirebaseMessagingBridge.swift */,
+				E5F6789012345678AD12CD /* FirebaseMessagingBridge.h */,
 				7555FF8C242A565B00829871 /* Info.plist */,
 				A1B2C3D4E5F6789012345679 /* GoogleService-Info.plist */,
+				F1A2B3C4D5E6F7890123456J /* iosApp.entitlements */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -88,6 +97,7 @@
 			name = iosApp;
 			packageProductDependencies = (
 				F1A2B3C4D5E6F7890123456B /* FirebaseAuth */,
+				F1A2B3C4D5E6F7890123456D /* FirebaseMessaging */,
 				F1A2B3C4D5E6F7890123456G /* FirebaseStorage */,
 			);
 			productName = iosApp;
@@ -171,6 +181,7 @@
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
 				B2C3D4E5F6789012345678AB /* FirebaseAuthBridge.swift in Sources */,
 				D4E5F6789012345678AB12 /* FirebaseStorageBridge.swift in Sources */,
+				E5F6789012345678AB12CD /* FirebaseMessagingBridge.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,6 +308,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = iosApp/iosApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Z3DAN4GFKX;
 				ENABLE_PREVIEWS = YES;
@@ -327,6 +339,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = iosApp/iosApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Z3DAN4GFKX;
 				ENABLE_PREVIEWS = YES;
@@ -392,6 +405,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F1A2B3C4D5E6F7890123456E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
+		};
+		F1A2B3C4D5E6F7890123456D /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F1A2B3C4D5E6F7890123456E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
 		};
 		F1A2B3C4D5E6F7890123456G /* FirebaseStorage */ = {
 			isa = XCSwiftPackageProductDependency;

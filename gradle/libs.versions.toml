@@ -4,6 +4,11 @@
 appVersion = "1.0.2"
 appVersionCode = "3"
 
+# Android SDK Versions
+android-compile-sdk = "36"
+android-min-sdk = "26"
+android-target-sdk = "36"
+
 # Core
 kotlin = "2.3.0"
 agp = "8.13.2"
@@ -43,6 +48,7 @@ androidx-exifinterface = "1.3.7"
 firebase-auth = "23.0.0"
 firebase-core = "21.0.0"
 firebase-storage = "21.0.0"
+firebase-messaging = "24.0.0"
 google-services = "4.4.0"
 kotlinx-coroutines-play-services = "1.9.0"
 
@@ -67,7 +73,8 @@ sqldelight-android-driver = { module = "app.cash.sqldelight:android-driver", ver
 sqldelight-native-driver = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
 
 # DataStore
-datastore-preferences = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastore" }
+datastore-preferences-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastore" }
+datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 
 # Koin
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
@@ -104,6 +111,7 @@ androidx-exifinterface = { module = "androidx.exifinterface:exifinterface", vers
 firebase-auth = { module = "com.google.firebase:firebase-auth-ktx", version.ref = "firebase-auth" }
 firebase-core = { module = "com.google.firebase:firebase-core", version.ref = "firebase-core" }
 firebase-storage = { module = "com.google.firebase:firebase-storage-ktx", version.ref = "firebase-storage" }
+firebase-messaging = { module = "com.google.firebase:firebase-messaging-ktx", version.ref = "firebase-messaging" }
 kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinx-coroutines-play-services" }
 
 # Compose Multiplatform
