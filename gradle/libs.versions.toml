@@ -1,8 +1,8 @@
 [versions]
 # App Version
 # Using simpler names to avoid nested access issues
-appVersion = "1.0.1"
-appVersionCode = "2"
+appVersion = "1.0.2"
+appVersionCode = "3"
 
 # Core
 kotlin = "2.3.0"
