@@ -31,7 +31,7 @@ actual class FirebaseMessaging actual constructor(
         try {
             logger.debug(TAG, "Getting FCM token")
             val token = firebaseMessaging.token.await()
-            logger.debug(TAG, "FCM token retrieved successfully")
+            logger.debug(TAG, "FCM token retrieved successfully: $token")
             token
         } catch (e: Exception) {
             logger.error(TAG, "Failed to get FCM token", e)

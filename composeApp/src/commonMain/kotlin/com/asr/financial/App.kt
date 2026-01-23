@@ -5,10 +5,12 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.asr.financial.domain.usecase.CheckAuthStatusUseCase
 import com.asr.financial.domain.usecase.ConvertAndSavePendingNotificationUseCase
+import com.asr.financial.domain.usecase.GetFcmTokenUseCase
 import com.asr.financial.domain.usecase.InitializeFcmSubscriptionsUseCase
 import com.asr.financial.domain.usecase.LogoutUseCase
 import com.asr.financial.domain.usecase.ObservePendingNotificationUseCase
 import com.asr.financial.platform.FirebaseMessaging
+import com.asr.financial.platform.Logger
 import com.asr.financial.presentation.navigation.NavGraph
 import com.asr.financial.presentation.navigation.Routes
 import com.asr.financial.presentation.screens.splash.SplashScreen
@@ -52,13 +54,21 @@ fun App() {
                 val navController = rememberNavController()
                 val logoutUseCase: LogoutUseCase = koinInject()
                 val initializeFcmSubscriptionsUseCase: InitializeFcmSubscriptionsUseCase = koinInject()
+                val getFcmTokenUseCase: GetFcmTokenUseCase = koinInject()
                 val firebaseMessaging: FirebaseMessaging = koinInject()
+                val logger: Logger = koinInject()
                 val scope = rememberCoroutineScope()
                 
                 // Initialize FCM subscriptions when app starts and user is authenticated
                 LaunchedEffect(Unit) {
                     try {
                         initializeFcmSubscriptionsUseCase()
+                        
+                        // Get and log FCM token for logged-in user
+                        val fcmToken = getFcmTokenUseCase()
+                        if (fcmToken != null) {
+                            logger.debug("App", "FCM Token for logged-in user: $fcmToken")
+                        }
                     } catch (e: Exception) {
                         // Silently handle FCM subscription errors - don't block app
                     }

@@ -184,13 +184,19 @@ class ConvertIntentDataAndSavePendingNotificationUseCase(
             val notificationId = getStringExtra("notification_id")
                 ?: clock.now().toEpochMilliseconds().toString()
 
+            // Try to get title from Intent extras first, then from data payload
+            // When app is closed and opened from notification, Firebase only sends data payload
             val notificationTitle = getStringExtra("notification_title")
+                ?: notificationData["notification_title"]
                 ?: notificationData["title"]
                 ?: ""
             
+            // Try to get body from Intent extras first, then from data payload
             val notificationBody = getStringExtra("notification_body")
+                ?: notificationData["notification_body"]
                 ?: notificationData["body"]
                 ?: ""
+            
             val notificationUrl = notificationData["link"]
             
             val notificationTimestamp = getLongExtra("notification_timestamp", -1L)

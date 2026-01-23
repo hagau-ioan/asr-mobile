@@ -29,7 +29,7 @@ actual class FirebaseMessaging actual constructor(
         suspendCancellableCoroutine { continuation ->
             FirebaseMessagingBridge.getToken { token, error ->
                 if (token != null) {
-                    logger.debug(TAG, "FCM token retrieved successfully")
+                    logger.debug(TAG, "FCM token retrieved successfully: $token")
                 } else {
                     logger.error(TAG, "Failed to get FCM token: $error")
                 }

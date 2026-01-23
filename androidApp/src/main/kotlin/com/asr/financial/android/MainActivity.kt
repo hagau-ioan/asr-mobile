@@ -76,9 +76,20 @@ class MainActivity : ComponentActivity(), KoinComponent {
 
         val data = mutableMapOf<String, String>()
         intent.extras?.keySet()?.forEach { key ->
-            val value = intent.extras?.getString(key)
-            if (value != null && key != null) {
-                data[key] = value
+            if (key != null) {
+                // Only extract String values, skip Firebase internal keys (google.*, gcm.*)
+                // and non-String values to avoid ClassCastException
+                if (!key.startsWith("google.") && !key.startsWith("gcm.")) {
+                    try {
+                        val value = intent.extras?.getString(key)
+                        if (value != null) {
+                            data[key] = value
+                        }
+                    } catch (e: ClassCastException) {
+                        // Skip non-String values (Long, Integer, Bundle, etc.)
+                        // These are Firebase internal metadata that we don't need
+                    }
+                }
             }
         }
         return data
