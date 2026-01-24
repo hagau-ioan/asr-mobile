@@ -1,6 +1,7 @@
 package com.asr.financial.presentation.screens.asrexpenses
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,6 +28,7 @@ import asr_financial.composeapp.generated.resources.asr_expenses_col_amount
 import asr_financial.composeapp.generated.resources.asr_expenses_col_category
 import asr_financial.composeapp.generated.resources.asr_expenses_col_date
 import asr_financial.composeapp.generated.resources.asr_expenses_col_description
+import asr_financial.composeapp.generated.resources.asr_expenses_empty
 import asr_financial.composeapp.generated.resources.asr_expenses_note_12_months
 import asr_financial.composeapp.generated.resources.asr_expenses_summary
 import asr_financial.composeapp.generated.resources.asr_expenses_total_amount
@@ -52,6 +54,7 @@ import com.asr.financial.presentation.ui.components.cards.SummaryInfoCard
 import com.asr.financial.presentation.ui.components.period.PeriodSelectorCard
 import com.asr.financial.presentation.ui.components.states.ErrorContent
 import com.asr.financial.presentation.ui.components.states.LoadingContent
+import com.asr.financial.presentation.ui.constants.UIConstants.EMPTY_STATE_PADDING_DP
 import com.asr.financial.presentation.ui.components.table.DataTable
 import com.asr.financial.presentation.ui.components.table.TableColumn
 import com.asr.financial.presentation.ui.components.table.TableHeaderCell
@@ -203,35 +206,57 @@ private fun AsrExpensesSuccessContent(
             totalAmountColor = MaterialTheme.colorScheme.error
         )
 
-        // Expenses Table
-        val columns = listOf(
-            TableColumn(stringResource(Res.string.asr_expenses_col_date), COL_DATE_WIDTH_DP.dp),
-            TableColumn(stringResource(Res.string.asr_expenses_col_category), COL_CATEGORY_WIDTH_DP.dp),
-            TableColumn(stringResource(Res.string.asr_expenses_col_description), COL_DESCRIPTION_WIDTH_DP.dp),
-            TableColumn(stringResource(Res.string.asr_expenses_col_amount), COL_AMOUNT_WIDTH_DP.dp, TextAlign.End)
-        )
+        // Expenses Table or Empty State
+        if (expenses.isEmpty()) {
+            EmptyStateCard()
+        } else {
+            val columns = listOf(
+                TableColumn(stringResource(Res.string.asr_expenses_col_date), COL_DATE_WIDTH_DP.dp),
+                TableColumn(stringResource(Res.string.asr_expenses_col_category), COL_CATEGORY_WIDTH_DP.dp),
+                TableColumn(stringResource(Res.string.asr_expenses_col_description), COL_DESCRIPTION_WIDTH_DP.dp),
+                TableColumn(stringResource(Res.string.asr_expenses_col_amount), COL_AMOUNT_WIDTH_DP.dp, TextAlign.End)
+            )
 
-        DataTable(
-            columns = columns,
-            headerContent = {
-                columns.forEach { column ->
-                    TableHeaderCell(
-                        text = column.header,
-                        width = column.width,
-                        textAlign = column.textAlign
+            DataTable(
+                columns = columns,
+                headerContent = {
+                    columns.forEach { column ->
+                        TableHeaderCell(
+                            text = column.header,
+                            width = column.width,
+                            textAlign = column.textAlign
+                        )
+                    }
+                }
+            ) {
+                expenses.forEach { expense ->
+                    AsrExpenseRow(
+                        expense = expense,
+                        onDecontClick = { year, month ->
+                            onNavigateToDecont(year, month)
+                        },
+                        monthsWithDecontData = monthsWithDecontData
                     )
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun EmptyStateCard() {
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(EMPTY_STATE_PADDING_DP.dp),
+            contentAlignment = Alignment.Center
         ) {
-            expenses.forEach { expense ->
-                AsrExpenseRow(
-                    expense = expense,
-                    onDecontClick = { year, month ->
-                        onNavigateToDecont(year, month)
-                    },
-                    monthsWithDecontData = monthsWithDecontData
-                )
-            }
+            Text(
+                text = stringResource(Res.string.asr_expenses_empty),
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
 }

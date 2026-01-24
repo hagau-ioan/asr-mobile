@@ -33,34 +33,10 @@ class DecontRepositoryImpl(
         // Use cached data if available
         val allDeconts = getAllDeconts()
         
-        // First, try exact match by decont's year/month
-        val exactMatch = allDeconts.find { it.year == year && it.month == month }
-        if (exactMatch != null) {
-            return exactMatch
-        }
-        
-        // Fallback: Search by expense dates (handles cases where backend groups expenses incorrectly)
-        // Look for decont where most expenses are from the requested month/year
-        return allDeconts.firstOrNull { decont ->
-            val matchingExpenses = decont.expenses.count { expense ->
-                try {
-                    // Parse date format: "DD.MM.YYYY" (e.g., "04.11.2025")
-                    val parts = expense.date.split(".")
-                    if (parts.size == 3) {
-                        val expenseDay = parts[0].toIntOrNull()
-                        val expenseMonth = parts[1].toIntOrNull()
-                        val expenseYear = parts[2].toIntOrNull()
-                        expenseYear == year && expenseMonth == month
-                    } else {
-                        false
-                    }
-                } catch (e: Exception) {
-                    false
-                }
-            }
-            // Return decont if at least one expense matches the requested month/year
-            matchingExpenses > 0
-        }
+        // Exact match by decont's year/month only
+        // We ignore individual expense dates as they may be from different months/years
+        // The year and month fields in Decont are always correct and must match exactly
+        return allDeconts.find { it.year == year && it.month == month }
     }
 
     override suspend fun refreshData() {

@@ -255,6 +255,7 @@
     <string name="filter_all_months">Toate lunile</string>
     <string name="filter_all_years">Toți anii</string>
     <string name="asr_expenses_note_12_months">Notă: Cheltuielile afișate sunt doar pentru ultimele 12 luni.</string>
+    <string name="asr_expenses_empty">Nu există date pentru perioada selectată</string>
     
     <!-- Login Screen -->
     <string name="login_title">Autentificare</string>

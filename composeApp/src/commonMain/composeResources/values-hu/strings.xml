@@ -254,6 +254,7 @@
     <string name="filter_all_months">Minden hónap</string>
     <string name="filter_all_years">Minden év</string>
     <string name="asr_expenses_note_12_months">Megjegyzés: A megjelenített kiadások csak az elmúlt 12 hónapra vonatkoznak.</string>
+    <string name="asr_expenses_empty">Nincs adat a kiválasztott időszakra</string>
     
     <!-- Login Screen -->
     <string name="login_title">Bejelentkezés</string>
