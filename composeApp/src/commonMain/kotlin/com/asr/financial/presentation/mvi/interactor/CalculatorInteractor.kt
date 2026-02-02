@@ -16,6 +16,7 @@ import com.asr.financial.presentation.screens.calculator.ContributionCalculation
 import com.asr.financial.utils.divide
 import com.asr.financial.utils.getCurrentMonth
 import com.asr.financial.utils.getCurrentYear
+import com.asr.financial.utils.parseYearMonthDdMmYyyy
 import com.asr.financial.utils.roundTo
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -111,12 +112,19 @@ class CalculatorInteractor(
                     val currentYear = getCurrentYear(clock)
                     val currentMonth = getCurrentMonth(clock)
                     
-                    // Only include if data matches current month and year
-                    if (situatie != null && situatie.year == currentYear && situatie.month == currentMonth) {
+                    // Include if data matches current month/year (by situatie.year/month)
+                    // OR if situatie's end_date falls in current month (e.g. data 01.01.2026–02.02.2026 visible in February)
+                    if (situatie == null) {
+                        null
+                    } else if (situatie.year == currentYear && situatie.month == currentMonth) {
                         situatie
                     } else {
-                        // Data doesn't match current month/year, don't display
-                        null
+                        val endYearMonth = parseYearMonthDdMmYyyy(situatie.endDate)
+                        if (endYearMonth != null && endYearMonth.first == currentYear && endYearMonth.second == currentMonth) {
+                            situatie
+                        } else {
+                            null
+                        }
                     }
                 }
             } catch (e: Exception) {

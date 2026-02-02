@@ -32,6 +32,26 @@ fun getAvailableYears(clock: Clock): List<Int> {
 }
 
 /**
+ * Parse date string in DD.MM.YYYY format and return (year, month) or null.
+ * Used e.g. for SituatieCurentaAsr.end_date ("02.02.2026").
+ */
+fun parseYearMonthDdMmYyyy(dateString: String): Pair<Int, Int>? {
+    return try {
+        val parts = dateString.split(".")
+        if (parts.size == 3) {
+            val day = parts[0].toIntOrNull()
+            val month = parts[1].toIntOrNull()
+            val year = parts[2].toIntOrNull()
+            if (year != null && month != null && day != null && month in 1..12 && day in 1..31) {
+                year to month
+            } else null
+        } else null
+    } catch (e: Exception) {
+        null
+    }
+}
+
+/**
  * Format current date and time for file naming.
  * Format: YYYYMMDD_HHmmss (e.g., 20260118_143025)
  * 
