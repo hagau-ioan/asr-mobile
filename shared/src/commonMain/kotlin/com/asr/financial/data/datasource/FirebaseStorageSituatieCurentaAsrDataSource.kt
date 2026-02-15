@@ -22,11 +22,9 @@ class FirebaseStorageSituatieCurentaAsrDataSource(
     override suspend fun get(): SituatieCurentaAsr? {
         val jsonString = firebaseStorage.downloadFileAsString(FILE_PATH) ?: return null
         return try {
-            // Parse as wrapped JSON (API format: { "_meta": {...}, "data": {...} })
             val wrapped = json.decodeFromString<JsonResponseWrapper<SituatieCurentaAsr>>(jsonString)
             wrapped.data
         } catch (e: Exception) {
-            // Fallback to direct object (for backward compatibility)
             try {
                 json.decodeFromString<SituatieCurentaAsr>(jsonString)
             } catch (e2: Exception) {

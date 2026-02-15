@@ -51,12 +51,17 @@ import com.asr.financial.presentation.ui.constants.UIConstants.CARD_PADDING_DP
 import com.asr.financial.presentation.ui.constants.UIConstants.SECTION_SPACING_DP
 import com.asr.financial.presentation.ui.responsive.WindowSizeClass
 import com.asr.financial.presentation.ui.scaffold.ScreenLayout
+import com.asr.financial.utils.calculatePreviousMonth
+import com.asr.financial.utils.getCurrentMonth
+import com.asr.financial.utils.getCurrentYear
+import com.asr.financial.utils.getMonthsList
 import asr_financial.composeapp.generated.resources.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -64,11 +69,16 @@ fun UploadScreen(
     windowSizeClass: WindowSizeClass,
     onNavigate: (String) -> Unit,
     onMenuClick: () -> Unit = {},
-    viewModel: UploadViewModel = koinViewModel()
+    viewModel: UploadViewModel = koinViewModel(),
+    clock: com.asr.financial.platform.Clock = koinInject()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     var launchCameraRequested by remember { mutableStateOf(false) }
+
+    val months = remember { getMonthsList() }
+    val (headerMonthNum, headerYear) = calculatePreviousMonth(getCurrentMonth(clock), getCurrentYear(clock))
+    val headerMonthName = months.find { it.first == headerMonthNum }?.second?.let { stringResource(it) } ?: ""
 
     CameraCapture(
         onCaptureResult = { success ->
@@ -151,6 +161,8 @@ fun UploadScreen(
                     UploadSuccessContent(
                         state = state,
                         windowSizeClass = windowSizeClass,
+                        headerMonthName = headerMonthName,
+                        headerYear = headerYear,
                         onNavigate = onNavigate,
                         onMenuClick = onMenuClick,
                         onCaptureClick = { viewModel.handleEvent(UploadEvent.RequestCapture) },
@@ -170,6 +182,8 @@ fun UploadScreen(
                             BreadcrumbItem(stringResource(Res.string.nav_home), Routes.HOME),
                             BreadcrumbItem(stringResource(Res.string.nav_upload))
                         ),
+                        selectedMonth = headerMonthName,
+                        selectedYear = headerYear,
                         onNavigate = onNavigate,
                         onMenuClick = onMenuClick
                     ) {
@@ -182,6 +196,8 @@ fun UploadScreen(
                     UploadErrorContent(
                         message = state.message,
                         windowSizeClass = windowSizeClass,
+                        headerMonthName = headerMonthName,
+                        headerYear = headerYear,
                         onNavigate = onNavigate,
                         onMenuClick = onMenuClick,
                         onRetryClick = { viewModel.handleEvent(UploadEvent.LoadData) }
@@ -201,6 +217,8 @@ fun UploadScreen(
 private fun UploadSuccessContent(
     state: UploadState.Success,
     windowSizeClass: WindowSizeClass,
+    headerMonthName: String,
+    headerYear: Int,
     onNavigate: (String) -> Unit,
     onMenuClick: () -> Unit,
     onCaptureClick: () -> Unit,
@@ -218,6 +236,8 @@ private fun UploadSuccessContent(
             BreadcrumbItem(stringResource(Res.string.nav_home), Routes.HOME),
             BreadcrumbItem(stringResource(Res.string.nav_upload))
         ),
+        selectedMonth = headerMonthName,
+        selectedYear = headerYear,
         onNavigate = onNavigate,
         onMenuClick = onMenuClick
     ) {
@@ -680,6 +700,8 @@ private fun GuidelineRow(text: String) {
 private fun UploadErrorContent(
     message: String,
     windowSizeClass: WindowSizeClass,
+    headerMonthName: String,
+    headerYear: Int,
     onNavigate: (String) -> Unit,
     onMenuClick: () -> Unit,
     onRetryClick: () -> Unit
@@ -690,6 +712,8 @@ private fun UploadErrorContent(
             BreadcrumbItem(stringResource(Res.string.nav_home), Routes.HOME),
             BreadcrumbItem(stringResource(Res.string.nav_upload))
         ),
+        selectedMonth = headerMonthName,
+        selectedYear = headerYear,
         onNavigate = onNavigate,
         onMenuClick = onMenuClick
     ) {

@@ -11,7 +11,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.asr.financial.platform.Clipboard
+import com.asr.financial.platform.Clock
+import com.asr.financial.utils.calculatePreviousMonth
+import com.asr.financial.utils.getCurrentMonth
+import com.asr.financial.utils.getCurrentYear
+import com.asr.financial.utils.getMonthsList
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.StringResource
 import org.koin.compose.koinInject
 import com.asr.financial.presentation.mvi.event.CalculatorEvent
 import com.asr.financial.presentation.mvi.interactor.CalculatorMessages
@@ -37,9 +43,14 @@ fun CalculatorScreen(
     windowSizeClass: WindowSizeClass,
     onNavigate: (String) -> Unit,
     onMenuClick: () -> Unit = {},
-    viewModel: CalculatorViewModel = koinViewModel()
+    viewModel: CalculatorViewModel = koinViewModel(),
+    clock: Clock = koinInject()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    val months = remember { getMonthsList() }
+    val (headerMonthNum, headerYear) = calculatePreviousMonth(getCurrentMonth(clock), getCurrentYear(clock))
+    val headerMonthName = months.find { it.first == headerMonthNum }?.second?.let { stringResource(it) } ?: ""
 
     LaunchedEffect(Unit) {
         viewModel.handleEvent(CalculatorEvent.LoadData)
@@ -50,6 +61,8 @@ fun CalculatorScreen(
             CalculatorSuccessContent(
                 state = state,
                 windowSizeClass = windowSizeClass,
+                headerMonthName = headerMonthName,
+                headerYear = headerYear,
                 onNavigate = onNavigate,
                 onMenuClick = onMenuClick
             )
@@ -61,6 +74,8 @@ fun CalculatorScreen(
                     BreadcrumbItem(stringResource(Res.string.nav_home), Routes.HOME),
                     BreadcrumbItem(stringResource(Res.string.nav_calculator))
                 ),
+                selectedMonth = headerMonthName,
+                selectedYear = headerYear,
                 onNavigate = onNavigate,
                 onMenuClick = onMenuClick
             ) {
@@ -76,6 +91,8 @@ fun CalculatorScreen(
                     BreadcrumbItem(stringResource(Res.string.nav_home), Routes.HOME),
                     BreadcrumbItem(stringResource(Res.string.nav_calculator))
                 ),
+                selectedMonth = headerMonthName,
+                selectedYear = headerYear,
                 onNavigate = onNavigate,
                 onMenuClick = onMenuClick
             ) {
@@ -91,6 +108,8 @@ fun CalculatorScreen(
 private fun CalculatorSuccessContent(
     state: CalculatorState.Success,
     windowSizeClass: WindowSizeClass,
+    headerMonthName: String,
+    headerYear: Int,
     onNavigate: (String) -> Unit,
     onMenuClick: () -> Unit
 ) {
@@ -100,6 +119,8 @@ private fun CalculatorSuccessContent(
             BreadcrumbItem(stringResource(Res.string.nav_home), Routes.HOME),
             BreadcrumbItem(stringResource(Res.string.nav_calculator))
         ),
+        selectedMonth = headerMonthName,
+        selectedYear = headerYear,
         onNavigate = onNavigate,
         onMenuClick = onMenuClick
     ) {

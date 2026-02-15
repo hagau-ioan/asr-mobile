@@ -102,18 +102,17 @@ class CalculatorInteractor(
             // Only load if user is admin, and only include if data matches current month/year
             // Data is cached for 12 hours
             val situatieCurentaAsr = try {
+                val currentYear = getCurrentYear(clock)
+                val currentMonth = getCurrentMonth(clock)
+
                 // Check if user is admin - only admins can view this data
                 val isAdmin = isAdminUseCase()
+
                 if (!isAdmin) {
-                    // User is not admin, don't load data
                     null
                 } else {
                     val situatie = getSituatieCurentaAsrUseCase()
-                    val currentYear = getCurrentYear(clock)
-                    val currentMonth = getCurrentMonth(clock)
-                    
-                    // Include if data matches current month/year (by situatie.year/month)
-                    // OR if situatie's end_date falls in current month (e.g. data 01.01.2026–02.02.2026 visible in February)
+
                     if (situatie == null) {
                         null
                     } else if (situatie.year == currentYear && situatie.month == currentMonth) {
@@ -128,8 +127,6 @@ class CalculatorInteractor(
                     }
                 }
             } catch (e: Exception) {
-                // If loading fails, continue without it (non-critical data)
-                // Exception is silently handled to not break the screen
                 null
             }
 

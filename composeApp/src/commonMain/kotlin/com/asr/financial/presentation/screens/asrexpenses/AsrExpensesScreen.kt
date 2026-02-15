@@ -16,9 +16,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -60,10 +62,14 @@ import com.asr.financial.presentation.ui.components.table.TableColumn
 import com.asr.financial.presentation.ui.components.table.TableHeaderCell
 import com.asr.financial.presentation.ui.responsive.WindowSizeClass
 import com.asr.financial.presentation.ui.scaffold.ScreenLayout
+import com.asr.financial.utils.calculatePreviousMonth
 import com.asr.financial.utils.formatCurrency
+import com.asr.financial.utils.getCurrentMonth
+import com.asr.financial.utils.getCurrentYear
 import com.asr.financial.utils.getMonthsList
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -72,11 +78,23 @@ fun AsrExpensesScreen(
     onNavigate: (String) -> Unit,
     onNavigateToDecont: (Int, Int) -> Unit = { _, _ -> },
     onMenuClick: () -> Unit = {},
-    viewModel: AsrExpensesViewModel = koinViewModel()
+    viewModel: AsrExpensesViewModel = koinViewModel(),
+    clock: com.asr.financial.platform.Clock = koinInject()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var showYearDropdown by remember { mutableStateOf(false) }
     var showMonthDropdown by remember { mutableStateOf(false) }
+
+    val months = remember { getMonthsList() }
+    val (initialMonth, initialYear) = calculatePreviousMonth(getCurrentMonth(clock), getCurrentYear(clock))
+    var headerMonthNum by remember { mutableIntStateOf(initialMonth) }
+    var headerYear by remember { mutableIntStateOf(initialYear) }
+    SideEffect {
+        val (m, y) = calculatePreviousMonth(getCurrentMonth(clock), getCurrentYear(clock))
+        headerMonthNum = m
+        headerYear = y
+    }
+    val headerMonthName = months.find { it.first == headerMonthNum }?.second?.let { stringResource(it) } ?: ""
 
     ScreenLayout(
         windowSizeClass = windowSizeClass,
@@ -84,6 +102,8 @@ fun AsrExpensesScreen(
             BreadcrumbItem(stringResource(Res.string.nav_home), Routes.HOME),
             BreadcrumbItem(stringResource(Res.string.nav_asr_expenses))
         ),
+        selectedMonth = headerMonthName,
+        selectedYear = headerYear,
         onNavigate = onNavigate,
         onMenuClick = onMenuClick
     ) {

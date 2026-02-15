@@ -27,7 +27,10 @@ import com.asr.financial.presentation.ui.constants.UIConstants.EMPTY_STATE_PADDI
 import com.asr.financial.presentation.ui.constants.UIConstants.SECTION_SPACING_DP
 import com.asr.financial.presentation.ui.responsive.WindowSizeClass
 import com.asr.financial.presentation.ui.scaffold.ScreenLayout
+import com.asr.financial.utils.calculatePreviousMonth
+import com.asr.financial.utils.getCurrentMonth
 import com.asr.financial.utils.getCurrentYear
+import com.asr.financial.utils.getMonthsList
 import asr_financial.composeapp.generated.resources.*
 import com.asr.financial.presentation.ui.constants.AppConstants
 import org.jetbrains.compose.resources.stringResource
@@ -39,9 +42,14 @@ fun YearlyScreen(
     windowSizeClass: WindowSizeClass,
     onNavigate: (String) -> Unit,
     onMenuClick: () -> Unit = {},
-    viewModel: YearlyViewModel = koinViewModel()
+    viewModel: YearlyViewModel = koinViewModel(),
+    clock: Clock = koinInject()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    val months = remember { getMonthsList() }
+    val (headerMonthNum, headerYear) = calculatePreviousMonth(getCurrentMonth(clock), getCurrentYear(clock))
+    val headerMonthName = months.find { it.first == headerMonthNum }?.second?.let { stringResource(it) } ?: ""
 
     LaunchedEffect(Unit) {
         viewModel.handleEvent(YearlyEvent.LoadData)
@@ -52,6 +60,8 @@ fun YearlyScreen(
             YearlySuccessContent(
                 state = state,
                 windowSizeClass = windowSizeClass,
+                headerMonthName = headerMonthName,
+                headerYear = headerYear,
                 onNavigate = onNavigate,
                 onMenuClick = onMenuClick
             )
@@ -63,6 +73,8 @@ fun YearlyScreen(
                     BreadcrumbItem(stringResource(Res.string.nav_home), Routes.HOME),
                     BreadcrumbItem(stringResource(Res.string.nav_yearly))
                 ),
+                selectedMonth = headerMonthName,
+                selectedYear = headerYear,
                 onNavigate = onNavigate,
                 onMenuClick = onMenuClick
             ) {
@@ -78,6 +90,8 @@ fun YearlyScreen(
                     BreadcrumbItem(stringResource(Res.string.nav_home), Routes.HOME),
                     BreadcrumbItem(stringResource(Res.string.nav_yearly))
                 ),
+                selectedMonth = headerMonthName,
+                selectedYear = headerYear,
                 onNavigate = onNavigate,
                 onMenuClick = onMenuClick
             ) {
@@ -93,6 +107,8 @@ fun YearlyScreen(
 private fun YearlySuccessContent(
     state: YearlyState.Success,
     windowSizeClass: WindowSizeClass,
+    headerMonthName: String,
+    headerYear: Int,
     onNavigate: (String) -> Unit,
     onMenuClick: () -> Unit
 ) {
@@ -102,6 +118,8 @@ private fun YearlySuccessContent(
             BreadcrumbItem(stringResource(Res.string.nav_home), Routes.HOME),
             BreadcrumbItem(stringResource(Res.string.nav_yearly))
         ),
+        selectedMonth = headerMonthName,
+        selectedYear = headerYear,
         onNavigate = onNavigate,
         onMenuClick = onMenuClick
     ) {
