@@ -7,6 +7,7 @@ import com.asr.financial.domain.usecase.GetTotalPublishersUseCase
 import com.asr.financial.domain.usecase.GetTransactionsUseCase
 import com.asr.financial.domain.usecase.IsAdminUseCase
 import com.asr.financial.platform.Clock
+import com.asr.financial.platform.Logger
 import com.asr.financial.presentation.mvi.effect.CalculatorEffect
 import com.asr.financial.presentation.mvi.event.CalculatorEvent
 import com.asr.financial.presentation.mvi.interactor.CalculatorMessages
@@ -16,7 +17,6 @@ import com.asr.financial.presentation.screens.calculator.ContributionCalculation
 import com.asr.financial.utils.divide
 import com.asr.financial.utils.getCurrentMonth
 import com.asr.financial.utils.getCurrentYear
-import com.asr.financial.utils.parseYearMonthDdMmYyyy
 import com.asr.financial.utils.roundTo
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -35,8 +35,12 @@ class CalculatorInteractor(
     private val getTransactionsUseCase: GetTransactionsUseCase,
     private val getSituatieCurentaAsrUseCase: GetSituatieCurentaAsrUseCase,
     private val isAdminUseCase: IsAdminUseCase,
-    private val clock: Clock
+    private val clock: Clock,
+    private val logger: Logger
 ) {
+    private companion object {
+        const val TAG = "CalculatorInteractor"
+    }
     private val _uiState = MutableStateFlow<CalculatorState>(CalculatorState.Loading)
     val uiState: Flow<CalculatorState> = _uiState.asStateFlow()
 
@@ -99,34 +103,25 @@ class CalculatorInteractor(
             }.sortedBy { it.congregationName }
 
             // Load current ASR situation from Firebase Storage
-            // Only load if user is admin, and only include if data matches current month/year
+            // Show whenever we have data (admin only); no filtering by current month
             // Data is cached for 12 hours
             val situatieCurentaAsr = try {
-                val currentYear = getCurrentYear(clock)
-                val currentMonth = getCurrentMonth(clock)
-
-                // Check if user is admin - only admins can view this data
                 val isAdmin = isAdminUseCase()
-
                 if (!isAdmin) {
+                    logger.debug(TAG, "situatie_curenta_asr: not shown (user is not admin)")
                     null
                 } else {
                     val situatie = getSituatieCurentaAsrUseCase()
-
                     if (situatie == null) {
+                        logger.warning(TAG, "situatie_curenta_asr: not shown (Cloud load or parse returned null)")
                         null
-                    } else if (situatie.year == currentYear && situatie.month == currentMonth) {
-                        situatie
                     } else {
-                        val endYearMonth = parseYearMonthDdMmYyyy(situatie.endDate)
-                        if (endYearMonth != null && endYearMonth.first == currentYear && endYearMonth.second == currentMonth) {
-                            situatie
-                        } else {
-                            null
-                        }
+                        logger.debug(TAG, "situatie_curenta_asr: showing (year=${situatie.year}, month=${situatie.month}, endDate=${situatie.endDate})")
+                        situatie
                     }
                 }
             } catch (e: Exception) {
+                logger.error(TAG, "situatie_curenta_asr: exception during load", e)
                 null
             }
 

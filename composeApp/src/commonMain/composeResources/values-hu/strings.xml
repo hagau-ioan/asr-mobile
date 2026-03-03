@@ -232,6 +232,7 @@
     <string name="calculator_period_label">Időszak: %1$d.%2$d - %3$s</string>
     <string name="calculator_data_end_date_label">Adatok eddig:</string>
     <string name="calculator_copy_to_clipboard">Másolás vágólapra</string>
+    <string name="calculator_situatie_copy_asr">ASR helyzet másolása vágólapra</string>
     <string name="calculator_situatie_info_note">Megjegyzés: A megjelenített információk közelítő értékek, nem pontos adatok.</string>
     <string name="calculator_distribution_title">Eloszlas Gyulekezetek Szerint</string>
     <string name="calculator_publishers">%1$d hirdeto</string>

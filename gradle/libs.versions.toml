@@ -1,8 +1,8 @@
 [versions]
 # App Version
 # Using simpler names to avoid nested access issues
-appVersion = "1.0.6"
-appVersionCode = "7"
+appVersion = "1.0.7"
+appVersionCode = "8"
 
 # Android SDK Versions
 android-compile-sdk = "36"

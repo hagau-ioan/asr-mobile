@@ -37,6 +37,7 @@ import com.asr.financial.domain.repository.CurrentAsrSituationRepository
 import com.asr.financial.domain.repository.NotificationRepository
 import com.asr.financial.domain.repository.TransactionRepository
 import com.asr.financial.platform.NotificationDataStore
+import com.asr.financial.platform.Logger
 import com.asr.financial.platform.ResourceLoader
 import org.koin.dsl.module
 
@@ -58,7 +59,7 @@ val dataModule = module {
         single<AppConfigDataSource> { FirebaseStorageAppConfigDataSource(get(), get()) }
         single<AsrExpenseDataSource> { FirebaseStorageAsrExpenseDataSource(get()) }
         single<DecontDataSource> { FirebaseStorageDecontDataSource(get()) }
-        single<SituatieCurentaAsrDataSource> { FirebaseStorageSituatieCurentaAsrDataSource(get()) }
+        single<SituatieCurentaAsrDataSource> { FirebaseStorageSituatieCurentaAsrDataSource(get(), get()) }
     } else {
         // Testing: Local JSON files
         single<TransactionDataSource> { JsonTransactionDataSource(get()) }
@@ -67,7 +68,7 @@ val dataModule = module {
         single<AsrExpenseDataSource> { JsonAsrExpenseDataSource(get()) }
         single<DecontDataSource> { JsonDecontDataSource(get()) }
         // Note: SituatieCurentaAsrDataSource only available via Firebase Storage (no JSON fallback)
-        single<SituatieCurentaAsrDataSource> { FirebaseStorageSituatieCurentaAsrDataSource(get()) }
+        single<SituatieCurentaAsrDataSource> { FirebaseStorageSituatieCurentaAsrDataSource(get(), get()) }
     }
     
     // Pending Notification DataSource
@@ -81,7 +82,7 @@ val dataModule = module {
     single<AppConfigRepository> { AppConfigRepositoryImpl(get()) }
     single<AsrExpenseRepository> { AsrExpenseRepositoryImpl(get()) }
     single<DecontRepository> { DecontRepositoryImpl(get()) }
-    single<CurrentAsrSituationRepository> { CurrentAsrSituationRepositoryImpl(get(), get()) }
+    single<CurrentAsrSituationRepository> { CurrentAsrSituationRepositoryImpl(get(), get(), get()) }
     single<AuthRepository> { AuthRepositoryImpl(get()) }
     single<NotificationRepository> { NotificationRepositoryImpl(get(), get(), get(), get()) }
 }

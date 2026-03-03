@@ -237,7 +237,7 @@ private fun SituatieCurentaAsrSection(
                 ) {
                     Icon(
                         imageVector = Icons.Default.ContentCopy,
-                        contentDescription = stringResource(Res.string.calculator_copy_to_clipboard),
+                        contentDescription = stringResource(Res.string.calculator_situatie_copy_asr),
                         tint = if (showCopySuccess) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -272,16 +272,11 @@ private fun SituatieCurentaAsrSection(
             }
             Spacer(Modifier.height(16.dp))
 
-            // Financial metrics displayed in rows
+            // Financial metrics (ASR only; no CG in this section)
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                SituatieRow(
-                    label = stringResource(Res.string.calculator_total_disponibil),
-                    value = situatie.totalDisponibil.formatCurrency(),
-                    valueColor = MaterialTheme.colorScheme.primary
-                )
                 SituatieRow(
                     label = stringResource(Res.string.calculator_incasare_asr),
                     value = situatie.incasareAsr.formatCurrency(),
@@ -291,19 +286,6 @@ private fun SituatieCurentaAsrSection(
                     label = stringResource(Res.string.calculator_plata_asr),
                     value = situatie.plataAsr.formatCurrency(),
                     valueColor = MaterialTheme.colorScheme.error
-                )
-                SituatieRow(
-                    label = stringResource(Res.string.calculator_disponibil_cg_initial),
-                    value = situatie.disponibilCgInitial.formatCurrency()
-                )
-                SituatieRow(
-                    label = stringResource(Res.string.calculator_incasare_cg),
-                    value = situatie.incasareCg.formatCurrency(),
-                    valueColor = MaterialTheme.colorScheme.tertiary
-                )
-                SituatieRow(
-                    label = stringResource(Res.string.calculator_disponibil_cg_final),
-                    value = situatie.disponibilCgFinal.formatCurrency()
                 )
                 SituatieRow(
                     label = stringResource(Res.string.calculator_total_asr),
@@ -374,19 +356,15 @@ private fun SituatieRow(
 }
 
 /**
- * Format situatie data for clipboard
+ * Format situatie data for clipboard (ASR only; no CG in this section)
  */
 private fun formatSituatieForClipboard(situatie: com.asr.financial.domain.models.SituatieCurentaAsr): String {
     return buildString {
         appendLine("Situație Curentă ASR")
         appendLine("Date până la: ${situatie.endDate}")
         appendLine()
-        appendLine("Total Disponibil: ${situatie.totalDisponibil.formatCurrency()}")
         appendLine("Încasare ASR: ${situatie.incasareAsr.formatCurrency()}")
         appendLine("Plată ASR: ${situatie.plataAsr.formatCurrency()}")
-        appendLine("Disponibil CG Inițial: ${situatie.disponibilCgInitial.formatCurrency()}")
-        appendLine("Încasare CG: ${situatie.incasareCg.formatCurrency()}")
-        appendLine("Disponibil CG Final: ${situatie.disponibilCgFinal.formatCurrency()}")
         appendLine("Total ASR: ${situatie.totalAsr.formatCurrency()}")
     }
 }

@@ -5,6 +5,7 @@ import com.asr.financial.data.datasource.SituatieCurentaAsrDataSource
 import com.asr.financial.domain.models.SituatieCurentaAsr
 import com.asr.financial.domain.repository.CurrentAsrSituationRepository
 import com.asr.financial.platform.Clock
+import com.asr.financial.platform.Logger
 
 /**
  * Implementation of CurrentAsrSituationRepository with time-based caching (12 hours).
@@ -12,8 +13,13 @@ import com.asr.financial.platform.Clock
  */
 class CurrentAsrSituationRepositoryImpl(
     private val dataSource: SituatieCurentaAsrDataSource,
-    private val clock: Clock
+    private val clock: Clock,
+    private val logger: Logger
 ) : CurrentAsrSituationRepository {
+
+    private companion object {
+        const val TAG = "SituatieCurentaRepo"
+    }
 
     private val cache = TimeBasedRepositoryCache<SituatieCurentaAsr>(clock)
 
@@ -21,13 +27,17 @@ class CurrentAsrSituationRepositoryImpl(
         // Cache-first strategy: check cache first
         val cached = cache.get()
         if (cached != null) {
+            logger.debug(TAG, "situatie_curenta_asr: cache HIT")
             return cached
         }
 
+        logger.debug(TAG, "situatie_curenta_asr: cache MISS, loading from Cloud")
         // Cache is empty or expired, load from server
         val currentSituation = dataSource.get()
-        // Cache the result (even if null) to prevent unnecessary reloads
-        if (currentSituation != null) {
+        if (currentSituation == null) {
+            logger.warning(TAG, "situatie_curenta_asr: dataSource.get() returned null (see SituatieCurentaAsrDS logs for download/parse details)")
+        } else {
+            logger.debug(TAG, "situatie_curenta_asr: loaded from Cloud, caching (year=${currentSituation.year}, month=${currentSituation.month})")
             cache.set(currentSituation)
         }
         return currentSituation
